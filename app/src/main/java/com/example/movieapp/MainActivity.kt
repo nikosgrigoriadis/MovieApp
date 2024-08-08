@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,10 +18,17 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        var ActionCovers = arrayOf( //metatropi se function
+        val actionCovers = listOf( //metatropi se function
             MovieCover(R.drawable.cars),
             MovieCover(R.drawable.despme4),
-            MovieCover(R.drawable.insideout2)
+            MovieCover(R.drawable.insideout2),
+            MovieCover(R.drawable.toystory4)
+
         )
+
+        val recyclerView = findViewById<RecyclerView>(R.id.covrecyclerView)
+        recyclerView.adapter = CoversAdapter(actionCovers)
     }
+
+
 }
