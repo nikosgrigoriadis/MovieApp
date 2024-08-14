@@ -26,8 +26,15 @@ class MainActivity : AppCompatActivity() {
 
         )
 
-        val recyclerView = findViewById<RecyclerView>(R.id.covrecyclerView)
-        recyclerView.adapter = CoversAdapter(actionCovers)
+        val actionCategory = listOf(
+            MovieCategories("Action",actionCovers),
+            MovieCategories("Animated",actionCovers),
+            MovieCategories("Drama",actionCovers)
+        )
+
+
+        val catrecyclerView = findViewById<RecyclerView>(R.id.catrecyclerView)
+        catrecyclerView.adapter = MainAdapter(actionCategory)
     }
 
 
