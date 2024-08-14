@@ -4,16 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
-
-data class MovieCover(@DrawableRes val image: Int)
 
 class CoversAdapter(private val covers: List<MovieCover>) : RecyclerView.Adapter<CoversAdapter.CoversAdapterViewHolder>() {
 
     //Κρατάει τις αναφορές στα TextView και ImageView για κάθε στοιχείο
     class CoversAdapterViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val coverImageView: ImageView = itemView.findViewById(R.id.moviecover)
+        val coverImageView: ImageView = itemView.findViewById(R.id.moviecover) // maybe binding
     }
 
     // Δημιουργεί νέες προβολές (invoked by the layout manager)
