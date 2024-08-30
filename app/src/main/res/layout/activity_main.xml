@@ -16,11 +16,6 @@
         android:orientation="vertical">
 
 
-        <!--na metakinithei-->
-
-
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/catrecyclerView"
             android:layout_width="match_parent"

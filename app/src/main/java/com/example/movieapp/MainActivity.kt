@@ -18,7 +18,9 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val actionCovers = listOf( //metatropi se function
+
+
+        val animationCovers = listOf(
             MovieCover(R.drawable.cars),
             MovieCover(R.drawable.despme4),
             MovieCover(R.drawable.insideout2),
@@ -26,11 +28,33 @@ class MainActivity : AppCompatActivity() {
 
         )
 
+        val actionCovers = listOf(
+            MovieCover(R.drawable.sanandreas),
+            MovieCover(R.drawable.missionimpossible),
+            MovieCover(R.drawable.thefallguy),
+            MovieCover(R.drawable.topgunmaverick),
+            MovieCover(R.drawable.fastx)
+        )
+
+        val dramaCategory = listOf(
+            MovieCover(R.drawable.shidlerlist),
+            MovieCover(R.drawable.shawshankredemption),
+            MovieCover(R.drawable.lion),
+            MovieCover(R.drawable.godfather3),
+            MovieCover(R.drawable.theblindside)
+        )
+
+
+
+
+
         val actionCategory = listOf(
             MovieCategories("Action",actionCovers),
-            MovieCategories("Animated",actionCovers),
-            MovieCategories("Drama",actionCovers)
+            MovieCategories("Animated",animationCovers),
+            MovieCategories("Drama",dramaCategory),
         )
+
+
 
 
         val catrecyclerView = findViewById<RecyclerView>(R.id.catrecyclerView)

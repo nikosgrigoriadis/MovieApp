@@ -1,15 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="3dp"
+    app:cardBackgroundColor="#FFFFFFFF"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp"
+   >
 
-    <ImageView
-        android:padding="5dp"
-        android:src="@drawable/cars"
+
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/moviecover"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/moviecover">
-    </ImageView>
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:clickable="true"
+        android:contentDescription="@string/moviecover"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cars"
+        app:shapeAppearanceOverlay="@style/CustomCorner">
+
+    </com.google.android.material.imageview.ShapeableImageView>
 
 </androidx.cardview.widget.CardView>
+
+
+
+
