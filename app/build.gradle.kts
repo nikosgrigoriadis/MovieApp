@@ -7,6 +7,11 @@ android {
     namespace = "com.example.movieapp"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
+
     defaultConfig {
         applicationId = "com.example.movieapp"
         minSdk = 24
@@ -36,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.fragment.ktx)
     implementation(libs.sqliteassethelper)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.core.ktx)
