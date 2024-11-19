@@ -52,4 +52,18 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    //Room
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    //Room Coroutines
+    implementation(libs.androidx.room.ktx)
+    //Gson
+    implementation(libs.gson)
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    //Glide
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
+
 }

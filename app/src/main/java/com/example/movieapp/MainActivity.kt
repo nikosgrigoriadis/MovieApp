@@ -1,18 +1,17 @@
 package com.example.movieapp
 
 import android.os.Bundle
-
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
-
 import com.example.movieapp.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-@Suppress("DEPRECATION") //na do giati bgazei tin grammi
+
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
 
         supportFragmentManager.commit {   //add fragment to activity
-            add(R.id.frame_content, MoviesFragment()) // add -> replace
+            add(R.id.frame_content, MoviesFragment())
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     private fun onTimeManageClicked() {
         supportFragmentManager.commit {   //add Time Manage fragment to activity
-            replace(R.id.frame_content, TimeManageFragment()) // add -> replace
+            replace(R.id.frame_content, TimeManageFragment())
         }
     }
 
@@ -56,10 +55,12 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 onMovieClicked()
                 return true
             }
+
             R.id.nav_time -> {
                 onTimeManageClicked()
                 return true
             }
+
             else -> {
                 return false
             }

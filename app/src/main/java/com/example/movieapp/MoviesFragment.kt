@@ -1,11 +1,16 @@
 package com.example.movieapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.movieapp.databinding.FragmentMoviesBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MoviesFragment: Fragment() {
@@ -24,41 +29,27 @@ class MoviesFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val animationCovers = listOf(
-            MovieCover(R.drawable.cars),
-            MovieCover(R.drawable.despme4),
-            MovieCover(R.drawable.insideout2),
-            MovieCover(R.drawable.toystory4)
+        fetchMovies()
+    }
 
-        )
+    private fun fetchMovies() {
+        val apikey = "5e8009b02ba3ed667527c72cf4779a4d"
+        val catrecyclerView = binding.catrecyclerView
 
-        val actionCovers = listOf(
-            MovieCover(R.drawable.sanandreas),
-            MovieCover(R.drawable.missionimpossible),
-            MovieCover(R.drawable.thefallguy),
-            MovieCover(R.drawable.topgunmaverick),
-            MovieCover(R.drawable.fastx)
-        )
+        CoroutineScope(Dispatchers.IO).launch { //api call in background
 
-        val dramaCategory = listOf(
-            MovieCover(R.drawable.shidlerlist),
-            MovieCover(R.drawable.shawshankredemption),
-            MovieCover(R.drawable.lion),
-            MovieCover(R.drawable.godfather3),
-            MovieCover(R.drawable.theblindside)
-        )
+            try {
 
-        val actionCategory = listOf(
-            MovieCategories("Action",actionCovers),
-            MovieCategories("Animated",animationCovers),
-            MovieCategories("Drama",dramaCategory),
-            MovieCategories("Drama",dramaCategory),
-            MovieCategories("Drama",dramaCategory),
-            MovieCategories("Drama",dramaCategory),
-            MovieCategories("Drama",dramaCategory)
-        )
-
-        val catrecyclerView = binding.catrecyclerView //metakinisi i oxi
-        catrecyclerView.adapter = MainAdapter(actionCategory) //na lyso to crash
+                val tmdbCategory = listOf(
+                    MovieCategories("Most Popular",RetroifitInstance.api.getPopularMovies(apikey).results),
+                    MovieCategories("Now Playing",RetroifitInstance.api.getNowPlayingMovies(apikey).results)
+                )
+                withContext(Dispatchers.Main) {
+                    catrecyclerView.adapter = MainAdapter(tmdbCategory)
+                }
+            } catch (e: Exception) {
+                Log.e("TMDbError", "Error: ${e.message}")
+            }
+        }
     }
 }
