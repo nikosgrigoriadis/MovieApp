@@ -5,14 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.movieapp.databinding.FragmentMoviesBinding
+import com.example.movieapp.databinding.FragmentTimemanageBinding
 
-class TimeManageFragment : Fragment() {
+
+class TimeManageFragment : Fragment(R.layout.fragment_timemanage) {
+
+   private lateinit var binding: FragmentTimemanageBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_timemanage, container,false)
+    ): View {
+        binding = FragmentTimemanageBinding.inflate(inflater, container, false)
+        return  binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setText()
+    }
+
+    private fun setText() {
+        binding.textView.text = "Time Manage Fragment is in Construction..."
     }
 }

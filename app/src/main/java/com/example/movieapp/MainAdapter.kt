@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
 
 class MainAdapter(private val categories: List<MovieCategories>) : RecyclerView.Adapter<MainAdapter.MainAdapterViewHolder>() {

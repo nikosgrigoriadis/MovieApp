@@ -65,5 +65,9 @@ dependencies {
     //Glide
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
+    //Lottie
+    implementation (libs.lottie)
+    //LiveData
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
 }

@@ -9,6 +9,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:layout_marginTop="30dp"
+        tools:layout="@layout/fragment_movies"
         android:id="@+id/frame_content"
         android:name="com.example.movieapp.MoviesFragment"
         android:layout_width="0dp"

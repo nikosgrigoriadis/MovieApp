@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
@@ -31,6 +32,9 @@ class CoversAdapter(private val moviesTMDB: List<Movie>) : RecyclerView.Adapter<
             .into(holder.coverImageView)
 
         //click handle
+        holder.itemView.setOnClickListener {
+            Toast.makeText(holder.itemView.context, "Title: ${covTMDBpos.title}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Επιστρέφει το μέγεθος του dataset (invoked by the layout manager)

@@ -3,24 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="3dp"
-    app:cardBackgroundColor="#FFFFFFFF"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="0dp"
-   >
-
+    android:layout_marginEnd="5dp"
+    android:layout_marginStart="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="#FF000000"
+    app:cardCornerRadius="7dp"
+    app:cardElevation="0dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/moviecover"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="150dp"
-        android:clickable="true"
         android:contentDescription="@string/moviecover"
-        android:focusable="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/cars"
-        app:shapeAppearanceOverlay="@style/CustomCorner">
-
+        android:src="@drawable/cars">
     </com.google.android.material.imageview.ShapeableImageView>
 
 </androidx.cardview.widget.CardView>

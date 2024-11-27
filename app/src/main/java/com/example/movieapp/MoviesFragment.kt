@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class MoviesFragment: Fragment() {
+class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private lateinit var binding: FragmentMoviesBinding
 
@@ -23,8 +23,10 @@ class MoviesFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMoviesBinding.inflate(inflater, container, false)
-        return  binding.root
+        return binding.root
+
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,24 +34,57 @@ class MoviesFragment: Fragment() {
         fetchMovies()
     }
 
-    private fun fetchMovies() {
+    fun fetchMovies() {  //να το βαλω σε view model
+        LoadingScreen(true)
         val apikey = "5e8009b02ba3ed667527c72cf4779a4d"
         val catrecyclerView = binding.catrecyclerView
-
         CoroutineScope(Dispatchers.IO).launch { //api call in background
-
+            val response = RetroifitInstance.api.getNowPlayingMovies(apikey).results
             try {
-
                 val tmdbCategory = listOf(
-                    MovieCategories("Most Popular",RetroifitInstance.api.getPopularMovies(apikey).results),
-                    MovieCategories("Now Playing",RetroifitInstance.api.getNowPlayingMovies(apikey).results)
+                    MovieCategories(
+                        "Now Playing",
+                        response
+                    ),
+                    MovieCategories(
+                        "Upcoming",
+                        RetroifitInstance.api.getUpcomingMovies(apikey).results
+                    ),
+                    MovieCategories(
+                        "Action",
+                        RetroifitInstance.api.getActionMovies(apikey).results
+                    ),
+                    MovieCategories(
+                        "Romance",
+                        RetroifitInstance.api.getRomanceMovies(apikey).results
+                    ),
+                    MovieCategories(
+                        "Most Popular",
+                        RetroifitInstance.api.getPopularMovies(apikey).results
+                    ),
+                    MovieCategories(
+                        "Top Rated",
+                        RetroifitInstance.api.getTopRatedMovies(apikey).results
+                    )
                 )
                 withContext(Dispatchers.Main) {
+                    LoadingScreen(false)
                     catrecyclerView.adapter = MainAdapter(tmdbCategory)
                 }
             } catch (e: Exception) {
                 Log.e("TMDbError", "Error: ${e.message}")
             }
         }
+    }
+
+    private fun LoadingScreen(loading: Boolean) {
+        if (loading) {
+            binding.loadingAnimationView.visibility = View.VISIBLE
+            binding.catrecyclerView.visibility = View.GONE
+        } else {
+            binding.loadingAnimationView.visibility = View.GONE
+            binding.catrecyclerView.visibility = View.VISIBLE
+        }
+
     }
 }
