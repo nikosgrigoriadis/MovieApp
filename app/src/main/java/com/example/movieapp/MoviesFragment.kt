@@ -1,10 +1,14 @@
 package com.example.movieapp
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.movieapp.databinding.FragmentMoviesBinding
 import kotlinx.coroutines.CoroutineScope
@@ -27,15 +31,17 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fetchMovies()
+        checkNetworkConnection()
+        /*binding.buttonrefresh.setOnClickListener {
+            checkNetworkConnection()
+            Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show()
+        } */
     }
 
+
     fun fetchMovies() {  //να το βαλω σε view model
-        LoadingScreen(true)
         val apikey = "5e8009b02ba3ed667527c72cf4779a4d"
         val catrecyclerView = binding.catrecyclerView
         CoroutineScope(Dispatchers.IO).launch { //api call in background
@@ -87,4 +93,24 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
 
     }
+
+    fun checkNetworkConnection() {
+        if (!isNetworkAvailable(requireContext())) {
+            LoadingScreen(false)
+            binding.nointernetext.text = "No internet connection..."
+        } else {
+            fetchMovies()
+        }
+    }
+
+    fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+        return networkCapabilities != null &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
 }
+
+
