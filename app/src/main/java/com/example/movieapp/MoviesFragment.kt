@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.movieapp.databinding.FragmentMoviesBinding
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +19,7 @@ import kotlinx.coroutines.withContext
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private lateinit var binding: FragmentMoviesBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,11 +33,12 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         checkNetworkConnection()
-        /*binding.buttonrefresh.setOnClickListener {
+        binding.refreshdown.setOnRefreshListener { //yparxei bug otan kleino to wifi bagzei pano sto ui no internet connection kai to antistreofo
             checkNetworkConnection()
-            Toast.makeText(requireContext(), "Refreshed", Toast.LENGTH_SHORT).show()
-        } */
+            binding.refreshdown.isRefreshing = false
+        }
     }
 
 
@@ -74,6 +75,10 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                     )
                 )
                 withContext(Dispatchers.Main) {
+                    Log.d(
+                        "TMDbResponseAction",
+                        "Movies: ${RetroifitInstance.api.getActionMovies(apikey).results}"
+                    )
                     LoadingScreen(false)
                     catrecyclerView.adapter = MainAdapter(tmdbCategory)
                 }
@@ -111,6 +116,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         return networkCapabilities != null &&
                 networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
+
 }
 
 

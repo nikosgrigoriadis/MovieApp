@@ -36,15 +36,22 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         binding.bottomNav.setOnNavigationItemSelectedListener(this)
 
     }
+    //add fragments to activity
+
+    private fun onMovieDetailsClicked() {
+        supportFragmentManager.commit {
+            replace(R.id.frame_content, MovieDetailsFragment())
+        }
+    }
 
     private fun onMovieClicked() {
-        supportFragmentManager.commit {   //add Movie fragment to activity
+        supportFragmentManager.commit {
             replace(R.id.frame_content, MoviesFragment())
         }
     }
 
     private fun onTimeManageClicked() {
-        supportFragmentManager.commit {   //add Time Manage fragment to activity
+        supportFragmentManager.commit {
             replace(R.id.frame_content, TimeManageFragment())
         }
     }
