@@ -9,7 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+
 import com.example.movieapp.databinding.FragmentMoviesBinding
+import com.google.android.material.carousel.CarouselLayoutManager
+import com.google.android.material.carousel.CarouselStrategy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +22,7 @@ import kotlinx.coroutines.withContext
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private lateinit var binding: FragmentMoviesBinding
+    private var loaded = false
 
 
     override fun onCreateView(
@@ -26,6 +30,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = FragmentMoviesBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -33,29 +38,26 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         checkNetworkConnection()
-        binding.refreshdown.setOnRefreshListener { //yparxei bug otan kleino to wifi bagzei pano sto ui no internet connection kai to antistreofo
+        binding.refreshdown.setOnRefreshListener {
             checkNetworkConnection()
             binding.refreshdown.isRefreshing = false
         }
     }
 
+    fun fetchMovies() {
 
-    fun fetchMovies() {  //να το βαλω σε view model
         val apikey = "5e8009b02ba3ed667527c72cf4779a4d"
+        val carouselRecyclerView = binding.carouselRecyclerView
         val catrecyclerView = binding.catrecyclerView
+
         CoroutineScope(Dispatchers.IO).launch { //api call in background
-            val response = RetroifitInstance.api.getNowPlayingMovies(apikey).results
+            val upcoming =  RetroifitInstance.api.getUpcomingMovies(apikey).results
             try {
                 val tmdbCategory = listOf(
                     MovieCategories(
                         "Now Playing",
-                        response
-                    ),
-                    MovieCategories(
-                        "Upcoming",
-                        RetroifitInstance.api.getUpcomingMovies(apikey).results
+                        RetroifitInstance.api.getNowPlayingMovies(apikey).results
                     ),
                     MovieCategories(
                         "Action",
@@ -80,6 +82,10 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                         "Movies: ${RetroifitInstance.api.getActionMovies(apikey).results}"
                     )
                     LoadingScreen(false)
+                    binding.upcomingText.visibility = View.VISIBLE
+                    carouselRecyclerView.layoutManager = CarouselLayoutManager()
+                    carouselRecyclerView.adapter = CarouselAdapter(upcoming)
+
                     catrecyclerView.adapter = MainAdapter(tmdbCategory)
                 }
             } catch (e: Exception) {
@@ -99,16 +105,19 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     }
 
-    fun checkNetworkConnection() {
+    private fun checkNetworkConnection() {
         if (!isNetworkAvailable(requireContext())) {
             LoadingScreen(false)
-            binding.nointernetext.text = "No internet connection..."
+            binding.nointernetext.visibility = View.VISIBLE
+            binding.mainFragment.visibility = View.GONE
         } else {
             fetchMovies()
+            binding.nointernetext.visibility = View.GONE
+            binding.mainFragment.visibility = View.VISIBLE
         }
     }
 
-    fun isNetworkAvailable(context: Context): Boolean {
+    private fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork

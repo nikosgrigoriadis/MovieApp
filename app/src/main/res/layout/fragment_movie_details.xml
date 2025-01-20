@@ -11,14 +11,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/testshowbutton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="HELLO"
-            android:textSize="18dp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/movieTitleDe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                android:text="MOVIE TITLE"
+                android:textSize="20dp" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/movieCoverDe"
+                android:layout_width="130dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="170dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/moviecover"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cars">
+            </com.google.android.material.imageview.ShapeableImageView>
+
+            <TextView
+                android:id="@+id/movieOverviewDe"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                android:textSize="16sp"
+                android:text="MOVIE OVERVIEW"/>
+
+        </LinearLayout>
 
 
     </androidx.core.widget.NestedScrollView>

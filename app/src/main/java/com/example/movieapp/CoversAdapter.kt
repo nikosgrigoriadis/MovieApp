@@ -45,6 +45,8 @@ class CoversAdapter(private val moviesTMDB: List<Movie>) :
         holder.itemView.setOnClickListener {
 
             bundle.putString("titlekey", covTMDBpos.title)
+            bundle.putString("overviewkey", covTMDBpos.overview)
+            bundle.putString("coverkey", "https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
             openFragment.arguments = bundle
 
             val activityFrag = holder.itemView.context as AppCompatActivity

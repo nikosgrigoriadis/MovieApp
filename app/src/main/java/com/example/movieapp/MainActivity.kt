@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
 
         supportFragmentManager.commit {   //add fragment to activity
-            add(R.id.frame_content, MoviesFragment())
+            replace(R.id.frame_content, MoviesFragment())
         }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
