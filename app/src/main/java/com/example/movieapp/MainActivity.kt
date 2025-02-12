@@ -38,12 +38,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
     //add fragments to activity
 
-    private fun onMovieDetailsClicked() {
-        supportFragmentManager.commit {
-            replace(R.id.frame_content, MovieDetailsFragment())
-        }
-    }
-
     private fun onMovieClicked() {
         supportFragmentManager.commit {
             replace(R.id.frame_content, MoviesFragment())

@@ -9,21 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.movieapp.adapters.CarouselAdapter
+import com.example.movieapp.adapters.MainAdapter
 
 import com.example.movieapp.databinding.FragmentMoviesBinding
 import com.google.android.material.carousel.CarouselLayoutManager
-import com.google.android.material.carousel.CarouselStrategy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
+const val APIKEY = "5e8009b02ba3ed667527c72cf4779a4d"
+
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private lateinit var binding: FragmentMoviesBinding
-    private var loaded = false
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +48,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     fun fetchMovies() {
 
-        val apikey = "5e8009b02ba3ed667527c72cf4779a4d"
+        val apikey = APIKEY
         val carouselRecyclerView = binding.carouselRecyclerView
         val catrecyclerView = binding.catrecyclerView
 
@@ -76,7 +77,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                         RetroifitInstance.api.getTopRatedMovies(apikey).results
                     )
                 )
-                withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main) {  //return to main thread after api call to update UI
                     Log.d(
                         "TMDbResponseAction",
                         "Movies: ${RetroifitInstance.api.getActionMovies(apikey).results}"
@@ -85,7 +86,6 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                     binding.upcomingText.visibility = View.VISIBLE
                     carouselRecyclerView.layoutManager = CarouselLayoutManager()
                     carouselRecyclerView.adapter = CarouselAdapter(upcoming)
-
                     catrecyclerView.adapter = MainAdapter(tmdbCategory)
                 }
             } catch (e: Exception) {
@@ -125,7 +125,4 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         return networkCapabilities != null &&
                 networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
-
 }
-
-

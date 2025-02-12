@@ -1,8 +1,7 @@
-package com.example.movieapp
+package com.example.movieapp.adapters
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.commit
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,9 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.movieapp.Movie
+import com.example.movieapp.MovieDetailsFragment
+import com.example.movieapp.R
 
 
 class CoversAdapter(private val moviesTMDB: List<Movie>) :
@@ -44,17 +46,20 @@ class CoversAdapter(private val moviesTMDB: List<Movie>) :
         //click handle
         holder.itemView.setOnClickListener {
 
+            bundle.putString("idkey", covTMDBpos.id.toString())
             bundle.putString("titlekey", covTMDBpos.title)
             bundle.putString("overviewkey", covTMDBpos.overview)
+            bundle.putString("releasekey", covTMDBpos.release_date)
             bundle.putString("coverkey", "https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
+
             openFragment.arguments = bundle
+
 
             val activityFrag = holder.itemView.context as AppCompatActivity
             activityFrag.supportFragmentManager.beginTransaction()  //.commit -> .beginTransaction()
                 .replace(R.id.frame_content, openFragment)
                 .addToBackStack(null)
                 .commit()
-
         }
     }
 

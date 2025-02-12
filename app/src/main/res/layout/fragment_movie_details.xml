@@ -1,52 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MovieDetailsFragment">
+    tools:context=".MainActivity">
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/moviecovercardview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="30dp"
+        app:cardBackgroundColor="#FF000000"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/movieCoverDe"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:contentDescription="@string/moviecover"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cars"></com.google.android.material.imageview.ShapeableImageView>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/movieTitleDe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="15dp"
+        android:text="MOVIE TITLE"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moviecovercardview" />
+
+    <TextView
+        android:id="@+id/Director"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:text="Director"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@id/moviecovercardview"
+        app:layout_constraintTop_toTopOf="@id/moviecovercardview" />
+
+    <TextView
+        android:id="@+id/DirectorsName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/moviecovercardview"
+        app:layout_constraintTop_toBottomOf="@id/Director" />
+
+    <TextView
+        android:id="@+id/Genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="2dp"
+        android:text="Genre"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@id/moviecovercardview"
+        app:layout_constraintTop_toBottomOf="@id/DirectorsName" />
+
+    <TextView
+        android:id="@+id/GenreField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="GenreField"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/moviecovercardview"
+        app:layout_constraintTop_toBottomOf="@id/Genre" />
+
+    <TextView
+        android:id="@+id/Year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="2dp"
+        android:text="Year"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@id/moviecovercardview"
+        app:layout_constraintTop_toBottomOf="@id/GenreField" />
+
+    <TextView
+        android:id="@+id/YearField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:text="YearField"
+        android:fontFamily="sans-serif-condensed-light"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/moviecovercardview"
+        app:layout_constraintTop_toBottomOf="@id/Year" />
+
+    <TextView
+        android:id="@+id/Duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="2dp"
+
+        android:text="Duration"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@id/moviecovercardview"
+        app:layout_constraintTop_toBottomOf="@id/YearField" />
+
+    <TextView
+        android:id="@+id/DurationField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:text="DurationField"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/moviecovercardview"
+        app:layout_constraintTop_toBottomOf="@id/Duration" />
+
+
+    <TextView
+        android:id="@+id/movieOverviewDe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-light"
+        android:padding="10dp"
+        android:text="@string/lightning_mcqueen_a_hotshot_rookie_race_car_driven_to_succeed_discovers_that_life_is_about_the_journey_not_the_finish_line_when_he_finds_himself_unexpectedly_detoured_in_the_sleepy_route_66_town_of_radiator_springs_on_route_across_the_country_to_the_big_piston_cup_championship_in_california_to_compete_against_two_seasoned_pros_mcqueen_gets_to_know_the_town_s_offbeat_characters"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieTitleDe" />
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/movieTitleDe"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_marginTop="30dp"
-                android:text="MOVIE TITLE"
-                android:textSize="20dp" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/movieCoverDe"
-                android:layout_width="130dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="170dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/moviecover"
-                android:scaleType="centerCrop"
-                android:src="@drawable/cars">
-            </com.google.android.material.imageview.ShapeableImageView>
-
-            <TextView
-                android:id="@+id/movieOverviewDe"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_marginTop="30dp"
-                android:textSize="16sp"
-                android:text="MOVIE OVERVIEW"/>
-
-        </LinearLayout>
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieOverviewDe">
 
 
-    </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/favouritebutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TRAILER" />
+
+    </androidx.cardview.widget.CardView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

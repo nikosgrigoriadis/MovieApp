@@ -1,11 +1,12 @@
-package com.example.movieapp
+package com.example.movieapp.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.marginStart
 import androidx.recyclerview.widget.RecyclerView
+import com.example.movieapp.MovieCategories
+import com.example.movieapp.R
 
 class MainAdapter(private val categories: List<MovieCategories>) : RecyclerView.Adapter<MainAdapter.MainAdapterViewHolder>() {
     class MainAdapterViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView)  {

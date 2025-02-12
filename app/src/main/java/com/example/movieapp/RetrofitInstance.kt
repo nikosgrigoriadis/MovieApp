@@ -3,6 +3,7 @@ package com.example.movieapp
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TMDBApi {
@@ -17,6 +18,20 @@ interface TMDBApi {
     suspend fun getUpcomingMovies(
         @Query("api_key") apiKey: String
     ): MovieResponse
+
+    //Directors
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): CreditsResponse
+
+    //Genre
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): MovieDetailsResponse
 
     //Action
     @GET("discover/movie")
