@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.movieapp"
-    compileSdk = 34
+    compileSdk = 35
 
     buildFeatures {
         viewBinding = true
@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.sqliteassethelper)
     implementation(libs.androidx.cardview)

@@ -1,7 +1,6 @@
 package com.example.movieapp.adapters
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapp.Movie
-import com.example.movieapp.MovieDetailsFragment
+import com.example.movieapp.fragments.MovieDetailsFragment
 import com.example.movieapp.R
 
 

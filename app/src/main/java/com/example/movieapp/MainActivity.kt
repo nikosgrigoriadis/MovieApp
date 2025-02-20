@@ -8,6 +8,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
 import com.example.movieapp.databinding.ActivityMainBinding
+import com.example.movieapp.fragments.FavoritesFragment
+import com.example.movieapp.fragments.MoviesFragment
+import com.example.movieapp.fragments.TimeManageFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -50,6 +53,14 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
     }
 
+    private fun onFavoritesClicked() {
+        supportFragmentManager.commit {
+            replace(R.id.frame_content, FavoritesFragment())
+        }
+    }
+
+
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_movies -> {
@@ -59,6 +70,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
             R.id.nav_time -> {
                 onTimeManageClicked()
+                return true
+            }
+
+            R.id.nav_favorites -> {
+                onFavoritesClicked()
                 return true
             }
 

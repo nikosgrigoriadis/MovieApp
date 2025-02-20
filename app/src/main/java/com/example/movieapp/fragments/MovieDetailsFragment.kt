@@ -1,4 +1,4 @@
-package com.example.movieapp
+package com.example.movieapp.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.example.movieapp.R
+import com.example.movieapp.RetroifitInstance
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +20,7 @@ import kotlinx.coroutines.withContext
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private lateinit var binding: FragmentMovieDetailsBinding
+    var heart_state = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +34,21 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getsetDatatoFragment()
+        button_handler()
+    }
+
+    fun button_handler() {
+        binding.favbutton.setOnClickListener {
+            if (heart_state) {
+                binding.favbutton.setImageResource(R.drawable.favoritefilled_24)
+                heart_state = false
+            }
+            else {
+                binding.favbutton.setImageResource(R.drawable.favorite_24)
+                heart_state = true
+            }
+
+        }
     }
 
 

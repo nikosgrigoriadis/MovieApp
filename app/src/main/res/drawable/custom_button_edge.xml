@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Ορίστε το χρώμα του φόντου -->
-    <solid android:color="#5B31B3" />
+    <solid android:color="#9482B6" />
 
     <!-- Ορίστε το χρώμα του περιγράμματος -->
     <stroke android:width="2dp" android:color="#372B79" />
