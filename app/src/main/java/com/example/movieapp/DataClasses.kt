@@ -35,5 +35,18 @@ data class MoreDetails(
     val name: String,
 )
 
+//Trailer
+data class VideoResponse(
+    val results: List<Video>
+)
+
+data class Video(
+    val key: String,
+    val name: String,
+    val site: String,  //"YouTube"
+    val type: String   //"Trailer", "Teaser"
+)
+
+
 
 

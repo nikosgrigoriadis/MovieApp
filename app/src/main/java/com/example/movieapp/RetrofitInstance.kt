@@ -64,6 +64,13 @@ interface TMDBApi {
         @Query("api_key") apiKey: String,
         @Query("page") page: Int = 50
     ): MovieResponse
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getMovieVideos(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): VideoResponse
+
 }
 
 //set the retrofit
