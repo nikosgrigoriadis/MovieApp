@@ -22,10 +22,19 @@ class MoviesViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    private val _hasFetched = MutableStateFlow(false)
+    val hasFetched: StateFlow<Boolean> = _hasFetched
 
+    fun markDataAsFetched() {
+        _hasFetched.value = true
+    }
 
+    fun resetFetchFlag() {
+        _hasFetched.value = false
+    }
 
     fun fetchMovies() {
+        if (_hasFetched.value) return
         val apikey = APIKEY
         viewModelScope.launch {   //CoroutineScope(Dispatchers.IO) -> viewModelScope
             _isLoading.value = true

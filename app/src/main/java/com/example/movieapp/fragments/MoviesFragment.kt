@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.movieapp.R
@@ -23,7 +24,8 @@ const val APIKEY = "5e8009b02ba3ed667527c72cf4779a4d"
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private lateinit var binding: FragmentMoviesBinding
-    private val viewModel: MoviesViewModel by viewModels()
+    private val viewModel: MoviesViewModel by activityViewModels()
+
     private var alreadyfetch = false
 
     override fun onCreateView(
@@ -39,7 +41,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         super.onViewCreated(view, savedInstanceState)
         checkNetworkConnection()
         binding.refreshdown.setOnRefreshListener {
-            alreadyfetch = false
+            viewModel.resetFetchFlag()
             checkNetworkConnection()
             binding.refreshdown.isRefreshing = false
         }
@@ -64,9 +66,15 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                 LoadingScreen(isLoading)
             }
         }
-        if (alreadyfetch) return
-        viewModel.fetchMovies()
-        alreadyfetch = true
+
+        lifecycleScope.launch {
+            viewModel.hasFetched.collect { fetched ->
+                if (!fetched) {
+                    viewModel.fetchMovies()
+                    viewModel.markDataAsFetched()
+                }
+            }
+        }
     }
 
     private fun LoadingScreen(loading: Boolean) {
