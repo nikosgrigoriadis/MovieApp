@@ -31,6 +31,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
         android:background="#443A7C"
         tools:ignore="VisualLintBottomNav" />
 

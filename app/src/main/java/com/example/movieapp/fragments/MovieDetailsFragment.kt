@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
-import com.example.movieapp.RetroifitInstance
+import com.example.movieapp.network.RetroifitInstance
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope

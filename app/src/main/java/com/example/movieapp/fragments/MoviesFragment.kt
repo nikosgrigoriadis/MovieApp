@@ -4,97 +4,69 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.movieapp.MovieCategories
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.movieapp.R
-import com.example.movieapp.RetroifitInstance
 import com.example.movieapp.adapters.CarouselAdapter
 import com.example.movieapp.adapters.MainAdapter
-
 import com.example.movieapp.databinding.FragmentMoviesBinding
+import com.example.movieapp.viewmodels.MoviesViewModel
 import com.google.android.material.carousel.CarouselLayoutManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
 
 const val APIKEY = "5e8009b02ba3ed667527c72cf4779a4d"
 
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private lateinit var binding: FragmentMoviesBinding
+    private val viewModel: MoviesViewModel by viewModels()
+    private var alreadyfetch = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentMoviesBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         checkNetworkConnection()
         binding.refreshdown.setOnRefreshListener {
+            alreadyfetch = false
             checkNetworkConnection()
             binding.refreshdown.isRefreshing = false
         }
     }
 
-    fun fetchMovies() {
+    fun FetchFromViewModel() {
+        binding.upcomingText.visibility = View.VISIBLE
 
-        val apikey = APIKEY
-        val carouselRecyclerView = binding.carouselRecyclerView
-        val catrecyclerView = binding.catrecyclerView
-
-        CoroutineScope(Dispatchers.IO).launch { //api call in background
-            val upcoming =  RetroifitInstance.api.getUpcomingMovies(apikey).results
-            try {
-                val tmdbCategory = listOf(
-                    MovieCategories(
-                        "Now Playing",
-                        RetroifitInstance.api.getNowPlayingMovies(apikey).results
-                    ),
-                    MovieCategories(
-                        "Action",
-                        RetroifitInstance.api.getActionMovies(apikey).results
-                    ),
-                    MovieCategories(
-                        "Romance",
-                        RetroifitInstance.api.getRomanceMovies(apikey).results
-                    ),
-                    MovieCategories(
-                        "Most Popular",
-                        RetroifitInstance.api.getPopularMovies(apikey).results
-                    ),
-                    MovieCategories(
-                        "Top Rated",
-                        RetroifitInstance.api.getTopRatedMovies(apikey).results
-                    )
-                )
-                withContext(Dispatchers.Main) {  //return to main thread after api call to update UI
-                    Log.d(
-                        "TMDbResponseAction",
-                        "Movies: ${RetroifitInstance.api.getActionMovies(apikey).results}"
-                    )
-                    LoadingScreen(false)
-                    binding.upcomingText.visibility = View.VISIBLE
-                    carouselRecyclerView.layoutManager = CarouselLayoutManager()
-                    carouselRecyclerView.adapter = CarouselAdapter(upcoming)
-                    catrecyclerView.adapter = MainAdapter(tmdbCategory)
-                }
-            } catch (e: Exception) {
-                Log.e("TMDbError", "Error: ${e.message}")
+        lifecycleScope.launch {
+            viewModel.upcomingMovies.collect { upcomingInsert  ->
+                binding.carouselRecyclerView.layoutManager = CarouselLayoutManager()
+                binding.carouselRecyclerView.adapter = CarouselAdapter(upcomingInsert)
             }
         }
+        lifecycleScope.launch {
+            viewModel.categories.collect { categoryList  ->
+                binding.catrecyclerView.adapter = MainAdapter(categoryList)
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.isLoading.collect { isLoading ->
+                LoadingScreen(isLoading)
+            }
+        }
+        if (alreadyfetch) return
+        viewModel.fetchMovies()
+        alreadyfetch = true
     }
 
     private fun LoadingScreen(loading: Boolean) {
@@ -110,11 +82,10 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private fun checkNetworkConnection() {
         if (!isNetworkAvailable(requireContext())) {
-            LoadingScreen(false)
             binding.nointernetext.visibility = View.VISIBLE
             binding.mainFragment.visibility = View.GONE
         } else {
-            fetchMovies()
+            FetchFromViewModel()
             binding.nointernetext.visibility = View.GONE
             binding.mainFragment.visibility = View.VISIBLE
         }

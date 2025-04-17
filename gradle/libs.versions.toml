@@ -23,6 +23,9 @@ sqliteassethelper = "2.0.1"
 swiperefreshlayout = "1.2.0-alpha01"
 legacySupportV4 = "1.0.0"
 lifecycleViewmodelKtx = "2.8.7"
+runtimeAndroid = "1.7.8"
+material3Android = "1.3.1"
+uiToolingPreviewAndroid = "1.7.8"
 
 [libraries]
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
@@ -50,6 +53,9 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 sqliteassethelper = { module = "com.readystatesoftware.sqliteasset:sqliteassethelper", version.ref = "sqliteassethelper" }
 androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+androidx-runtime-android = { group = "androidx.compose.runtime", name = "runtime-android", version.ref = "runtimeAndroid" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreviewAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

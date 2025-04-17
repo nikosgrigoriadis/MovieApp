@@ -1,5 +1,9 @@
-package com.example.movieapp
+package com.example.movieapp.network
 
+import com.example.movieapp.CreditsResponse
+import com.example.movieapp.MovieDetailsResponse
+import com.example.movieapp.MovieResponse
+import com.example.movieapp.VideoResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
