@@ -1,5 +1,4 @@
 package com.example.movieapp.fragments
-
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.movieapp.R
 import com.example.movieapp.adapters.CarouselAdapter
@@ -25,8 +23,6 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private lateinit var binding: FragmentMoviesBinding
     private val viewModel: MoviesViewModel by activityViewModels()
-
-    private var alreadyfetch = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +62,6 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                 LoadingScreen(isLoading)
             }
         }
-
         lifecycleScope.launch {
             viewModel.hasFetched.collect { fetched ->
                 if (!fetched) {
@@ -90,6 +85,8 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private fun checkNetworkConnection() {
         if (!isNetworkAvailable(requireContext())) {
+            LoadingScreen(false)
+            binding.searchBar.visibility = View.GONE
             binding.nointernetext.visibility = View.VISIBLE
             binding.mainFragment.visibility = View.GONE
         } else {
