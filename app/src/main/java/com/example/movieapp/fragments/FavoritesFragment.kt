@@ -26,11 +26,5 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setText()
     }
-
-    private fun setText() {
-        binding.textView.text = "Favorites Fragment is in Construction..."
-    }
-
 }

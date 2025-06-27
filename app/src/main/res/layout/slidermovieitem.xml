@@ -3,11 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="5dp"
     android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="10dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="#FF000000"
+    app:cardBackgroundColor="#443A7C"
     app:cardCornerRadius="7dp"
     app:cardElevation="0dp">
 
@@ -17,8 +19,7 @@
         android:layout_height="150dp"
         android:contentDescription="@string/moviecover"
         android:scaleType="centerCrop"
-        android:src="@drawable/cars">
-    </com.google.android.material.imageview.ShapeableImageView>
+        android:src="@drawable/cars"></com.google.android.material.imageview.ShapeableImageView>
 
 
 </androidx.cardview.widget.CardView>

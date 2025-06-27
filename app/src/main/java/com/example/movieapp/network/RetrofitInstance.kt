@@ -75,6 +75,14 @@ interface TMDBApi {
         @Query("api_key") apiKey: String
     ): VideoResponse
 
+    //Search
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String
+    ): MovieResponse
+
+
 }
 
 //set the retrofit
@@ -89,6 +97,5 @@ object RetroifitInstance {
             .build()
             .create(TMDBApi::class.java)
     }
-
 
 }

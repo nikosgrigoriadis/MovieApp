@@ -1,16 +1,19 @@
 package com.example.movieapp.fragments
+
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.movieapp.R
+import androidx.fragment.app.Fragment
 import com.example.movieapp.adapters.CarouselAdapter
+import com.example.movieapp.adapters.CoversAdapter
 import com.example.movieapp.adapters.MainAdapter
 import com.example.movieapp.databinding.FragmentMoviesBinding
 import com.example.movieapp.viewmodels.MoviesViewModel
@@ -35,26 +38,63 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.apply {
+            // Connect SearchBar with SearchView
+            searchView.setupWithSearchBar(searchBar)
+            searchView.editText.setOnEditorActionListener { view, actionId, event ->
+                val query = searchView.text.toString()
+                if (query.isNotEmpty()) {
+                    searchForMovie(query)
+                }
+                true
+            }
+        }
+
         checkNetworkConnection()
-        binding.refreshdown.setOnRefreshListener {
-            viewModel.resetFetchFlag()
-            checkNetworkConnection()
-            binding.refreshdown.isRefreshing = false
+        setupRefreshListener()
+    }
+
+    private fun searchForMovie(query: String) {
+        lifecycleScope.launch {
+            val results = viewModel.searchMovie(query)
+            binding.apply {
+                if (results.isNotEmpty()) {
+                    noresultsanimation.visibility = View.GONE
+                    searchrecyclerView.visibility = View.VISIBLE
+                    searchrecyclerView.adapter = CoversAdapter(results, this@MoviesFragment)
+
+                } else {
+                    noresultsanimation.visibility = View.VISIBLE
+                    searchrecyclerView.visibility = View.GONE
+                }
+            }
         }
     }
 
-    fun FetchFromViewModel() {
-        binding.upcomingText.visibility = View.VISIBLE
-
+    private fun FetchFromViewModel() {
         lifecycleScope.launch {
-            viewModel.upcomingMovies.collect { upcomingInsert  ->
-                binding.carouselRecyclerView.layoutManager = CarouselLayoutManager()
-                binding.carouselRecyclerView.adapter = CarouselAdapter(upcomingInsert)
+            viewModel.upcomingMovies.collect { upcomingInsert ->
+                binding.apply {
+                    upcarouselRecyclerView.layoutManager = CarouselLayoutManager()
+                    upcarouselRecyclerView.adapter = CarouselAdapter(upcomingInsert)
+                }
             }
         }
+
         lifecycleScope.launch {
-            viewModel.categories.collect { categoryList  ->
-                binding.catrecyclerView.adapter = MainAdapter(categoryList)
+            viewModel.nowPlayingMovies.collect { nowplayingInsert ->
+                binding.apply {
+                    npcarouselRecyclerView.layoutManager = CarouselLayoutManager()
+                    npcarouselRecyclerView.adapter = CarouselAdapter(nowplayingInsert)
+                }
+            }
+        }
+
+
+        lifecycleScope.launch {
+            viewModel.categories.collect { categoryList ->
+                binding.apply { catrecyclerView.adapter = MainAdapter(categoryList,this@MoviesFragment) }
             }
         }
         lifecycleScope.launch {
@@ -64,7 +104,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
         lifecycleScope.launch {
             viewModel.hasFetched.collect { fetched ->
-                if (!fetched) {
+                if (!fetched && isNetworkAvailable(requireContext())) {
                     viewModel.fetchMovies()
                     viewModel.markDataAsFetched()
                 }
@@ -74,25 +114,47 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     private fun LoadingScreen(loading: Boolean) {
         if (loading) {
-            binding.loadingAnimationView.visibility = View.VISIBLE
-            binding.catrecyclerView.visibility = View.GONE
+            binding.apply {
+                loadingAnimationView.visibility = View.VISIBLE
+                catrecyclerView.visibility = View.GONE
+                upcarouselRecyclerView.visibility = View.GONE
+                npcarouselRecyclerView.visibility = View.GONE
+                searchBar.visibility = View.GONE
+                upcomingText.visibility = View.GONE
+                nowplayingText.visibility = View.GONE
+            }
         } else {
-            binding.loadingAnimationView.visibility = View.GONE
-            binding.catrecyclerView.visibility = View.VISIBLE
+            binding.apply {
+                loadingAnimationView.visibility = View.GONE
+                nointernetanimation.visibility = View.GONE
+                upcarouselRecyclerView.visibility = View.VISIBLE
+                npcarouselRecyclerView.visibility = View.VISIBLE
+                catrecyclerView.visibility = View.VISIBLE
+                searchBar.visibility = View.VISIBLE
+                upcomingText.visibility = View.VISIBLE
+                nowplayingText.visibility = View.VISIBLE
+            }
         }
-
     }
 
     private fun checkNetworkConnection() {
         if (!isNetworkAvailable(requireContext())) {
-            LoadingScreen(false)
-            binding.searchBar.visibility = View.GONE
-            binding.nointernetext.visibility = View.VISIBLE
-            binding.mainFragment.visibility = View.GONE
+            showNoInternetUI()
         } else {
+            binding.apply {
+                mainFragment.visibility = View.VISIBLE
+                nointernetanimation.visibility = View.GONE
+            }
             FetchFromViewModel()
-            binding.nointernetext.visibility = View.GONE
-            binding.mainFragment.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showNoInternetUI() {
+        binding.apply {
+            loadingAnimationView.visibility = View.GONE
+            nointernetanimation.visibility = View.VISIBLE
+            mainFragment.visibility = View.GONE
+            searchBar.visibility = View.GONE
         }
     }
 
@@ -103,5 +165,19 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
         return networkCapabilities != null &&
                 networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    private fun setupRefreshListener() {
+        binding.refreshdown.setOnRefreshListener {
+            binding.apply {
+                if (isNetworkAvailable(requireContext())) {
+                    viewModel.resetFetchFlag()
+                    checkNetworkConnection()
+                } else {
+                    showNoInternetUI()
+                }
+                refreshdown.isRefreshing = false
+            }
+        }
     }
 }

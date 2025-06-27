@@ -4,24 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:elevation="8dp"
-        android:orientation="vertical">
-
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="16dp"
-            android:backgroundTint="#33FFFFFF"
-            android:hint="Which film is on your mind?"
-            app:strokeColor="@android:color/transparent" />
-
-    </LinearLayout>
-
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="#10FFFFFF"
+        android:hint="Find a Movie"
+        app:strokeColor="@android:color/transparent" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshdown"
@@ -31,12 +22,12 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/mainFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"> <!-- Padding ίσο με το ύψος του SearchBar -->
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="65dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -47,16 +38,34 @@
                     android:layout_marginBottom="7dp"
                     android:text="Upcoming"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:visibility="invisible" />
+                    android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/carousel_recycler_view"
+                    android:id="@+id/upcarousel_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_height="180dp"
                     android:clipChildren="false"
-                    android:clipToPadding="false" />
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="true" />
+
+                <TextView
+                    android:id="@+id/nowplaying_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="7dp"
+                    android:text="Now Playing"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/npcarousel_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:layout_marginBottom="10dp"
+                    android:nestedScrollingEnabled="true" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/catrecyclerView"
@@ -69,24 +78,18 @@
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <!-- SearchView -->
-    <com.google.android.material.search.SearchView
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        app:layout_anchor="@id/search_bar" />
 
-    <!-- No Internet Text -->
-    <TextView
-        android:id="@+id/nointernetext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/nointernetanimation"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
         android:layout_gravity="center"
-        android:text="No internet connection..."
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/animationconnectionlost" />
 
-    <!-- Loading Animation -->
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/loadingAnimationView"
         android:layout_width="80dp"
@@ -96,5 +99,32 @@
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/animationloading" />
+
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_anchor="@id/search_bar"
+        app:backgroundTint="#443A7C">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchrecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/noresultsanimation"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/animationresults" />
+
+    </com.google.android.material.search.SearchView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

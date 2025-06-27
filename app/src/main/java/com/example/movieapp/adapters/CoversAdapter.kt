@@ -12,59 +12,50 @@ import com.bumptech.glide.Glide
 import com.example.movieapp.Movie
 import com.example.movieapp.fragments.MovieDetailsFragment
 import com.example.movieapp.R
+import com.example.movieapp.fragments.MoviesFragment
 
 
-class CoversAdapter(private val moviesTMDB: List<Movie>) :
-    RecyclerView.Adapter<CoversAdapter.CoversAdapterViewHolder>() {
+class CoversAdapter(
+    private val moviesTMDB: List<Movie>,
+    private val parentFragment: MoviesFragment
+) : RecyclerView.Adapter<CoversAdapter.CoversAdapterViewHolder>() {
 
-    private val openFragment = MovieDetailsFragment()
-    private val bundle = Bundle()
-
-    //Κρατάει τις αναφορές στα TextView και ImageView για κάθε στοιχείο
     class CoversAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val coverImageView: ImageView = itemView.findViewById(R.id.moviecover) // maybe binding
+        val coverImageView: ImageView = itemView.findViewById(R.id.moviecover)
     }
 
-    // Δημιουργεί νέες προβολές (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoversAdapterViewHolder {
-
-        val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.slidermovieitem, parent, false)
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.slidermovieitem, parent, false)
         return CoversAdapterViewHolder(itemView)
-
     }
 
-    // Αντικαθιστά το περιεχόμενο μιας προβολής (invoked by the layout manager)
     override fun onBindViewHolder(holder: CoversAdapterViewHolder, position: Int) {
         val covTMDBpos = moviesTMDB[position]
+
         Glide.with(holder.itemView.context)
             .load("https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
             .into(holder.coverImageView)
 
-
-        //click handle
         holder.itemView.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("idkey", covTMDBpos.id.toString())
+                putString("titlekey", covTMDBpos.title)
+                putString("overviewkey", covTMDBpos.overview)
+                putString("releasekey", covTMDBpos.release_date)
+                putString("coverkey", "https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
+            }
 
-            bundle.putString("idkey", covTMDBpos.id.toString())
-            bundle.putString("titlekey", covTMDBpos.title)
-            bundle.putString("overviewkey", covTMDBpos.overview)
-            bundle.putString("releasekey", covTMDBpos.release_date)
-            bundle.putString("coverkey", "https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
+            val openFragment = MovieDetailsFragment().apply {
+                arguments = bundle
+            }
 
-            openFragment.arguments = bundle
-
-
-            val activityFrag = holder.itemView.context as AppCompatActivity
-            activityFrag.supportFragmentManager.beginTransaction()  //.commit -> .beginTransaction()
+            parentFragment.parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_content, openFragment)
                 .addToBackStack(null)
                 .commit()
         }
     }
 
-
-    // Επιστρέφει το μέγεθος του dataset (invoked by the layout manager)
-    override fun getItemCount() = moviesTMDB.size //covers.size
-
-
+    override fun getItemCount() = moviesTMDB.size
 }

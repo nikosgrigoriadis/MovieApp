@@ -116,7 +116,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         }
     }
 
-
     private fun getDirector(movieId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = RetroifitInstance.api.getMovieCredits(

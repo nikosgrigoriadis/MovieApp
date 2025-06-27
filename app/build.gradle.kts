@@ -74,7 +74,7 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
     //Lottie
-    implementation (libs.lottie)
+    implementation("com.airbnb.android:lottie:6.6.6")
     //LiveData
     implementation(libs.androidx.lifecycle.livedata.ktx)
     //SwipeRefresh

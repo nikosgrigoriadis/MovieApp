@@ -25,10 +25,6 @@ class TimeManageFragment : Fragment(R.layout.fragment_timemanage) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setText()
     }
 
-    private fun setText() {
-        binding.textView.text = "Time Manage Fragment is in Construction..."
-    }
 }

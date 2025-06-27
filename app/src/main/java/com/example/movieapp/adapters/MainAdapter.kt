@@ -1,29 +1,35 @@
 package com.example.movieapp.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.MovieCategories
-import com.example.movieapp.R
+import com.example.movieapp.databinding.CategoryItemBinding
+import com.example.movieapp.fragments.MoviesFragment
 
-class MainAdapter(private val categories: List<MovieCategories>) : RecyclerView.Adapter<MainAdapter.MainAdapterViewHolder>() {
-    class MainAdapterViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView)  {
-        val categoryTextView: TextView = itemView.findViewById(R.id.categorytext)
-        val nestedRecyclerView: RecyclerView = itemView.findViewById(R.id.covrecyclerView)
-    }
+class MainAdapter(
+    private val categories: List<MovieCategories>,
+    private val parentFragment: MoviesFragment
+) : RecyclerView.Adapter<MainAdapter.MainAdapterViewHolder>() {
+
+    class MainAdapterViewHolder(val binding: CategoryItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainAdapterViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.category_item,parent,false)
-        return MainAdapterViewHolder(itemView)
+        val binding = CategoryItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return MainAdapterViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MainAdapterViewHolder, position: Int) {
         val catpos = categories[position]
-        holder.categoryTextView.text = catpos.cat
-        val coversadapter = CoversAdapter(catpos.moviecoverchild)
-        holder.nestedRecyclerView.adapter = coversadapter
+        holder.binding.categorytext.text = catpos.cat
+
+        val coversAdapter = CoversAdapter(catpos.moviecoverchild, parentFragment)
+        holder.binding.covrecyclerView.adapter = coversAdapter
     }
 
     override fun getItemCount() = categories.size
