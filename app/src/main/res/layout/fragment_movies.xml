@@ -89,16 +89,21 @@
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/animationconnectionlost" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="?attr/actionBarSize"> <!-- Adjust this value based on your BottomNavigationView height -->
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/loadingAnimationView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        android:visibility="visible"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/animationloading" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadingAnimationView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/animationloading" />
+    </FrameLayout>
 
     <com.google.android.material.search.SearchView
         android:id="@+id/search_view"
@@ -115,11 +120,13 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3" />
 
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/noresultsanimation"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="50dp"
             android:visibility="visible"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"

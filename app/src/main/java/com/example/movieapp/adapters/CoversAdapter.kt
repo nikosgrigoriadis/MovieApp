@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.movieapp.Movie
+import com.example.movieapp.data.Movie
 import com.example.movieapp.fragments.MovieDetailsFragment
 import com.example.movieapp.R
 import com.example.movieapp.fragments.MoviesFragment
@@ -49,6 +48,8 @@ class CoversAdapter(
             val openFragment = MovieDetailsFragment().apply {
                 arguments = bundle
             }
+
+
 
             parentFragment.parentFragmentManager.beginTransaction()
                 .replace(R.id.frame_content, openFragment)

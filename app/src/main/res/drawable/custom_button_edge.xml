@@ -1,9 +1,9 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Ορίστε το χρώμα του φόντου -->
-    <solid android:color="#9482B6" />
+    <solid android:color="#12FFFFFF" />
 
     <!-- Ορίστε το χρώμα του περιγράμματος -->
-    <stroke android:width="2dp" android:color="#372B79" />
+    <stroke android:width="0.5dp" android:color="#FFFFFF" />
 
     <!-- Ορίστε την ακτίνα των γωνιών για στρογγυλεμένες γωνίες -->
     <corners android:radius="5dp" />

@@ -1,7 +1,7 @@
 package com.example.movieapp.fragments
 
+import BackdropPagerAdapter
 import android.content.Intent
-
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
+import com.example.movieapp.activities.MainActivity
 import com.example.movieapp.network.RetroifitInstance
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
+import com.example.movieapp.network.RetroifitInstance.api
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +29,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private lateinit var binding: FragmentMovieDetailsBinding
     var heart_state = true
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,48 +42,74 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getsetDatatoFragment()
+        (activity as? MainActivity)?.hideBottomNav() //call function from main activity
         favbutton_handler()
     }
 
     fun favbutton_handler() {
         binding.favbutton.setOnClickListener {
             if (heart_state) {
-                binding.favbutton.setImageResource(R.drawable.favoritefilled_24)
-                heart_state = false
+                binding.favbuttonim.setImageResource(R.drawable.favorite_white_filled)
+                 heart_state = false
             } else {
-                binding.favbutton.setImageResource(R.drawable.favorite_24)
+                binding.favbuttonim.setImageResource(R.drawable.favorite_white)
                 heart_state = true
             }
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as? MainActivity)?.showBottomNav() //call function from main activity
+    }
+
 
     private fun getsetDatatoFragment() {
         val movieId = arguments?.getString("idkey")?.toInt() ?: 0
-
-        getDirector(movieId) //fix the slow getting of director
+//
+//        getDirector(movieId) //fix the slow getting of director
         getGenre(movieId)
         getDuration(movieId)
         getTrailer(movieId)
-
-        binding.sharebuttonbutton.setOnClickListener {
-            shareMovie(movieId)
-        }
-
-        val getTitle = arguments?.getString("titlekey")
-        binding.movieTitleDe.text = "$getTitle"
+        fetchBackdrops(movieId)
+//
+//        binding.sharebuttonbutton.setOnClickListener {
+//            shareMovie(movieId)
+//        }
 
         val getOverview = arguments?.getString("overviewkey")
         binding.movieOverviewDe.text = "$getOverview"
 
-        val getReleaseDate = arguments?.getString("releasekey")
-        binding.YearField.text = "$getReleaseDate"
+        val getReleaseDate = arguments?.getString("releasekey")?.substring(0, 4) //only 4 first digits(year)
+        binding.YearField.text = "${getReleaseDate}  •"
+
+        val getTitle = arguments?.getString("titlekey")
+        binding.movieTitleDe.text = "$getTitle"
 
         val getCover = arguments?.getString("coverkey") //MovieCover
         Glide.with(requireContext())
             .load(getCover)
             .into(binding.movieCoverDe)
     }
+
+    private fun fetchBackdrops(movieId: Int) {
+        lifecycleScope.launch {
+            try {
+                val response = api.getMovieBackdrops(
+                    movieId = movieId,
+                    apiKey = APIKEY
+                )
+
+                //binding.dotsIndicator.setViewPager2(binding.backdropViewPager)
+
+                val adapter = BackdropPagerAdapter(response.backdrops)
+                binding.backdropViewPager.adapter = adapter
+            } catch (e: Exception) {
+                Log.e("TMDB", "Error: ${e.message}")
+            }
+        }
+    }
+
 
     private fun shareMovie(movieId: Int) {
         val movieURL = "https://www.themoviedb.org/movie/$movieId"
@@ -116,18 +146,18 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         }
     }
 
-    private fun getDirector(movieId: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = RetroifitInstance.api.getMovieCredits(
-                movieId = movieId,
-                apiKey = APIKEY
-            )
-            withContext(Dispatchers.Main) {
-                val director = response.crew.find { it.job == "Director" }?.name ?: "Unknown"
-                binding.DirectorsName.text = director
-            }
-        }
-    }
+//    private fun getDirector(movieId: Int) {
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val response = RetroifitInstance.api.getMovieCredits(
+//                movieId = movieId,
+//                apiKey = APIKEY
+//            )
+//            withContext(Dispatchers.Main) {
+//                val director = response.crew.find { it.job == "Director" }?.name ?: "Unknown"
+//                binding.DirectorsName.text = director
+//            }
+//        }
+//    }
 
     private fun getGenre(movieId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -138,7 +168,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             withContext(Dispatchers.Main) {
                 val genre = response.genres.take(2)
                     .joinToString(", ") { it.name } //takes only 2 genres and not all
-                binding.GenreField.text = genre
+                binding.GenreField.text = "${genre}  •"
             }
         }
     }
@@ -149,7 +179,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 movieId = movieId,
                 apiKey = APIKEY
             )
-            Log.d("SeeResponse", response.toString())
             withContext(Dispatchers.Main) {
                 val duration = response.runtime
                 val convert = if (duration < 60) {
@@ -157,7 +186,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 } else {
                     val hours = duration / 60
                     val minutes = duration % 60
-                    "$hours h $minutes min"
+                    "${hours}h ${minutes}m"
                 }
                 binding.DurationField.text = convert
             }

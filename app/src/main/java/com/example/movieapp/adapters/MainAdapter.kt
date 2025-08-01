@@ -3,7 +3,7 @@ package com.example.movieapp.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.movieapp.MovieCategories
+import com.example.movieapp.data.MovieCategories
 import com.example.movieapp.databinding.CategoryItemBinding
 import com.example.movieapp.fragments.MoviesFragment
 

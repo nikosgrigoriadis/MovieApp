@@ -1,4 +1,4 @@
-package com.example.movieapp
+package com.example.movieapp.data
 
 
 data class MovieCategories(val cat: String, val moviecoverchild: List<Movie>)
@@ -45,6 +45,17 @@ data class Video(
     val name: String,
     val site: String,  //"YouTube"
     val type: String   //"Trailer", "Teaser"
+)
+
+//Backdrops
+data class BackdropResponse( // na ta sviso ean den ta xrisimopoiso
+    val backdrops: List<Backdrop>
+)
+
+data class Backdrop(
+    val file_path: String,
+    val width: Int,
+    val height: Int
 )
 
 

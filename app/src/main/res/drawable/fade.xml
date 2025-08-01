@@ -1,0 +1,9 @@
+<!-- res/drawable/fade_overlay_full.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="270"
+        android:centerColor="#801C1C3A"
+        android:endColor="#001C1C3A"
+        android:startColor="#FF1C1C3A" />
+</shape>
+

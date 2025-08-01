@@ -1,9 +1,10 @@
 package com.example.movieapp.network
 
-import com.example.movieapp.CreditsResponse
-import com.example.movieapp.MovieDetailsResponse
-import com.example.movieapp.MovieResponse
-import com.example.movieapp.VideoResponse
+import com.example.movieapp.data.BackdropResponse
+import com.example.movieapp.data.CreditsResponse
+import com.example.movieapp.data.MovieDetailsResponse
+import com.example.movieapp.data.MovieResponse
+import com.example.movieapp.data.VideoResponse
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -82,6 +83,12 @@ interface TMDBApi {
         @Query("query") query: String
     ): MovieResponse
 
+     //na to sbiso ean den to xrisimopoiso
+        @GET("movie/{movie_id}/images")
+        suspend fun getMovieBackdrops(
+            @Path("movie_id") movieId: Int,
+            @Query("api_key") apiKey: String
+        ): BackdropResponse
 
 }
 

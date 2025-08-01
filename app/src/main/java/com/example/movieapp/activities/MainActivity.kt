@@ -1,18 +1,19 @@
-package com.example.movieapp
+package com.example.movieapp.activities
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
+import com.example.movieapp.R
 import com.example.movieapp.databinding.ActivityMainBinding
 import com.example.movieapp.fragments.FavoritesFragment
 import com.example.movieapp.fragments.MoviesFragment
 import com.example.movieapp.fragments.TimeManageFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -59,6 +60,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
     }
 
+    fun hideBottomNav() {
+        binding.bottomNav.visibility = View.INVISIBLE
+    }
+
+    fun showBottomNav() {
+        binding.bottomNav.visibility = View.VISIBLE
+    }
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

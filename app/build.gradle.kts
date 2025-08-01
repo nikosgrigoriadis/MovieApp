@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
 }
 
 android {
@@ -79,5 +80,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     //SwipeRefresh
     implementation(libs.androidx.swiperefreshlayout)
+    //Swipe Dots
+    implementation("com.tbuonomo:dotsindicator:5.1.0")
 
 }

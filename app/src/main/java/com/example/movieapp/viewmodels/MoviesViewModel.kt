@@ -3,8 +3,8 @@ package com.example.movieapp.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieapp.Movie
-import com.example.movieapp.MovieCategories
+import com.example.movieapp.data.Movie
+import com.example.movieapp.data.MovieCategories
 import com.example.movieapp.fragments.APIKEY
 import com.example.movieapp.network.RetroifitInstance
 import kotlinx.coroutines.FlowPreview
