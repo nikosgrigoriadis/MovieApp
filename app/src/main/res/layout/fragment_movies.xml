@@ -92,7 +92,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="?attr/actionBarSize"> <!-- Adjust this value based on your BottomNavigationView height -->
+        android:paddingBottom="?attr/actionBarSize">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loadingAnimationView"
@@ -119,6 +119,8 @@
             android:nestedScrollingEnabled="true"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3" />
+
+
 
 
         <com.airbnb.lottie.LottieAnimationView

@@ -16,7 +16,8 @@ data class Movie(
 
 //Crew Members (Directors)
 data class CreditsResponse(
-    val crew: List<CrewMember>
+    val crew: List<CrewMember>,
+    val cast: List<CastMember>
 )
 
 data class CrewMember(
@@ -57,6 +58,14 @@ data class Backdrop(
     val width: Int,
     val height: Int
 )
+
+//Cast
+data class CastMember(
+    val name: String,
+    val character: String,
+    val profile_path: String?
+)
+
 
 
 

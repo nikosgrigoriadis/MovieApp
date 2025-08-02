@@ -16,7 +16,6 @@
         android:contentDescription="@string/moviecover"
         android:scaleType="centerCrop"
         android:src="@drawable/cars">
-
     </com.google.android.material.imageview.ShapeableImageView>
 
 
@@ -24,6 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#CC000000" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -39,8 +42,7 @@
             android:gravity="center"
             android:text="MOVIE TITLE"
             android:textColor="#ECECEC"
-            android:textSize="25sp"
-            android:textStyle="italic"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -213,9 +215,47 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/favbutton" />
 
+        <TextView
+            android:id="@+id/castTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/roboto"
+            android:text="Cast"
+            android:textColor="#D5FFFFFF"
+            android:textSize="20sp"
+            android:padding="5dp"
+            app:layout_constraintStart_toStartOf="@+id/movieOverviewDe"
+            app:layout_constraintTop_toBottomOf="@+id/movieOverviewDe" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/materialDivider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerInsetStart="16dp"
+            app:dividerInsetEnd="16dp"
+            app:layout_constraintStart_toStartOf="@+id/castTextView"
+            app:layout_constraintTop_toBottomOf="@+id/castTextView"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/castRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/materialDivider" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.core.widget.NestedScrollView>
+
 </FrameLayout>
+
+
+
 
 
 

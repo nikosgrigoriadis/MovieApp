@@ -83,13 +83,12 @@ interface TMDBApi {
         @Query("query") query: String
     ): MovieResponse
 
-     //na to sbiso ean den to xrisimopoiso
+     //Backdrops
         @GET("movie/{movie_id}/images")
         suspend fun getMovieBackdrops(
             @Path("movie_id") movieId: Int,
             @Query("api_key") apiKey: String
         ): BackdropResponse
-
 }
 
 //set the retrofit

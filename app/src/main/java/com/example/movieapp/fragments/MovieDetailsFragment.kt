@@ -10,9 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.activities.MainActivity
+import com.example.movieapp.adapters.CastAdapter
 import com.example.movieapp.network.RetroifitInstance
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.network.RetroifitInstance.api
@@ -50,7 +52,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         binding.favbutton.setOnClickListener {
             if (heart_state) {
                 binding.favbuttonim.setImageResource(R.drawable.favorite_white_filled)
-                 heart_state = false
+                heart_state = false
             } else {
                 binding.favbuttonim.setImageResource(R.drawable.favorite_white)
                 heart_state = true
@@ -71,6 +73,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         getGenre(movieId)
         getDuration(movieId)
         getTrailer(movieId)
+        getCast(movieId)
         fetchBackdrops(movieId)
 //
 //        binding.sharebuttonbutton.setOnClickListener {
@@ -80,7 +83,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         val getOverview = arguments?.getString("overviewkey")
         binding.movieOverviewDe.text = "$getOverview"
 
-        val getReleaseDate = arguments?.getString("releasekey")?.substring(0, 4) //only 4 first digits(year)
+        val getReleaseDate =
+            arguments?.getString("releasekey")?.substring(0, 4) //only 4 first digits(year)
         binding.YearField.text = "${getReleaseDate}  •"
 
         val getTitle = arguments?.getString("titlekey")
@@ -92,6 +96,23 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             .into(binding.movieCoverDe)
     }
 
+    private fun getCast(movieId: Int) {
+        lifecycleScope.launch {
+            try {
+                val response = api.getMovieCredits(
+                    movieId = movieId,
+                    apiKey = APIKEY
+                )
+                val adapter = CastAdapter(response.cast)
+                binding.castRecyclerView.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                binding.castRecyclerView.adapter = adapter
+            } catch (e: Exception) {
+                Log.e("TMDB", "Error: ${e.message}")
+            }
+        }
+    }
+
     private fun fetchBackdrops(movieId: Int) {
         lifecycleScope.launch {
             try {
@@ -100,12 +121,10 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                     apiKey = APIKEY
                 )
 
-                //binding.dotsIndicator.setViewPager2(binding.backdropViewPager)
-
                 val adapter = BackdropPagerAdapter(response.backdrops)
                 binding.backdropViewPager.adapter = adapter
             } catch (e: Exception) {
-                Log.e("TMDB", "Error: ${e.message}")
+                Log.e("TMDBack", "Error: ${e.message}")
             }
         }
     }
@@ -161,7 +180,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private fun getGenre(movieId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = RetroifitInstance.api.getMovieDetails(
+            val response = api.getMovieDetails(
                 movieId = movieId,
                 apiKey = APIKEY
             )
@@ -175,7 +194,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private fun getDuration(movieId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = RetroifitInstance.api.getMovieDetails(
+            val response = api.getMovieDetails(
                 movieId = movieId,
                 apiKey = APIKEY
             )
