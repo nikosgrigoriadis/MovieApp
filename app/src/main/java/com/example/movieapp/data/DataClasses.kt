@@ -14,7 +14,7 @@ data class Movie(
     val release_date: String,
 )
 
-//Crew Members (Directors)
+//Crew Members (Directors, Cast)
 data class CreditsResponse(
     val crew: List<CrewMember>,
     val cast: List<CastMember>
@@ -22,6 +22,7 @@ data class CreditsResponse(
 
 data class CrewMember(
     val name: String,
+    val profile_path: String,
     val job: String
 )
 

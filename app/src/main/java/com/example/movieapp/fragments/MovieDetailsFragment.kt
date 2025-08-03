@@ -68,8 +68,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private fun getsetDatatoFragment() {
         val movieId = arguments?.getString("idkey")?.toInt() ?: 0
-//
-//        getDirector(movieId) //fix the slow getting of director
+
+        getDirector(movieId)
         getGenre(movieId)
         getDuration(movieId)
         getTrailer(movieId)
@@ -109,6 +109,26 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 binding.castRecyclerView.adapter = adapter
             } catch (e: Exception) {
                 Log.e("TMDB", "Error: ${e.message}")
+            }
+        }
+    }
+
+    private fun getDirector(movieId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = api.getMovieCredits(
+                movieId = movieId,
+                apiKey = APIKEY
+            )
+            withContext(Dispatchers.Main) {
+                val director = response.crew.find { it.job == "Director" }
+                if (director != null) {
+                    binding.directorsNameTextView.text = director.name
+                    val imageUrl = "https://image.tmdb.org/t/p/w185${director.profile_path}"
+                    Glide.with(requireContext())
+                        .load(imageUrl)
+                        .placeholder(R.drawable.notanactor)
+                        .into(binding.directorsImageView)
+                }
             }
         }
     }
@@ -164,19 +184,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             }
         }
     }
-
-//    private fun getDirector(movieId: Int) {
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val response = RetroifitInstance.api.getMovieCredits(
-//                movieId = movieId,
-//                apiKey = APIKEY
-//            )
-//            withContext(Dispatchers.Main) {
-//                val director = response.crew.find { it.job == "Director" }?.name ?: "Unknown"
-//                binding.DirectorsName.text = director
-//            }
-//        }
-//    }
 
     private fun getGenre(movieId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
