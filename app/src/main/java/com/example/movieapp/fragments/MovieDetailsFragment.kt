@@ -12,10 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.movieapp.R
 import com.example.movieapp.activities.MainActivity
 import com.example.movieapp.adapters.CastAdapter
-import com.example.movieapp.network.RetroifitInstance
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.network.RetroifitInstance.api
 import com.google.android.material.snackbar.Snackbar
@@ -45,6 +45,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         super.onViewCreated(view, savedInstanceState)
         getsetDatatoFragment()
         (activity as? MainActivity)?.hideBottomNav() //call function from main activity
+        (activity as? MainActivity)?.changeBackground()
         favbutton_handler()
     }
 
@@ -63,6 +64,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     override fun onDestroy() {
         super.onDestroy()
         (activity as? MainActivity)?.showBottomNav() //call function from main activity
+        (activity as? MainActivity)?.changeBackgroundtoMain()
     }
 
 
@@ -75,25 +77,27 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         getTrailer(movieId)
         getCast(movieId)
         fetchBackdrops(movieId)
-//
-//        binding.sharebuttonbutton.setOnClickListener {
-//            shareMovie(movieId)
-//        }
 
-        val getOverview = arguments?.getString("overviewkey")
-        binding.movieOverviewDe.text = "$getOverview"
+        binding.apply {
 
-        val getReleaseDate =
-            arguments?.getString("releasekey")?.substring(0, 4) //only 4 first digits(year)
-        binding.YearField.text = "${getReleaseDate}  •"
+            floatingshare.setOnClickListener {
+                shareMovie(movieId)
+            }
+            val getOverview = arguments?.getString("overviewkey")
+            movieOverviewDe.text = "$getOverview"
 
-        val getTitle = arguments?.getString("titlekey")
-        binding.movieTitleDe.text = "$getTitle"
+            val getReleaseDate =
+                arguments?.getString("releasekey")?.substring(0, 4) //only 4 first digits(year)
+            YearField.text = "${getReleaseDate}  •"
 
-        val getCover = arguments?.getString("coverkey") //MovieCover
-        Glide.with(requireContext())
-            .load(getCover)
-            .into(binding.movieCoverDe)
+            val getTitle = arguments?.getString("titlekey")
+            movieTitleDe.text = "$getTitle"
+
+            val getCover = arguments?.getString("coverkey") //MovieCover
+            Glide.with(requireContext())
+                .load(getCover)
+                .into(binding.movieCoverDe)
+        }
     }
 
     private fun getCast(movieId: Int) {
@@ -121,14 +125,23 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             )
             withContext(Dispatchers.Main) {
                 val director = response.crew.find { it.job == "Director" }
-                if (director != null) {
-                    binding.directorsNameTextView.text = director.name
-                    val imageUrl = "https://image.tmdb.org/t/p/w185${director.profile_path}"
-                    Glide.with(requireContext())
-                        .load(imageUrl)
+
+                binding.directorsNameTextView.text = director?.name
+                val profilePath = director?.profile_path
+                val imageUrl =
+                    if (profilePath != null) "https://image.tmdb.org/t/p/w185$profilePath" else null
+                val requestOptions = if (profilePath == null) {
+                    RequestOptions()
                         .placeholder(R.drawable.notanactor)
-                        .into(binding.directorsImageView)
+                        .error(R.drawable.notanactor) // Keep original scale type for actual image
+                } else {
+                    RequestOptions().centerCrop()
                 }
+
+                Glide.with(requireContext())
+                    .load(imageUrl)
+                    .apply(requestOptions)
+                    .into(binding.directorsImageView)
             }
         }
     }
@@ -163,7 +176,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     private fun getTrailer(movieId: Int) {
         CoroutineScope(Dispatchers.IO).launch {
-            val response = RetroifitInstance.api.getMovieVideos(
+            val response = api.getMovieVideos(
                 movieId = movieId,
                 apiKey = APIKEY
             )
@@ -195,6 +208,11 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 val genre = response.genres.take(2)
                     .joinToString(", ") { it.name } //takes only 2 genres and not all
                 binding.GenreField.text = "${genre}  •"
+
+                binding.ratingBar.rating = (response.voteAverage / 2).toFloat()
+                binding.ratingBar.numStars = 5
+                binding.ratingValueText.text = "${"%.1f".format(response.voteAverage)} / 10"
+
             }
         }
     }

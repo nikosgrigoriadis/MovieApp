@@ -24,7 +24,7 @@ class CastAdapter(private val castList: List<CastMember>) :
         holder.binding.actorNameTextView.text = actor.name
         holder.binding.characterTextView.text = "as ${actor.character}"
 
-        val profileUrl = actor.profile_path?.let {
+        val profileUrl = actor.profile_path?.let { //for directors images
             "https://image.tmdb.org/t/p/w185$it"
         }
 

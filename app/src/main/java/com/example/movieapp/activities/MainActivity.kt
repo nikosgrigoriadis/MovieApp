@@ -1,11 +1,13 @@
 package com.example.movieapp.activities
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
 import com.example.movieapp.R
@@ -14,6 +16,7 @@ import com.example.movieapp.fragments.FavoritesFragment
 import com.example.movieapp.fragments.MoviesFragment
 import com.example.movieapp.fragments.TimeManageFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.core.graphics.toColorInt
 
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -21,8 +24,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -66,6 +69,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     fun showBottomNav() {
         binding.bottomNav.visibility = View.VISIBLE
+    }
+
+    fun changeBackground() {
+        binding.main.setBackgroundColor("#00FFFFFF".toColorInt())
+    }
+    fun changeBackgroundtoMain() {
+        binding.main.setBackgroundResource(R.drawable.gradient_background)
     }
 
 
