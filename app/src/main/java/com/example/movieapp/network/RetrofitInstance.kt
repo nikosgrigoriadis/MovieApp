@@ -2,6 +2,7 @@ package com.example.movieapp.network
 
 import com.example.movieapp.data.BackdropResponse
 import com.example.movieapp.data.CreditsResponse
+import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieDetailsResponse
 import com.example.movieapp.data.MovieResponse
 import com.example.movieapp.data.VideoResponse
@@ -89,6 +90,13 @@ interface TMDBApi {
             @Path("movie_id") movieId: Int,
             @Query("api_key") apiKey: String
         ): BackdropResponse
+
+    // fetch favorites
+    @GET("movie/{movie_id}")
+    suspend fun getMovie(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): Movie
 }
 
 //set the retrofit

@@ -16,6 +16,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.movieapp.R
 import com.example.movieapp.activities.MainActivity
 import com.example.movieapp.adapters.CastAdapter
+import com.example.movieapp.database.DatabaseProvider
+import com.example.movieapp.database.FavoriteMovieId
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.network.RetroifitInstance.api
 import com.google.android.material.snackbar.Snackbar
@@ -26,11 +28,7 @@ import kotlinx.coroutines.withContext
 
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
-
-
     private lateinit var binding: FragmentMovieDetailsBinding
-    var heart_state = true
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,20 +44,38 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         getsetDatatoFragment()
         (activity as? MainActivity)?.hideBottomNav() //call function from main activity
         (activity as? MainActivity)?.changeBackground()
-        favbutton_handler()
     }
 
-    fun favbutton_handler() {
-        binding.favbutton.setOnClickListener {
-            if (heart_state) {
-                binding.favbuttonim.setImageResource(R.drawable.favorite_white_filled)
-                heart_state = false
-            } else {
-                binding.favbuttonim.setImageResource(R.drawable.favorite_white)
-                heart_state = true
+    private fun favbutton_handler(movieId: Int) {
+        val dao = DatabaseProvider.getDatabase(requireContext()).favoriteMovieDao()
+
+        lifecycleScope.launch {
+            var isFav = withContext(Dispatchers.IO) { dao.isFavorite(movieId) }
+            updateSaveButtonUI(isFav)
+
+            binding.favbutton.setOnClickListener {
+                lifecycleScope.launch {
+                    if (isFav) {
+                        withContext(Dispatchers.IO) { dao.delete(FavoriteMovieId(movieId)) }
+                        isFav = false
+                    } else {
+                        withContext(Dispatchers.IO) { dao.insert(FavoriteMovieId(movieId)) }
+                        isFav = true
+                    }
+                    updateSaveButtonUI(isFav)
+                }
             }
         }
     }
+
+    private fun updateSaveButtonUI(isFav: Boolean) {
+        binding.favbuttonim.setImageResource(
+            if (isFav) R.drawable.favorite_white_filled
+            else R.drawable.favorite_white
+        )
+        binding.savetext.text = if (isFav) "Saved" else "Save"
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -71,6 +87,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private fun getsetDatatoFragment() {
         val movieId = arguments?.getString("idkey")?.toInt() ?: 0
 
+        favbutton_handler(movieId)
         getDirector(movieId)
         getGenre(movieId)
         getDuration(movieId)

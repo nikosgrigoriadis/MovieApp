@@ -11,14 +11,14 @@ import com.bumptech.glide.Glide
 import com.example.movieapp.data.Movie
 import com.example.movieapp.fragments.MovieDetailsFragment
 import com.example.movieapp.R
-import com.example.movieapp.fragments.MoviesFragment
+import com.example.movieapp.fragments.FavoritesFragment
 import com.google.android.material.snackbar.Snackbar
 
 
-class CoversAdapter(
+class FavoritesAdapter(
     private val moviesTMDB: List<Movie>,
-    private val parentFragment: MoviesFragment
-) : RecyclerView.Adapter<CoversAdapter.CoversAdapterViewHolder>() {
+    private val parentFragment: FavoritesFragment
+) : RecyclerView.Adapter<FavoritesAdapter.CoversAdapterViewHolder>() {
 
     class CoversAdapterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val coverImageView: ImageView = itemView.findViewById(R.id.moviecover)

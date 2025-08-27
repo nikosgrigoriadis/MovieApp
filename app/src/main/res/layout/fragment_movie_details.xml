@@ -117,6 +117,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/custom_button_edge"
                 android:orientation="horizontal"
+                android:clickable="true"
                 android:padding="5dp"
                 app:layout_constraintEnd_toStartOf="@+id/trailerbt"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -345,11 +346,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingshare"
-        android:backgroundTint="#25FFFFFF"
+        android:backgroundTint="#40FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="30dp"
         android:src="@drawable/share_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">

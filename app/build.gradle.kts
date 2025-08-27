@@ -1,12 +1,12 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-
+    id("kotlin-kapt")
 }
 
 android {
     namespace = "com.example.movieapp"
-    compileSdk = 35
+    compileSdk = 36
 
     buildFeatures {
         viewBinding = true
@@ -49,7 +49,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation (libs.glide)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.legacy.support.v4)
@@ -57,13 +56,12 @@ dependencies {
     implementation(libs.androidx.espresso.core)
     implementation(libs.androidx.runtime.android)
     implementation(libs.androidx.material3.android)
-    implementation(libs.androidx.ui.tooling.preview.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     //Room
     implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
     //Room Coroutines
     implementation(libs.androidx.room.ktx)
     //Gson
@@ -73,14 +71,11 @@ dependencies {
     implementation(libs.converter.gson)
     //Glide
     implementation(libs.glide)
-    annotationProcessor(libs.compiler)
+    kapt(libs.compiler)
     //Lottie
     implementation("com.airbnb.android:lottie:6.6.6")
     //LiveData
     implementation(libs.androidx.lifecycle.livedata.ktx)
     //SwipeRefresh
     implementation(libs.androidx.swiperefreshlayout)
-    //Swipe Dots
-    implementation("com.tbuonomo:dotsindicator:5.1.0")
-
 }
