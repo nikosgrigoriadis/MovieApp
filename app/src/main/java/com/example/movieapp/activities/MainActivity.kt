@@ -1,13 +1,12 @@
 package com.example.movieapp.activities
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.commit
 import com.example.movieapp.R
@@ -16,9 +15,10 @@ import com.example.movieapp.fragments.FavoritesFragment
 import com.example.movieapp.fragments.MoviesFragment
 import com.example.movieapp.fragments.TimeManageFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import androidx.core.graphics.toColorInt
+import dagger.hilt.android.AndroidEntryPoint
 
 @Suppress("DEPRECATION")
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding

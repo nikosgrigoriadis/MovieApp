@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -20,6 +21,7 @@ import com.example.movieapp.database.DatabaseProvider
 import com.example.movieapp.database.FavoriteMovieId
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.network.RetroifitInstance.api
+import com.example.movieapp.viewmodels.FavoritesViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +31,7 @@ import kotlinx.coroutines.withContext
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private lateinit var binding: FragmentMovieDetailsBinding
+    private val viewModelFav: FavoritesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +58,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
             binding.favbutton.setOnClickListener {
                 lifecycleScope.launch {
+                    viewModelFav.resetFetchFlag()
                     if (isFav) {
                         withContext(Dispatchers.IO) { dao.delete(FavoriteMovieId(movieId)) }
                         isFav = false

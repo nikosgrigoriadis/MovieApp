@@ -2,7 +2,7 @@
 activityKtx = "1.10.0"
 agp = "8.11.1"
 cardview = "1.0.0"
-compiler = "4.15.1"
+compiler = "4.16.0"
 fragmentKtx = "1.8.4"
 glide = "4.16.0"
 gson = "2.11.0"

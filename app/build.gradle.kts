@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -74,8 +75,9 @@ dependencies {
     kapt(libs.compiler)
     //Lottie
     implementation("com.airbnb.android:lottie:6.6.6")
-    //LiveData
-    implementation(libs.androidx.lifecycle.livedata.ktx)
     //SwipeRefresh
     implementation(libs.androidx.swiperefreshlayout)
+    //Dagger Hilt
+    implementation("com.google.dagger:hilt-android:2.49")
+    kapt("com.google.dagger:hilt-android-compiler:2.49")
 }

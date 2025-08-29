@@ -1,6 +1,10 @@
 package com.example.movieapp.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface FavoriteMovieDao {
@@ -10,6 +14,9 @@ interface FavoriteMovieDao {
 
     @Delete
     suspend fun delete(movie: FavoriteMovieId)
+
+    @Query("DELETE FROM favorite_movies")
+    suspend fun deleteAll()
 
     @Query("SELECT * FROM favorite_movies")
     suspend fun getAllFavorites(): List<FavoriteMovieId>
