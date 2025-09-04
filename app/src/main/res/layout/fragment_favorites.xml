@@ -75,7 +75,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/removeallfav"
         android:background="?attr/selectableItemBackground"
-        android:layout_marginTop="10dp"
         android:visibility="visible"
         android:src="@drawable/delete_icon"
         app:layout_constraintEnd_toEndOf="parent"

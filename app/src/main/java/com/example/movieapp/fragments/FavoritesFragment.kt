@@ -1,4 +1,5 @@
 package com.example.movieapp.fragments
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,9 @@ import com.example.movieapp.database.DatabaseProvider
 import com.example.movieapp.databinding.FragmentFavoritesBinding
 import com.example.movieapp.viewmodels.FavoritesViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
+import kotlinx.coroutines.withContext
 
 
 class FavoritesFragment : Fragment() {
@@ -59,34 +61,19 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun fetchfavoritesviewmodel() {
-
+        startLoading()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadfavoritemovies()
             viewModel.favorites.collect { favmovies ->
                 if (favmovies.isEmpty()) {
-                    not_exist_favorites()
+                    withContext(Dispatchers.Main) { not_exist_favorites() }
                 } else {
-                    exist_favorites(favmovies)
+                    withContext(Dispatchers.Main) { exist_favorites(favmovies) }
                 }
                 viewModel.markDataAsFetched()
             }
         }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-
-            viewModel.loading.collect { isloading ->
-                if (isloading) {
-                    binding.loadingAnimationView.visibility = View.VISIBLE
-                    binding.favoritesrecyclerView.visibility = View.GONE
-                    binding.brokenHeartAnimationView.visibility = View.GONE
-                    binding.nofavoritestextView.visibility = View.GONE
-                } else {
-                    binding.loadingAnimationView.visibility = View.GONE
-                    binding.favoritesrecyclerView.visibility = View.VISIBLE
-                }
-
-            }
-        }
+        stopLoading()
     }
 
     private fun not_exist_favorites() {
@@ -105,8 +92,17 @@ class FavoritesFragment : Fragment() {
             nofavoritestextView.visibility = View.GONE
             favoritesrecyclerView.visibility = View.VISIBLE
             favorites.visibility = View.VISIBLE
+            removeallfav.visibility = View.VISIBLE
             adapter = FavoritesAdapter(favmovies, this@FavoritesFragment)
             favoritesrecyclerView.adapter = adapter
         }
+    }
+
+    private fun startLoading() {
+        binding.loadingAnimationView.visibility = View.VISIBLE
+    }
+
+    private fun stopLoading() {
+        binding.loadingAnimationView.visibility = View.GONE
     }
 }

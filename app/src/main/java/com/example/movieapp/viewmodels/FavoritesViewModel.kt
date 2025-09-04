@@ -20,9 +20,6 @@ class FavoritesViewModel @Inject constructor(private val dao: FavoriteMovieDao):
     private val _favorites = MutableStateFlow<List<Movie>>(emptyList())
     val favorites: StateFlow<List<Movie>> = _favorites
 
-    private val _loading = MutableStateFlow(false)
-    val loading: StateFlow<Boolean> = _loading
-
     private val _hasFetched = MutableStateFlow(false)
     val hasFetched: StateFlow<Boolean> = _hasFetched
 
@@ -39,14 +36,13 @@ class FavoritesViewModel @Inject constructor(private val dao: FavoriteMovieDao):
          if (_hasFetched.value) return
 
         viewModelScope.launch {
-            _loading.value = true
 
             //withContext because we take results
             val favoriteIds = withContext(Dispatchers.IO) { dao.getAllFavorites()}
 
             val favmovies = mutableListOf<Movie>()
 
-            for (fav in favoriteIds) {
+            for (fav in favoriteIds) {  //make it async without for loop
                 val movie = withContext(Dispatchers.IO) {
                     api.getMovie(fav.id, APIKEY)
                 }
@@ -54,7 +50,6 @@ class FavoritesViewModel @Inject constructor(private val dao: FavoriteMovieDao):
 
             }
             _favorites.value = favmovies
-            _loading.value = false
         }
     }
 }
