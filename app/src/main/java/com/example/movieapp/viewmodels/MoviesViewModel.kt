@@ -31,8 +31,6 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
     private val _hasFetched = MutableStateFlow(false)
     val hasFetched: StateFlow<Boolean> = _hasFetched
 
-    private lateinit var tmdbCategory: List<MovieCategories>
-
     fun markDataAsFetched() {
         _hasFetched.value = true
     }
@@ -48,7 +46,7 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
             _isLoading.value = true
             val upcoming = MovieCategories("Upcoming", repository.getUpcomingMovies())
             val nowplaying = MovieCategories("Now Playing", repository.getNowPlayingMovies())
-            tmdbCategory = listOf(
+            _categories.value = listOf(
 
                 MovieCategories(
                     "Action",
@@ -67,10 +65,23 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
                     repository.getTopRatedMovies()
                 )
             )
-            _categories.value = tmdbCategory
-            _upcomingMovies.value = upcoming.moviecoverchild
-            _nowPlayingMovies.value = nowplaying.moviecoverchild
+            _upcomingMovies.value = upcoming.movies
+            _nowPlayingMovies.value = nowplaying.movies
             _isLoading.value = false
+        }
+    }
+
+    suspend fun getSpecificCategory(category: String) {
+        val refreshMovies = when (category) {
+            "Action" -> repository.getActionMovies()
+            "Romance" -> repository.getRomanceMovies()
+            "Most Popular" -> repository.getMostPopularMovies()
+            "Top Rated" -> repository.getTopRatedMovies()
+            else -> emptyList()
+        }
+        val refreshCategory = MovieCategories(category, refreshMovies)
+        _categories.value = _categories.value.map {
+            if (it.cat == category) refreshCategory else it
         }
     }
 

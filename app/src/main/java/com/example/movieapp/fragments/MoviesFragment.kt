@@ -51,24 +51,18 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
 
         checkNetworkConnection()
-        setupRefreshListener()
     }
 
-//    suspend fun refreshCategory(category: String) {
-//
-//        lifecycleScope.launch {
-//            viewModel.categories.collect { categories ->
-//                val selectedCategory = categories.find { it.cat == category }
-//                binding.apply {
-//                    catrecyclerView.adapter =
-//                        CoversAdapter(
-//                            selectedCategory?.moviecoverchild ?: emptyList(),
-//                            this@MoviesFragment
-//                        )
-//                }
-//            }
-//        }
-//    }
+    fun refreshCategory(category: String) {
+        lifecycleScope.launch {
+            viewModel.getSpecificCategory(category)
+            viewModel.categories.collect { categoryList ->
+                binding.apply {
+                    catrecyclerView.adapter = MainAdapter(categoryList, this@MoviesFragment)
+                }
+            }
+        }
+    }
 
     private fun searchForMovie(query: String) {
         lifecycleScope.launch {
@@ -183,19 +177,5 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
         return networkCapabilities != null &&
                 networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    }
-
-    private fun setupRefreshListener() {
-        binding.refreshdown.setOnRefreshListener {
-            binding.apply {
-                if (isNetworkAvailable(requireContext())) {
-                    viewModel.resetFetchFlag()
-                    checkNetworkConnection()
-                } else {
-                    showNoInternetUI()
-                }
-                refreshdown.isRefreshing = false
-            }
-        }
     }
 }

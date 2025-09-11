@@ -14,11 +14,6 @@
         android:hint="Find a Movie"
         app:strokeColor="@android:color/transparent" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refreshdown"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/mainFragment"
             android:layout_width="match_parent"
@@ -76,8 +71,6 @@
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/nointernetanimation"
@@ -119,9 +112,6 @@
             android:nestedScrollingEnabled="true"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="3" />
-
-
-
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/noresultsanimation"

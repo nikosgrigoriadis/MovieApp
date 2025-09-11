@@ -3,7 +3,7 @@
     import com.google.gson.annotations.SerializedName
 
 
-    data class MovieCategories(val cat: String, val moviecoverchild: List<Movie>)
+    data class MovieCategories(val cat: String, val movies: List<Movie>)
 
     data class MovieResponse(val results: List<Movie>)
 
