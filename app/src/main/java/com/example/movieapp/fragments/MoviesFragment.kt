@@ -7,10 +7,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.movieapp.R
-import androidx.fragment.app.Fragment
 import com.example.movieapp.adapters.CarouselAdapter
 import com.example.movieapp.adapters.CoversAdapter
 import com.example.movieapp.adapters.MainAdapter
@@ -54,6 +54,22 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         setupRefreshListener()
     }
 
+//    suspend fun refreshCategory(category: String) {
+//
+//        lifecycleScope.launch {
+//            viewModel.categories.collect { categories ->
+//                val selectedCategory = categories.find { it.cat == category }
+//                binding.apply {
+//                    catrecyclerView.adapter =
+//                        CoversAdapter(
+//                            selectedCategory?.moviecoverchild ?: emptyList(),
+//                            this@MoviesFragment
+//                        )
+//                }
+//            }
+//        }
+//    }
+
     private fun searchForMovie(query: String) {
         lifecycleScope.launch {
             val results = viewModel.searchMovie(query)
@@ -90,17 +106,20 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
             }
         }
 
-
         lifecycleScope.launch {
             viewModel.categories.collect { categoryList ->
-                binding.apply { catrecyclerView.adapter = MainAdapter(categoryList,this@MoviesFragment) }
+                binding.apply {
+                    catrecyclerView.adapter = MainAdapter(categoryList, this@MoviesFragment)
+                }
             }
         }
+
         lifecycleScope.launch {
             viewModel.isLoading.collect { isLoading ->
                 LoadingScreen(isLoading)
             }
         }
+
         lifecycleScope.launch {
             viewModel.hasFetched.collect { fetched ->
                 if (!fetched && isNetworkAvailable(requireContext())) {

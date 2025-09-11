@@ -2,10 +2,12 @@ package com.example.movieapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.movieapp.data.MovieCategories
 import com.example.movieapp.databinding.CategoryItemBinding
 import com.example.movieapp.fragments.MoviesFragment
+import kotlinx.coroutines.launch
 
 class MainAdapter(
     private val categories: List<MovieCategories>,
@@ -30,6 +32,12 @@ class MainAdapter(
 
         val coversAdapter = CoversAdapter(catpos.moviecoverchild, parentFragment)
         holder.binding.covrecyclerView.adapter = coversAdapter
+
+        holder.binding.refreshButton.setOnClickListener {
+            parentFragment.lifecycleScope.launch {
+                //parentFragment.refreshCategory(catpos.cat)
+            }
+        }
     }
 
     override fun getItemCount() = categories.size

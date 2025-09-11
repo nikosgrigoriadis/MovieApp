@@ -5,16 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieCategories
-import com.example.movieapp.fragments.APIKEY
-import com.example.movieapp.network.RetroifitInstance
-import kotlinx.coroutines.FlowPreview
+import com.example.movieapp.repositories.MovieRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-@OptIn(FlowPreview::class)
-class MoviesViewModel : ViewModel() {
+@HiltViewModel
+class MoviesViewModel @Inject constructor(private val repository: MovieRepository) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<MovieCategories>>(emptyList())
     val categories: StateFlow<List<MovieCategories>> = _categories
@@ -31,6 +31,8 @@ class MoviesViewModel : ViewModel() {
     private val _hasFetched = MutableStateFlow(false)
     val hasFetched: StateFlow<Boolean> = _hasFetched
 
+    private lateinit var tmdbCategory: List<MovieCategories>
+
     fun markDataAsFetched() {
         _hasFetched.value = true
     }
@@ -41,30 +43,30 @@ class MoviesViewModel : ViewModel() {
 
     fun fetchMovies() {
         if (_hasFetched.value) return
-        val apikey = APIKEY
+
         viewModelScope.launch {   //CoroutineScope(Dispatchers.IO) -> viewModelScope
             _isLoading.value = true
-            val upcoming = MovieCategories("Upcoming", RetroifitInstance.api.getUpcomingMovies(apikey).results)
-            val nowplaying = MovieCategories("Now Playing", RetroifitInstance.api.getNowPlayingMovies(apikey).results)
-            val tmdbCategory = listOf(
+            val upcoming = MovieCategories("Upcoming", repository.getUpcomingMovies())
+            val nowplaying = MovieCategories("Now Playing", repository.getNowPlayingMovies())
+            tmdbCategory = listOf(
 
-                        MovieCategories(
-                            "Action",
-                            RetroifitInstance.api.getActionMovies(apikey).results
-                        ),
-                        MovieCategories(
-                            "Romance",
-                            RetroifitInstance.api.getRomanceMovies(apikey).results
-                        ),
-                        MovieCategories(
-                            "Most Popular",
-                            RetroifitInstance.api.getPopularMovies(apikey).results
-                        ),
-                        MovieCategories(
-                            "Top Rated",
-                            RetroifitInstance.api.getTopRatedMovies(apikey).results
-                        )
-                    )
+                MovieCategories(
+                    "Action",
+                    repository.getActionMovies()
+                ),
+                MovieCategories(
+                    "Romance",
+                    repository.getRomanceMovies()
+                ),
+                MovieCategories(
+                    "Most Popular",
+                    repository.getMostPopularMovies()
+                ),
+                MovieCategories(
+                    "Top Rated",
+                    repository.getTopRatedMovies()
+                )
+            )
             _categories.value = tmdbCategory
             _upcomingMovies.value = upcoming.moviecoverchild
             _nowPlayingMovies.value = nowplaying.moviecoverchild
@@ -72,12 +74,7 @@ class MoviesViewModel : ViewModel() {
         }
     }
 
-
     suspend fun searchMovie(query: String): List<Movie> {
-        return try {
-            RetroifitInstance.api.searchMovies(APIKEY, query).results ?: emptyList()
-        } catch (e: Exception) {
-            emptyList()
-        }
+        return repository.searchMovies(query)
     }
 }
