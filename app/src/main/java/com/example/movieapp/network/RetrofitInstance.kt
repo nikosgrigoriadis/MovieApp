@@ -45,7 +45,24 @@ interface TMDBApi {
         @Query("api_key") apiKey: String,
         @Query("with_genres") genreId: String = "28",
         @Query("sort_by") sortBy: String = "revenue.desc", //ταξινομηση με βάση το revenue
-        @Query("page") page: Int = (1..20).random()
+        @Query("page") page: Int = (1..30).random()
+    ): MovieResponse
+
+
+
+    @GET("discover/movie")
+    suspend fun getAnimationMovies(
+        @Query("api_key") apiKey: String,
+        @Query("with_genres") genreId: String = "16",
+        @Query("page") page: Int = (1..30).random()
+    ): MovieResponse
+
+    @GET("discover/movie")
+    suspend fun getDramaMovies(
+        @Query("api_key") apiKey: String,
+        @Query("with_genres") genreId: String = "18",
+        @Query("sort_by") sortBy: String = "revenue.desc",
+        @Query("page") page: Int = (1..30).random()
     ): MovieResponse
 
     //Romance
@@ -54,13 +71,46 @@ interface TMDBApi {
         @Query("api_key") apiKey: String,
         @Query("with_genres") genreId: String = "10749",
         @Query("sort_by") sortBy: String = "revenue.desc",
-        @Query("page") page: Int = (1..20).random()
+        @Query("page") page: Int = (1..30).random()
+    ): MovieResponse
+
+    @GET("discover/movie")
+    suspend fun getFantasyMovies(
+        @Query("api_key") apiKey: String,
+        @Query("with_genres") genreId: String = "14",
+        @Query("sort_by") sortBy: String = "revenue.desc",
+        @Query("page") page: Int = (1..30).random()
+    ): MovieResponse
+
+    @GET("discover/movie")
+    suspend fun getAdventureMovies(
+        @Query("api_key") apiKey: String,
+        @Query("with_genres") genreId: String = "12",
+        @Query("sort_by") sortBy: String = "revenue.desc",
+        @Query("page") page: Int = (1..30).random()
+    ): MovieResponse
+
+    @GET("discover/movie")
+    suspend fun getThrillerMovies(
+        @Query("api_key") apiKey: String,
+        @Query("with_genres") genreId: String = "53",
+        @Query("sort_by") sortBy: String = "revenue.desc",
+        @Query("page") page: Int = (1..30).random()
+    ): MovieResponse
+
+    @GET("discover/movie")
+    suspend fun getHorrorMovies(
+        @Query("api_key") apiKey: String,
+        @Query("with_genres") genreId: String = "27",
+        @Query("sort_by") sortBy: String = "revenue.desc",
+        @Query("page") page: Int = (1..30).random()
     ): MovieResponse
 
     //Top Rated
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(
-        @Query("api_key") apiKey: String
+        @Query("api_key") apiKey: String,
+        @Query("page") page: Int
     ): MovieResponse
 
 
@@ -68,7 +118,7 @@ interface TMDBApi {
     @GET("movie/popular")
     suspend fun getPopularMovies(
         @Query("api_key") apiKey: String,
-        @Query("page") page: Int = 50
+        @Query("page") page : Int = (1..30).random()
     ): MovieResponse
 
     @GET("movie/{movie_id}/videos")

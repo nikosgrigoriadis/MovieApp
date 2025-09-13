@@ -34,6 +34,7 @@ class MainAdapter(
 
         holder.binding.refreshButton.setOnClickListener {
                 parentFragment.refreshCategory(catpos.cat)
+
             }
     }
 

@@ -9,6 +9,8 @@ import javax.inject.Singleton
 @Singleton
 class MovieRepository @Inject constructor() {
 
+    var currentPage = 0
+
     private val api = RetroifitInstance.api
 
     suspend fun getUpcomingMovies(): List<Movie> {
@@ -34,10 +36,57 @@ class MovieRepository @Inject constructor() {
             emptyList()
         }
     }
+    suspend fun getAnimationMovies(): List<Movie> {
+        return try {
+            api.getAnimationMovies(APIKEY).results
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getDramaMovies(): List<Movie> {
+        return try {
+            api.getDramaMovies(APIKEY).results
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 
     suspend fun getRomanceMovies(): List<Movie> {
         return try {
             api.getRomanceMovies(APIKEY).results
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getFantasyMovies(): List<Movie> {
+        return try {
+            api.getFantasyMovies(APIKEY).results
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getAdventureMovies(): List<Movie> {
+        return try {
+            api.getAdventureMovies(APIKEY).results
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getThrillerMovies(): List<Movie> {
+        return try {
+            api.getThrillerMovies(APIKEY).results
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun getHorrorMovies(): List<Movie> {
+        return try {
+            api.getHorrorMovies(APIKEY).results
         } catch (e: Exception) {
             emptyList()
         }
@@ -51,9 +100,14 @@ class MovieRepository @Inject constructor() {
         }
     }
 
+    private fun loadTopRatedNextPage(): Int {
+        currentPage++
+        return currentPage
+    }
+
     suspend fun getTopRatedMovies(): List<Movie> {
         return try {
-            api.getTopRatedMovies(APIKEY).results
+            api.getTopRatedMovies(APIKEY, loadTopRatedNextPage()).results
         } catch (e: Exception) {
             emptyList()
         }

@@ -35,10 +35,6 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
         _hasFetched.value = true
     }
 
-    fun resetFetchFlag() {
-        _hasFetched.value = false
-    }
-
     fun fetchMovies() {
         if (_hasFetched.value) return
 
@@ -52,9 +48,35 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
                     "Action",
                     repository.getActionMovies()
                 ),
+
+                MovieCategories(
+                    "Animation",
+                    repository.getAnimationMovies()
+                ),
+
+                MovieCategories(
+                    "Drama",
+                    repository.getDramaMovies()
+                ),
                 MovieCategories(
                     "Romance",
                     repository.getRomanceMovies()
+                ),
+                MovieCategories(
+                    "Fantasy",
+                    repository.getFantasyMovies()
+                ),
+                MovieCategories(
+                    "Adventure",
+                    repository.getAdventureMovies()
+                ),
+                MovieCategories(
+                    "Thriller",
+                    repository.getThrillerMovies()
+                ),
+                MovieCategories(
+                    "Horror",
+                    repository.getHorrorMovies()
                 ),
                 MovieCategories(
                     "Most Popular",
@@ -74,7 +96,13 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
     suspend fun getSpecificCategory(category: String) {
         val refreshMovies = when (category) {
             "Action" -> repository.getActionMovies()
+            "Animation" -> repository.getAnimationMovies()
+            "Drama" -> repository.getDramaMovies()
             "Romance" -> repository.getRomanceMovies()
+            "Fantasy" -> repository.getFantasyMovies()
+            "Adventure" -> repository.getAdventureMovies()
+            "Thriller" -> repository.getThrillerMovies()
+            "Horror" -> repository.getHorrorMovies()
             "Most Popular" -> repository.getMostPopularMovies()
             "Top Rated" -> repository.getTopRatedMovies()
             else -> emptyList()

@@ -44,9 +44,15 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getsetDatatoFragment()
         (activity as? MainActivity)?.hideBottomNav() //call function from main activity
         (activity as? MainActivity)?.changeBackground()
+        getsetDatatoFragment()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (activity as? MainActivity)?.showBottomNav() //call function from main activity
+        (activity as? MainActivity)?.changeBackgroundtoMain()
     }
 
     private fun favbutton_handler(movieId: Int) {
@@ -78,13 +84,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             else R.drawable.favorite_white
         )
         binding.savetext.text = if (isFav) "Saved" else "Save"
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        (activity as? MainActivity)?.showBottomNav() //call function from main activity
-        (activity as? MainActivity)?.changeBackgroundtoMain()
     }
 
 
@@ -257,4 +256,5 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             }
         }
     }
+
 }

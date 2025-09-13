@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.movieapp.R
+import com.example.movieapp.activities.MainActivity
 import com.example.movieapp.adapters.CarouselAdapter
 import com.example.movieapp.adapters.CoversAdapter
 import com.example.movieapp.adapters.MainAdapter
@@ -38,29 +39,23 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.apply {
-            // Connect SearchBar with SearchView
-            searchView.setupWithSearchBar(searchBar)
-            searchView.editText.setOnEditorActionListener { view, actionId, event ->
-                val query = searchView.text.toString()
-                if (query.isNotEmpty()) {
-                    searchForMovie(query)
-                }
-                true
-            }
-        }
-
+        applysearchview()
+        reloadclicked()
         checkNetworkConnection()
     }
 
+
     fun refreshCategory(category: String) {
         lifecycleScope.launch {
-            viewModel.getSpecificCategory(category)
-            viewModel.categories.collect { categoryList ->
-                binding.apply {
-                    catrecyclerView.adapter = MainAdapter(categoryList, this@MoviesFragment)
+            if (isNetworkAvailable(requireContext())) {
+                viewModel.getSpecificCategory(category)
+                viewModel.categories.collect { categoryList ->
+                    binding.apply {
+                        catrecyclerView.adapter = MainAdapter(categoryList, this@MoviesFragment)
+                    }
                 }
             }
+            else {showNoInternetUI()}
         }
     }
 
@@ -77,6 +72,20 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
                     noresultsanimation.visibility = View.VISIBLE
                     searchrecyclerView.visibility = View.GONE
                 }
+            }
+        }
+    }
+
+    private fun applysearchview() {
+        binding.apply {
+            // Connect SearchBar with SearchView
+            searchView.setupWithSearchBar(searchBar)
+            searchView.editText.setOnEditorActionListener { view, actionId, event ->
+                val query = searchView.text.toString()
+                if (query.isNotEmpty()) {
+                    searchForMovie(query)
+                }
+                true
             }
         }
     }
@@ -149,28 +158,38 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
     }
 
+    private fun reloadclicked() {
+        binding.reload.setOnClickListener {
+            checkNetworkConnection()
+        }
+    }
+
     private fun checkNetworkConnection() {
         if (!isNetworkAvailable(requireContext())) {
             showNoInternetUI()
         } else {
             binding.apply {
                 mainFragment.visibility = View.VISIBLE
+                (activity as? MainActivity)?.showBottomNav()
                 nointernetanimation.visibility = View.GONE
+                reload.visibility = View.GONE
             }
             FetchFromViewModel()
         }
     }
 
-    private fun showNoInternetUI() {
+     fun showNoInternetUI() {
         binding.apply {
             loadingAnimationView.visibility = View.GONE
             nointernetanimation.visibility = View.VISIBLE
+            reload.visibility = View.VISIBLE
             mainFragment.visibility = View.GONE
             searchBar.visibility = View.GONE
+            (activity as? MainActivity)?.hideBottomNav()
         }
     }
 
-    private fun isNetworkAvailable(context: Context): Boolean {
+     fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork
