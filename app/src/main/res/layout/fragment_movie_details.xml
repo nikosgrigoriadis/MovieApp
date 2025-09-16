@@ -47,6 +47,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <LinearLayout
                 android:id="@+id/viewPagerLayout"
                 android:layout_width="match_parent"
@@ -198,6 +199,49 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/schbutton"
+                android:layout_width="308dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="15dp"
+
+                android:background="@drawable/custom_button_edge"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/favbutton">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/schbuttonim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/calendar_clock_24dp_ffffff_fill0_wght200_grad0_opsz24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/scheduletext"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/scheduletext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Schedule"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/schbuttonim"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <RatingBar
                 android:id="@+id/ratingBar"
                 style="?android:attr/ratingBarStyleIndicator"
@@ -210,7 +254,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/movieOverviewDe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/favbutton"
+                app:layout_constraintTop_toBottomOf="@+id/schbutton"
                 app:layout_constraintVertical_bias="0.0"
                 tools:layout_editor_absoluteY="200dp" />
 

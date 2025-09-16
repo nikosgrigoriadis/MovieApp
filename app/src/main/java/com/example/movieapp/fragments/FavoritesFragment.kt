@@ -61,7 +61,6 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun fetchfavoritesviewmodel() {
-        startLoading()
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.loadfavoritemovies()
             viewModel.favorites.collect { favmovies ->
@@ -73,7 +72,6 @@ class FavoritesFragment : Fragment() {
                 viewModel.markDataAsFetched()
             }
         }
-        stopLoading()
     }
 
     private fun not_exist_favorites() {
@@ -96,13 +94,5 @@ class FavoritesFragment : Fragment() {
             adapter = FavoritesAdapter(favmovies, this@FavoritesFragment)
             favoritesrecyclerView.adapter = adapter
         }
-    }
-
-    private fun startLoading() {
-        binding.loadingAnimationView.visibility = View.VISIBLE
-    }
-
-    private fun stopLoading() {
-        binding.loadingAnimationView.visibility = View.GONE
     }
 }
