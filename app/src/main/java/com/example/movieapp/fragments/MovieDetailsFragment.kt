@@ -19,9 +19,11 @@ import com.example.movieapp.activities.MainActivity
 import com.example.movieapp.adapters.CastAdapter
 import com.example.movieapp.database.DatabaseProvider
 import com.example.movieapp.database.FavoriteMovieId
+import com.example.movieapp.database.MovieSchedule
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.network.RetroifitInstance.api
 import com.example.movieapp.viewmodels.FavoritesViewModel
+import com.example.movieapp.viewmodels.ScheduleViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -31,12 +33,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
-import java.util.TimeZone
 
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private lateinit var binding: FragmentMovieDetailsBinding
     private val viewModelFav: FavoritesViewModel by activityViewModels()
+    private val viewModelSchedule: ScheduleViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +63,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
     private fun schbutton_handler(movieId: Int) {
+
         binding.schbutton.setOnClickListener {
             val datePicker =
                 MaterialDatePicker.Builder.datePicker()
@@ -79,23 +82,23 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                         .build()
 
                 timePicker.addOnPositiveButtonClickListener {
-                    val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+                    val calendar = Calendar.getInstance()
                     calendar.timeInMillis = dateSelection
                     calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
                     calendar.set(Calendar.MINUTE, timePicker.minute)
                     calendar.set(Calendar.SECOND, 0)
+                    calendar.set(Calendar.MILLISECOND, 0)
 
                     val scheduledTime = calendar.timeInMillis
-                    Log.d("MovieDetailsFragment2", "Scheduled Time: $scheduledTime")
-                    // -> Εδώ αποθήκευση στη βάση & WorkManager
+                    val schmovie = MovieSchedule(movieId = movieId, scheduledTime = scheduledTime)
+                    viewModelSchedule.addScheduled(schmovie)
+
                 }
 
                 timePicker.show(parentFragmentManager, "movie_time_picker")
             }
 
             datePicker.show(parentFragmentManager, "movie_date_picker")
-
-
         }
     }
 

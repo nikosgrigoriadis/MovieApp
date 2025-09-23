@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_margin="8dp"
+app:cardCornerRadius="12dp"
+app:cardElevation="6dp">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#3C3F58"
+    android:padding="16dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/imageView_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardCornerRadius="7dp"
+        app:cardElevation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/moviecoversch"
+            android:layout_width="110dp"
+            android:layout_height="150dp"
+            android:contentDescription="@string/moviecover"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cars">
+
+        </com.google.android.material.imageview.ShapeableImageView>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/schtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Cars"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-light"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="6dp"
+        app:layout_constraintStart_toEndOf="@id/imageView_poster"
+        app:layout_constraintEnd_toStartOf="@id/imageButton_delete" />
+
+    <TextView
+        android:id="@+id/movieScheduledTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:text=""
+        android:alpha="0.8"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/schtitle"
+        app:layout_constraintStart_toEndOf="@id/imageView_poster"
+        app:layout_constraintEnd_toStartOf="@id/imageButton_delete" />
+
+    <ImageButton
+        android:id="@+id/imageButton_delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/delete_icon2"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

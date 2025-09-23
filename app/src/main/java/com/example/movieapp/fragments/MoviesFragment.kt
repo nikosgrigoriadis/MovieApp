@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -102,6 +103,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
         lifecycleScope.launch {
             viewModel.nowPlayingMovies.collect { nowplayingInsert ->
+                Log.d("MoviesFragment2", "Now Playing Movies: $nowplayingInsert") //id, title, overview , poster_path
                 binding.apply {
                     npcarouselRecyclerView.layoutManager = CarouselLayoutManager()
                     npcarouselRecyclerView.adapter = CarouselAdapter(nowplayingInsert)

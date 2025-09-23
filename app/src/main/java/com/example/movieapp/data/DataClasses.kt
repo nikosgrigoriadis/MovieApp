@@ -16,6 +16,14 @@
         val release_date: String,
     )
 
+    data class ScheduledMovieItem (
+        val movieId: Int,
+        val poster_path: String,
+        val scheduledTime: Long,
+        val dbID: Int,
+        val title: String,
+    )
+
     //Crew Members (Directors, Cast)
     data class CreditsResponse(
         val crew: List<CrewMember>,

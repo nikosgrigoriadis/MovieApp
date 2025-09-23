@@ -12,7 +12,9 @@ object DatabaseProvider {
                 context.applicationContext,
                 AppDatabase::class.java,
                 "movies_db"
-            ).build()
+            )
+                .fallbackToDestructiveMigration() //delete the db if change schema (change also to hilt AppModule)
+                .build()
         }
         return db!!
     }

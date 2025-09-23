@@ -11,7 +11,7 @@ import com.example.movieapp.R
 import com.example.movieapp.databinding.ActivityMainBinding
 import com.example.movieapp.fragments.FavoritesFragment
 import com.example.movieapp.fragments.MoviesFragment
-import com.example.movieapp.fragments.TimeManageFragment
+import com.example.movieapp.fragments.ScheduleFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     private fun onTimeManageClicked() {
         supportFragmentManager.commit {
-            replace(R.id.frame_content, TimeManageFragment())
+            replace(R.id.frame_content, ScheduleFragment())
         }
     }
 
