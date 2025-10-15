@@ -38,7 +38,7 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
     fun fetchMovies() {
         if (_hasFetched.value) return
 
-        viewModelScope.launch {   //CoroutineScope(Dispatchers.IO) -> viewModelScope
+        viewModelScope.launch {
             _isLoading.value = true
             val upcoming = MovieCategories("Upcoming", repository.getUpcomingMovies())
             val nowplaying = MovieCategories("Now Playing", repository.getNowPlayingMovies())
@@ -46,37 +46,77 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
 
                 MovieCategories(
                     "Action",
-                    repository.getActionMovies()
+                    repository.getMoviesByGenre("28")
                 ),
 
                 MovieCategories(
                     "Animation",
-                    repository.getAnimationMovies()
+                    repository.getMoviesByGenre("16")
                 ),
 
                 MovieCategories(
                     "Drama",
-                    repository.getDramaMovies()
+                    repository.getMoviesByGenre("18")
                 ),
                 MovieCategories(
                     "Romance",
-                    repository.getRomanceMovies()
+                    repository.getMoviesByGenre("10749")
                 ),
                 MovieCategories(
                     "Fantasy",
-                    repository.getFantasyMovies()
+                    repository.getMoviesByGenre("14")
+                ),
+                MovieCategories(
+                    "Comedy",
+                    repository.getMoviesByGenre("35")
                 ),
                 MovieCategories(
                     "Adventure",
-                    repository.getAdventureMovies()
+                    repository.getMoviesByGenre("12")
                 ),
                 MovieCategories(
                     "Thriller",
-                    repository.getThrillerMovies()
+                    repository.getMoviesByGenre("53")
                 ),
                 MovieCategories(
                     "Horror",
-                    repository.getHorrorMovies()
+                    repository.getMoviesByGenre("27")
+                ),
+                MovieCategories(
+                    "Mystery",
+                    repository.getMoviesByGenre("9648")
+                ),
+                MovieCategories(
+                    "Crime",
+                    repository.getMoviesByGenre("80")
+                ),
+                MovieCategories(
+                    "Music",
+                    repository.getMoviesByGenre("10402")
+                ),
+                MovieCategories(
+                    "History",
+                    repository.getMoviesByGenre("36")
+                ),
+                MovieCategories(
+                    "War",
+                    repository.getMoviesByGenre("10752")
+                ),
+                MovieCategories(
+                    "Science Fiction",
+                    repository.getMoviesByGenre("878")
+                ),
+                MovieCategories(
+                    "Family",
+                    repository.getMoviesByGenre("10751")
+                ),
+                MovieCategories(
+                    "Documentary",
+                    repository.getMoviesByGenre("99")
+                ),
+                MovieCategories(
+                    "Western",
+                    repository.getMoviesByGenre("37")
                 ),
                 MovieCategories(
                     "Most Popular",
@@ -95,14 +135,24 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
 
     suspend fun getSpecificCategory(category: String) {
         val refreshMovies = when (category) {
-            "Action" -> repository.getActionMovies()
-            "Animation" -> repository.getAnimationMovies()
-            "Drama" -> repository.getDramaMovies()
-            "Romance" -> repository.getRomanceMovies()
-            "Fantasy" -> repository.getFantasyMovies()
-            "Adventure" -> repository.getAdventureMovies()
-            "Thriller" -> repository.getThrillerMovies()
-            "Horror" -> repository.getHorrorMovies()
+            "Action" -> repository.getMoviesByGenre("28")
+            "Animation" -> repository.getMoviesByGenre("16")
+            "Drama" -> repository.getMoviesByGenre("18")
+            "Romance" -> repository.getMoviesByGenre("10749")
+            "Fantasy" -> repository.getMoviesByGenre("14")
+            "Comedy" -> repository.getMoviesByGenre("35")
+            "Adventure" -> repository.getMoviesByGenre("12")
+            "Thriller" -> repository.getMoviesByGenre("53")
+            "Horror" -> repository.getMoviesByGenre("27")
+            "Mystery" -> repository.getMoviesByGenre("9648")
+            "Crime" -> repository.getMoviesByGenre("80")
+            "Music" -> repository.getMoviesByGenre("10402")
+            "History" -> repository.getMoviesByGenre("36")
+            "War" -> repository.getMoviesByGenre("10752")
+            "Science Fiction" -> repository.getMoviesByGenre("878")
+            "Family" -> repository.getMoviesByGenre("10751")
+            "Documentary" -> repository.getMoviesByGenre("99")
+            "Western" -> repository.getMoviesByGenre("37")
             "Most Popular" -> repository.getMostPopularMovies()
             "Top Rated" -> repository.getTopRatedMovies()
             else -> emptyList()

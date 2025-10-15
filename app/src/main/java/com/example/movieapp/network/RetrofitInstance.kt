@@ -6,6 +6,7 @@ import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieDetailsResponse
 import com.example.movieapp.data.MovieResponse
 import com.example.movieapp.data.VideoResponse
+import com.example.movieapp.fragments.APIKEY
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -39,70 +40,12 @@ interface TMDBApi {
         @Query("api_key") apiKey: String
     ): MovieDetailsResponse
 
-    //Action
+    // Discover movies by genre
     @GET("discover/movie")
-    suspend fun getActionMovies(
-        @Query("api_key") apiKey: String,
-        @Query("with_genres") genreId: String = "28",
-        @Query("sort_by") sortBy: String = "revenue.desc", //ταξινομηση με βάση το revenue
-        @Query("page") page: Int = (1..30).random()
-    ): MovieResponse
-
-
-
-    @GET("discover/movie")
-    suspend fun getAnimationMovies(
-        @Query("api_key") apiKey: String,
-        @Query("with_genres") genreId: String = "16",
-        @Query("page") page: Int = (1..30).random()
-    ): MovieResponse
-
-    @GET("discover/movie")
-    suspend fun getDramaMovies(
-        @Query("api_key") apiKey: String,
-        @Query("with_genres") genreId: String = "18",
-        @Query("sort_by") sortBy: String = "revenue.desc",
-        @Query("page") page: Int = (1..30).random()
-    ): MovieResponse
-
-    //Romance
-    @GET("discover/movie")
-    suspend fun getRomanceMovies(
-        @Query("api_key") apiKey: String,
-        @Query("with_genres") genreId: String = "10749",
-        @Query("sort_by") sortBy: String = "revenue.desc",
-        @Query("page") page: Int = (1..30).random()
-    ): MovieResponse
-
-    @GET("discover/movie")
-    suspend fun getFantasyMovies(
-        @Query("api_key") apiKey: String,
-        @Query("with_genres") genreId: String = "14",
-        @Query("sort_by") sortBy: String = "revenue.desc",
-        @Query("page") page: Int = (1..30).random()
-    ): MovieResponse
-
-    @GET("discover/movie")
-    suspend fun getAdventureMovies(
-        @Query("api_key") apiKey: String,
-        @Query("with_genres") genreId: String = "12",
-        @Query("sort_by") sortBy: String = "revenue.desc",
-        @Query("page") page: Int = (1..30).random()
-    ): MovieResponse
-
-    @GET("discover/movie")
-    suspend fun getThrillerMovies(
-        @Query("api_key") apiKey: String,
-        @Query("with_genres") genreId: String = "53",
-        @Query("sort_by") sortBy: String = "revenue.desc",
-        @Query("page") page: Int = (1..30).random()
-    ): MovieResponse
-
-    @GET("discover/movie")
-    suspend fun getHorrorMovies(
-        @Query("api_key") apiKey: String,
-        @Query("with_genres") genreId: String = "27",
-        @Query("sort_by") sortBy: String = "revenue.desc",
+    suspend fun getMoviesByGenreRetrofit(
+        @Query("with_genres") genreId: String,
+        @Query("api_key") apiKey: String = APIKEY,
+        @Query("sort_by") sortBy: String? = "revenue.desc",
         @Query("page") page: Int = (1..30).random()
     ): MovieResponse
 
@@ -147,6 +90,8 @@ interface TMDBApi {
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
     ): Movie
+
+
 }
 
 //set the retrofit

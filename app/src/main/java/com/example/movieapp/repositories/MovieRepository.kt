@@ -29,64 +29,9 @@ class MovieRepository @Inject constructor() {
         }
     }
 
-    suspend fun getActionMovies(): List<Movie> {
+    suspend fun getMoviesByGenre(genreId: String): List<Movie> {
         return try {
-            api.getActionMovies(APIKEY).results
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-    suspend fun getAnimationMovies(): List<Movie> {
-        return try {
-            api.getAnimationMovies(APIKEY).results
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    suspend fun getDramaMovies(): List<Movie> {
-        return try {
-            api.getDramaMovies(APIKEY).results
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    suspend fun getRomanceMovies(): List<Movie> {
-        return try {
-            api.getRomanceMovies(APIKEY).results
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    suspend fun getFantasyMovies(): List<Movie> {
-        return try {
-            api.getFantasyMovies(APIKEY).results
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    suspend fun getAdventureMovies(): List<Movie> {
-        return try {
-            api.getAdventureMovies(APIKEY).results
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    suspend fun getThrillerMovies(): List<Movie> {
-        return try {
-            api.getThrillerMovies(APIKEY).results
-        } catch (e: Exception) {
-            emptyList()
-        }
-    }
-
-    suspend fun getHorrorMovies(): List<Movie> {
-        return try {
-            api.getHorrorMovies(APIKEY).results
+            api.getMoviesByGenreRetrofit(genreId).results
         } catch (e: Exception) {
             emptyList()
         }

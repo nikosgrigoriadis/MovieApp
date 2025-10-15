@@ -74,7 +74,7 @@ dependencies {
     implementation(libs.glide)
     kapt(libs.compiler)
     //Lottie
-    implementation("com.airbnb.android:lottie:6.6.6")
+    implementation(libs.lottie.v666)
     //SwipeRefresh
     implementation(libs.androidx.swiperefreshlayout)
     //Dagger Hilt
