@@ -94,7 +94,7 @@
         android:id="@+id/removeallfav"
         android:background="?attr/selectableItemBackground"
         android:visibility="visible"
-        android:src="@drawable/delete_icon"
+        android:src="@drawable/delete_icon2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/favorites"
         app:layout_constraintBottom_toBottomOf="@+id/favorites"
