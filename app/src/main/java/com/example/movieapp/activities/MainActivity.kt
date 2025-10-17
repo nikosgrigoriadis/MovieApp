@@ -2,9 +2,9 @@ package com.example.movieapp.activities
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.commit
 import com.example.movieapp.R
@@ -12,6 +12,7 @@ import com.example.movieapp.databinding.ActivityMainBinding
 import com.example.movieapp.fragments.FavoritesFragment
 import com.example.movieapp.fragments.MoviesFragment
 import com.example.movieapp.fragments.ScheduleFragment
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,24 +45,28 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
     }
 
-    private fun onTimeManageClicked() {
+     fun onTimeManageClicked() {
         supportFragmentManager.commit {
             replace(R.id.frame_content, ScheduleFragment())
         }
     }
 
-    private fun onFavoritesClicked() {
+     fun onFavoritesClicked() {
         supportFragmentManager.commit {
             replace(R.id.frame_content, FavoritesFragment())
         }
     }
 
     fun hideBottomNav() {
-        binding.bottomNav.visibility = View.INVISIBLE
+        val params = binding.bottomNav.layoutParams as CoordinatorLayout.LayoutParams
+        val behavior = params.behavior as HideBottomViewOnScrollBehavior
+        behavior.slideDown(binding.bottomNav)
     }
 
     fun showBottomNav() {
-        binding.bottomNav.visibility = View.VISIBLE
+        val params = binding.bottomNav.layoutParams as CoordinatorLayout.LayoutParams
+        val behavior = params.behavior as HideBottomViewOnScrollBehavior
+        behavior.slideUp(binding.bottomNav) //show bottom_nav when is hidden
     }
 
     fun changeBackground() {
@@ -70,6 +75,16 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     fun changeBackgroundtoMain() {
         binding.main.setBackgroundResource(R.drawable.gradient_background)
     }
+
+    fun navigateToSchedule() {
+        binding.bottomNav.selectedItemId = R.id.nav_time
+    }
+
+    fun navigateToFavorites() {
+        binding.bottomNav.selectedItemId = R.id.nav_favorites
+    }
+
+
 
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

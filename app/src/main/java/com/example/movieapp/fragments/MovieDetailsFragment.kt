@@ -92,6 +92,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                     val scheduledTime = calendar.timeInMillis
                     val schmovie = MovieSchedule(movieId = movieId, scheduledTime = scheduledTime)
                     viewModelSchedule.addScheduled(schmovie)
+                    showsnackbar("sch")
 
                 }
 
@@ -118,6 +119,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                     } else {
                         withContext(Dispatchers.IO) { dao.insert(FavoriteMovieId(movieId)) }
                         isFav = true
+                        showsnackbar("fav")
                     }
                     updateSaveButtonUI(isFav)
                 }
@@ -212,6 +214,38 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                     .into(binding.directorsImageView)
             }
         }
+    }
+
+    private fun showsnackbar(fragment: String) {
+        var text = "Added to Schedule"
+        var action: Fragment = ScheduleFragment()
+        var navigation: (() -> Unit)? = {
+            (activity as? MainActivity)?.onTimeManageClicked()
+            (activity as? MainActivity)?.navigateToSchedule()
+        }
+
+        if (fragment == "fav") {
+            text = "Added to Favorites"
+            action = FavoritesFragment()
+            navigation = {
+                (activity as? MainActivity)?.onFavoritesClicked()
+                (activity as? MainActivity)?.navigateToFavorites()}
+            }
+
+        Snackbar.make(
+            requireView(),
+            text,
+            Snackbar.LENGTH_LONG
+        ).setAction("View") {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.frame_content, action)
+                addToBackStack(null)
+                commit()
+            }
+            navigation?.invoke()
+            (activity as? MainActivity)?.showBottomNav()
+            (activity as? MainActivity)?.changeBackgroundtoMain()
+        }.show()
     }
 
     private fun fetchBackdrops(movieId: Int) {
