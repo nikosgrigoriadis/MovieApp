@@ -12,7 +12,9 @@
         android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="#10FFFFFF"
-        android:hint="Find a Movie"
+        android:text="Find a movie"
+        app:navigationIconTint="?attr/colorOnSurface"
+        app:titleTextColor="?attr/colorOnSurface"
         app:strokeColor="@android:color/transparent" />
 
         <androidx.core.widget.NestedScrollView
@@ -31,9 +33,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginBottom="7dp"
                     android:text="Upcoming"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -51,7 +54,8 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="7dp"
                     android:text="Now Playing"
-                    android:textColor="@color/white"
+                    android:layout_marginStart="5dp"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView

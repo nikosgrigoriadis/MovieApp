@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_checked="true"
+        android:drawable="@drawable/calendar_clock_24dp_ffffff_fill1_wght400_grad0_opsz24" />
+
+    <item android:drawable="@drawable/calendar_clock_nofilled" />
+</selector>

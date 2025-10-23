@@ -251,6 +251,7 @@
                 android:isIndicator="true"
                 android:rating="3"
                 android:stepSize="0.1"
+                android:progressTint="#ccc2dc"
                 app:layout_constraintBottom_toTopOf="@+id/movieOverviewDe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -263,7 +264,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="8.2 / 10"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -348,7 +349,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-
+                app:cardBackgroundColor="#25222d"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:layout_constraintStart_toStartOf="@+id/directorDivider"
@@ -366,6 +367,7 @@
                         android:id="@+id/directorsImageView"
                         android:layout_width="100dp"
                         android:layout_height="140dp"
+                        android:background="#25222d"
                         android:src="@drawable/notanactor" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -378,7 +380,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:gravity="start|center"
-                android:text="Actor Name"
+                android:text="Director;s Name"
+                android:textColor="#cac4d0"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/directorCardView"
@@ -399,6 +402,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="30dp"
         android:src="@drawable/share_24"
+        app:tint="#ccc2dc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>

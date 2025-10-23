@@ -3,13 +3,13 @@
 
     <item android:id="@+id/nav_movies"
         android:title="Movies"
-        android:icon="@drawable/movieicon_24"/>
+        android:icon="@drawable/nav_movies_icon"/>
 
     <item android:id="@+id/nav_favorites"
         android:title="Favorites"
-        android:icon="@drawable/favorite_24"/>
+        android:icon="@drawable/nav_favorites_icon"/>
 
     <item android:id="@+id/nav_time"
         android:title="Schedule"
-        android:icon="@drawable/time_24"/>
+        android:icon="@drawable/nav_schedule_icon"/>
 </menu>

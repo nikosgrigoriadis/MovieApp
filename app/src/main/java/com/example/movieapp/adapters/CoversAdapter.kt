@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.movieapp.R
 import com.example.movieapp.data.Movie
 import com.example.movieapp.fragments.MovieDetailsFragment
-import com.example.movieapp.R
 import com.example.movieapp.fragments.MoviesFragment
-import com.google.android.material.snackbar.Snackbar
 
 
 class CoversAdapter(
@@ -36,19 +34,6 @@ class CoversAdapter(
         Glide.with(holder.itemView.context)
             .load("https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
             .into(holder.coverImageView)
-
-        holder.itemView.setOnLongClickListener {
-            val activity = parentFragment.requireActivity()
-            val coordinator = activity.findViewById<View>(R.id.main) // CoordinatorLayout
-            val bottomNav = activity.findViewById<View>(R.id.bottom_nav)
-
-            Snackbar.make(coordinator, covTMDBpos.title, Snackbar.LENGTH_SHORT)
-                .setAnchorView(bottomNav) // κάνει το snackbar να ακολουθεί το bottom nav
-                .show()
-
-            true
-        }
-
 
         holder.itemView.setOnClickListener {
             val bundle = Bundle().apply {

@@ -3,4 +3,8 @@
     <style name="CustomCorner">
         <item name="cornerSize">"10dp"</item>
     </style>
+
+    <style name="FixedIndicatorStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">#8467BD</item>
+    </style>
 </resources>

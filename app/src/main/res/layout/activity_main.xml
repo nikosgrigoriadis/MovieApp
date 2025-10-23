@@ -32,10 +32,12 @@
         android:layout_gravity="bottom"
         android:background="#443A7C"
         android:visibility="visible"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white"
+        app:itemActiveIndicatorStyle="@style/FixedIndicatorStyle"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:menu="@menu/bottom_nav"
+        app:itemIconTint="#D1FFFFFF"
+        app:labelVisibilityMode="selected"
+        app:itemTextColor="#D1FFFFFF"
         tools:ignore="VisualLintBottomNav"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -45,7 +45,7 @@
             android:text="No scheduled movies yet"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="?attr/colorOnBackground" />
+            android:textColor="?attr/colorOnSurface" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tap the "
-                android:alpha="0.7"/>
+                android:textColor="#9790a9"/>
 
             <ImageView
                 android:layout_width="20dp"
@@ -69,8 +69,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.7"
-                android:text=" button to add one" />
+                android:text=" button to add one"
+                android:textColor="#9790a9"/>
 
         </LinearLayout>
 
@@ -84,7 +84,7 @@
         android:textSize="30sp"
         android:visibility="visible"
         android:textStyle="bold"
-        android:textColor="@color/white"
+        android:textColor="?attr/colorOnSurface"
         android:layout_margin="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

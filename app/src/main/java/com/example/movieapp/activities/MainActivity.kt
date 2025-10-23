@@ -2,6 +2,7 @@ package com.example.movieapp.activities
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -61,16 +62,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val params = binding.bottomNav.layoutParams as CoordinatorLayout.LayoutParams
         val behavior = params.behavior as HideBottomViewOnScrollBehavior
         behavior.slideDown(binding.bottomNav)
+        binding.bottomNav.visibility = View.INVISIBLE
     }
 
     fun showBottomNav() {
+        binding.bottomNav.visibility = View.VISIBLE
         val params = binding.bottomNav.layoutParams as CoordinatorLayout.LayoutParams
         val behavior = params.behavior as HideBottomViewOnScrollBehavior
         behavior.slideUp(binding.bottomNav) //show bottom_nav when is hidden
     }
 
     fun changeBackground() {
-        binding.main.setBackgroundColor("#00FFFFFF".toColorInt())
+        binding.main.setBackgroundColor("#1C1B1B".toColorInt())
     }
     fun changeBackgroundtoMain() {
         binding.main.setBackgroundResource(R.drawable.gradient_background)
