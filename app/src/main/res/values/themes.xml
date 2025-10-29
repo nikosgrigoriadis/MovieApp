@@ -7,5 +7,11 @@
 
     </style>
 
+    <style name="ShapeAppearance.SearchBar.Gmail" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+
+
     <style name="Theme.MovieApp" parent="Base.Theme.MovieApp" />
 </resources>

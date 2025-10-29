@@ -7,4 +7,5 @@
     <style name="FixedIndicatorStyle" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">#8467BD</item>
     </style>
+
 </resources>

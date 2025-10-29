@@ -40,95 +40,95 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
 
         viewModelScope.launch {
             _isLoading.value = true
-            val upcoming = MovieCategories("Upcoming", repository.getUpcomingMovies())
-            val nowplaying = MovieCategories("Now Playing", repository.getNowPlayingMovies())
-            _categories.value = listOf(
-
-                MovieCategories(
-                    "Action",
-                    repository.getMoviesByGenre("28")
-                ),
-
-                MovieCategories(
-                    "Animation",
-                    repository.getMoviesByGenre("16")
-                ),
-
-                MovieCategories(
-                    "Drama",
-                    repository.getMoviesByGenre("18")
-                ),
-                MovieCategories(
-                    "Romance",
-                    repository.getMoviesByGenre("10749")
-                ),
-                MovieCategories(
-                    "Fantasy",
-                    repository.getMoviesByGenre("14")
-                ),
-                MovieCategories(
-                    "Comedy",
-                    repository.getMoviesByGenre("35")
-                ),
-                MovieCategories(
-                    "Adventure",
-                    repository.getMoviesByGenre("12")
-                ),
-                MovieCategories(
-                    "Thriller",
-                    repository.getMoviesByGenre("53")
-                ),
-                MovieCategories(
-                    "Horror",
-                    repository.getMoviesByGenre("27")
-                ),
-                MovieCategories(
-                    "Mystery",
-                    repository.getMoviesByGenre("9648")
-                ),
-                MovieCategories(
-                    "Crime",
-                    repository.getMoviesByGenre("80")
-                ),
-                MovieCategories(
-                    "Music",
-                    repository.getMoviesByGenre("10402")
-                ),
-                MovieCategories(
-                    "History",
-                    repository.getMoviesByGenre("36")
-                ),
-                MovieCategories(
-                    "War",
-                    repository.getMoviesByGenre("10752")
-                ),
-                MovieCategories(
-                    "Science Fiction",
-                    repository.getMoviesByGenre("878")
-                ),
-                MovieCategories(
-                    "Family",
-                    repository.getMoviesByGenre("10751")
-                ),
-                MovieCategories(
-                    "Documentary",
-                    repository.getMoviesByGenre("99")
-                ),
-                MovieCategories(
-                    "Western",
-                    repository.getMoviesByGenre("37")
-                ),
-                MovieCategories(
-                    "Most Popular",
-                    repository.getMostPopularMovies()
-                ),
-                MovieCategories(
-                    "Top Rated",
-                    repository.getTopRatedMovies()
-                )
-            )
-            _upcomingMovies.value = upcoming.movies
-            _nowPlayingMovies.value = nowplaying.movies
+ //           val upcoming = MovieCategories("Upcoming", repository.getUpcomingMovies())
+ //           val nowplaying = MovieCategories("Now Playing", repository.getNowPlayingMovies())
+//            _categories.value = listOf(
+//
+//                MovieCategories(
+//                    "Action",
+//                    repository.getMoviesByGenre("28")
+//                ),
+//
+//                MovieCategories(
+//                    "Animation",
+//                    repository.getMoviesByGenre("16")
+//                ),
+//
+//                MovieCategories(
+//                    "Drama",
+//                    repository.getMoviesByGenre("18")
+//                ),
+//                MovieCategories(
+//                    "Romance",
+//                    repository.getMoviesByGenre("10749")
+//                ),
+//                MovieCategories(
+//                    "Fantasy",
+//                    repository.getMoviesByGenre("14")
+//                ),
+//                MovieCategories(
+//                    "Comedy",
+//                    repository.getMoviesByGenre("35")
+//                ),
+//                MovieCategories(
+//                    "Adventure",
+//                    repository.getMoviesByGenre("12")
+//                ),
+//                MovieCategories(
+//                    "Thriller",
+//                    repository.getMoviesByGenre("53")
+//                ),
+//                MovieCategories(
+//                    "Horror",
+//                    repository.getMoviesByGenre("27")
+//                ),
+//                MovieCategories(
+//                    "Mystery",
+//                    repository.getMoviesByGenre("9648")
+//                ),
+//                MovieCategories(
+//                    "Crime",
+//                    repository.getMoviesByGenre("80")
+//                ),
+//                MovieCategories(
+//                    "Music",
+//                    repository.getMoviesByGenre("10402")
+//                ),
+//                MovieCategories(
+//                    "History",
+//                    repository.getMoviesByGenre("36")
+//                ),
+//                MovieCategories(
+//                    "War",
+//                    repository.getMoviesByGenre("10752")
+//                ),
+//                MovieCategories(
+//                    "Science Fiction",
+//                    repository.getMoviesByGenre("878")
+//                ),
+//                MovieCategories(
+//                    "Family",
+//                    repository.getMoviesByGenre("10751")
+//                ),
+//                MovieCategories(
+//                    "Documentary",
+//                    repository.getMoviesByGenre("99")
+//                ),
+//                MovieCategories(
+//                    "Western",
+//                    repository.getMoviesByGenre("37")
+//                ),
+//                MovieCategories(
+//                    "Most Popular",
+//                    repository.getMostPopularMovies()
+//                ),
+//                MovieCategories(
+//                    "Top Rated",
+//                    repository.getTopRatedMovies()
+//                )
+//            )
+//            _upcomingMovies.value = upcoming.movies
+//            _nowPlayingMovies.value = nowplaying.movies
             _isLoading.value = false
         }
     }

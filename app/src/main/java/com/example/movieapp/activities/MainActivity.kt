@@ -6,7 +6,9 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.graphics.toColorInt
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.commit
 import com.example.movieapp.R
 import com.example.movieapp.databinding.ActivityMainBinding
@@ -26,16 +28,23 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        supportFragmentManager.commit {   //add fragment to activity
-            replace(R.id.frame_content, MoviesFragment())
-        }
+        //disappear the navigation bar/line
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.hide(WindowInsetsCompat.Type.systemBars())
+        controller.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.bottomNav.setOnNavigationItemSelectedListener(this)
+
+        supportFragmentManager.commit {   //add fragment to activity
+            replace(R.id.frame_content, MoviesFragment())
+        }
 
     }
     //add fragments to activity
@@ -70,13 +79,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val params = binding.bottomNav.layoutParams as CoordinatorLayout.LayoutParams
         val behavior = params.behavior as HideBottomViewOnScrollBehavior
         behavior.slideUp(binding.bottomNav) //show bottom_nav when is hidden
-    }
-
-    fun changeBackground() {
-        binding.main.setBackgroundColor("#1C1B1B".toColorInt())
-    }
-    fun changeBackgroundtoMain() {
-        binding.main.setBackgroundResource(R.drawable.gradient_background)
     }
 
     fun navigateToSchedule() {

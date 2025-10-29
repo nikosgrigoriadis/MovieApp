@@ -67,7 +67,8 @@ class FavoritesFragment : Fragment() {
                 if (favmovies.isEmpty()) {
                     withContext(Dispatchers.Main) { not_exist_favorites() }
                 } else {
-                    withContext(Dispatchers.Main) { exist_favorites(favmovies) }
+                    withContext(Dispatchers.Main) {
+                        exist_favorites(favmovies) }
                 }
                 viewModel.markDataAsFetched()
             }

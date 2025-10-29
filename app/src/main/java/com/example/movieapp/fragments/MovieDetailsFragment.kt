@@ -52,14 +52,12 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNav() //call function from main activity
-        (activity as? MainActivity)?.changeBackground()
         getsetDatatoFragment()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         (activity as? MainActivity)?.showBottomNav() //call function from main activity
-        (activity as? MainActivity)?.changeBackgroundtoMain()
     }
 
     private fun schbutton_handler(movieId: Int) {
@@ -244,7 +242,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             }
             navigation?.invoke()
             (activity as? MainActivity)?.showBottomNav()
-            (activity as? MainActivity)?.changeBackgroundtoMain()
         }.show()
     }
 

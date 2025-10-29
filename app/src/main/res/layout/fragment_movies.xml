@@ -2,30 +2,59 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="20dp">
+    android:layout_height="match_parent">
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/search_bar"
         android:layout_width="180dp"
         android:layout_height="50dp"
-        android:layout_margin="16dp"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center_horizontal"
         android:backgroundTint="#10FFFFFF"
-        android:text="Find a movie"
-        app:navigationIconTint="?attr/colorOnSurface"
+        android:text="Find a Movie"
         app:titleTextColor="?attr/colorOnSurface"
+        app:navigationIconTint="?attr/colorOnSurface"
         app:strokeColor="@android:color/transparent" />
+
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="false"
+        android:layout_height="match_parent"
+        app:layout_anchor="@id/search_bar"
+        android:hint="Find a Movie"
+        app:backgroundTint="@color/search_toolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchrecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            android:layout_marginStart="10dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="3" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/noresultsanimation"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:visibility="invisible"
+            android:layout_gravity="center_horizontal"
+            app:lottie_autoPlay="true"
+            android:layout_marginTop="60dp"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/animationresults" />
+
+    </com.google.android.material.search.SearchView>
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/mainFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="65dp"
+                android:layout_marginTop="90dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -93,33 +122,6 @@
             app:lottie_rawRes="@raw/animationloading" />
     </FrameLayout>
 
-    <com.google.android.material.search.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_anchor="@id/search_bar"
-        app:backgroundTint="#443A7C">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/searchrecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="true"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="3" />
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/noresultsanimation"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="50dp"
-            android:visibility="visible"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/animationresults" />
-
-    </com.google.android.material.search.SearchView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

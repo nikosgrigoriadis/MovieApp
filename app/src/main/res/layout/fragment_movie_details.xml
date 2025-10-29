@@ -5,13 +5,11 @@
     android:id="@+id/frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="20dp"
     tools:context=".activities.MainActivity">
 
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/movieCoverDe"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
@@ -30,14 +28,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp">
 
             <TextView
                 android:id="@+id/movieTitleDe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="44dp"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:text="MOVIE TITLE"

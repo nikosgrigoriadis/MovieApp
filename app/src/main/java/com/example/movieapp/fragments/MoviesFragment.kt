@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -78,9 +79,42 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
     private fun applysearchview() {
+
         binding.apply {
             // Connect SearchBar with SearchView
             searchView.setupWithSearchBar(searchBar)
+            searchBar.setOnClickListener {
+                searchView.show()
+                searchView.setText("")
+                (activity as? MainActivity)?.hideBottomNav()
+            }
+
+            val toolbar = searchView.findViewById<com.google.android.material.appbar.MaterialToolbar>(
+                com.google.android.material.R.id.open_search_view_toolbar
+            )
+
+            val content_area = searchView.findViewById<View>(
+                com.google.android.material.R.id.open_search_view_content_container
+            )
+
+            val clearButton = searchView.findViewById<ImageView>(
+                com.google.android.material.R.id.open_search_view_clear_button
+            )
+
+            toolbar.setBackgroundColor(resources.getColor(R.color.search_toolbar, null))
+
+            content_area.setBackgroundColor(resources.getColor(R.color.content_area, null))
+
+            clearButton.setColorFilter(resources.getColor(R.color.white, null))
+
+            searchView.addTransitionListener { _, _, newState ->
+                if (newState == com.google.android.material.search.SearchView.TransitionState.HIDDEN) {
+                    (activity as? MainActivity)?.showBottomNav()
+                    noresultsanimation.visibility = View.GONE
+                    searchrecyclerView.adapter = CoversAdapter(emptyList(), this@MoviesFragment)
+                }
+            }
+
             searchView.editText.setOnEditorActionListener { view, actionId, event ->
                 val query = searchView.text.toString()
                 if (query.isNotEmpty()) {
