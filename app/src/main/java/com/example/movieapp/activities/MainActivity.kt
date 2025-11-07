@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         val params = binding.bottomNav.layoutParams as CoordinatorLayout.LayoutParams
         val behavior = params.behavior as HideBottomViewOnScrollBehavior
         behavior.slideDown(binding.bottomNav)
-        binding.bottomNav.visibility = View.INVISIBLE
+        binding.bottomNav.visibility = View.GONE
     }
 
     fun showBottomNav() {

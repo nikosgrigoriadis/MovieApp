@@ -55,9 +55,10 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         getsetDatatoFragment()
     }
 
+
     override fun onDestroy() {
         super.onDestroy()
-        (activity as? MainActivity)?.showBottomNav() //call function from main activity
+        (activity as? MainActivity)?.showBottomNav()
     }
 
     private fun schbutton_handler(movieId: Int) {
@@ -65,6 +66,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         binding.schbutton.setOnClickListener {
             val datePicker =
                 MaterialDatePicker.Builder.datePicker()
+                    .setTheme(R.style.DatePickerTheme)
                     .setTitleText("Select Schedule Date")
                     .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                     .build()
@@ -73,6 +75,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
                 val timePicker =
                     MaterialTimePicker.Builder()
+                        .setTheme(R.style.TimePickerTheme)
                         .setTimeFormat(TimeFormat.CLOCK_24H)
                         .setHour(12)
                         .setMinute(0)
@@ -134,6 +137,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     }
 
 
+
+
     private fun getsetDatatoFragment() {
         val movieId = arguments?.getString("idkey")?.toInt() ?: 0
 
@@ -148,9 +153,14 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
         binding.apply {
 
+            backButton.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
+
             floatingshare.setOnClickListener {
                 shareMovie(movieId)
             }
+
             val getOverview = arguments?.getString("overviewkey")
             movieOverviewDe.text = "$getOverview"
 

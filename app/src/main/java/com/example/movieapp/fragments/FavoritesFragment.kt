@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.movieapp.R
 import com.example.movieapp.adapters.FavoritesAdapter
 import com.example.movieapp.data.Movie
 import com.example.movieapp.database.DatabaseProvider
@@ -42,7 +43,7 @@ class FavoritesFragment : Fragment() {
     private fun binclicked() {
         binding.removeallfav.setOnClickListener {
             val dao = DatabaseProvider.getDatabase(requireContext()).favoriteMovieDao()
-            MaterialAlertDialogBuilder(requireContext())
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle("Confirm Deletion")
                 .setMessage("This action will remove all your favorites. Are you sure?")
                 .setPositiveButton("Yes") { dialog, _ ->

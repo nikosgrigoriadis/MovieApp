@@ -43,9 +43,9 @@ class ScheduleFragment : Fragment(R.layout.fragment_timemanage) {
 
      fun binclickedsch(movie: MovieSchedule) {
 
-            MaterialAlertDialogBuilder(requireContext())
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle("Confirm Deletion")
-                .setMessage("This action will remove all your favorites. Are you sure?")
+                .setMessage("This action will remove the movie from the schedule. Are you sure?")
                 .setPositiveButton("Yes") { dialog, _ ->
                     lifecycleScope.launch {
                         viewModelSchedule.removeScheduled(movie)

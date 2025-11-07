@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.example.movieapp.R
 import com.example.movieapp.data.ScheduledMovieItem
 import com.example.movieapp.database.MovieSchedule
 import com.example.movieapp.databinding.ScheduleItemBinding
@@ -37,8 +39,21 @@ class ScheduleAdapter(
 
         holder.binding.apply {
             val covTMDBpos = moviesTMDB[position]
+            val coverUrl = covTMDBpos.poster_path?.let {
+                "https://image.tmdb.org/t/p/w500$it"
+            }
+
+            val requestOptions = if (coverUrl == null) {
+                RequestOptions()
+                    .placeholder(R.drawable.nomovieicon)
+                    .error(R.drawable.nomovieicon)
+            } else {
+                RequestOptions().centerCrop()
+            }
+
             Glide.with(holder.itemView.context)
-                .load("https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
+                .load(coverUrl)
+                .apply(requestOptions)
                 .into(moviecoversch)
 
 

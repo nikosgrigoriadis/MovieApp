@@ -8,10 +8,9 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.movieapp.R
 import com.example.movieapp.data.Movie
 import com.example.movieapp.fragments.MovieDetailsFragment
-import com.example.movieapp.R
-import com.google.android.material.snackbar.Snackbar
 
 class CarouselAdapter(private val images: List<Movie>) :
     RecyclerView.Adapter<CarouselAdapter.CarouselViewHolder>() {
@@ -53,10 +52,6 @@ class CarouselAdapter(private val images: List<Movie>) :
 
         }
 
-        holder.itemView.setOnLongClickListener {
-            Snackbar.make(it, covTMDBpos.title, Snackbar.LENGTH_SHORT).show()
-            true
-        }
     }
 
     override fun getItemCount(): Int = images.size

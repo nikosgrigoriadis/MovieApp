@@ -38,10 +38,10 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
     fun fetchMovies() {
         if (_hasFetched.value) return
 
-        viewModelScope.launch {
-            _isLoading.value = true
- //           val upcoming = MovieCategories("Upcoming", repository.getUpcomingMovies())
- //           val nowplaying = MovieCategories("Now Playing", repository.getNowPlayingMovies())
+//        viewModelScope.launch {
+//            _isLoading.value = true
+//            val upcoming = MovieCategories("Upcoming", repository.getUpcomingMovies())
+//            val nowplaying = MovieCategories("Now Playing", repository.getNowPlayingMovies())
 //            _categories.value = listOf(
 //
 //                MovieCategories(
@@ -129,8 +129,8 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
 //            )
 //            _upcomingMovies.value = upcoming.movies
 //            _nowPlayingMovies.value = nowplaying.movies
-            _isLoading.value = false
-        }
+//            _isLoading.value = false
+//        }
     }
 
     suspend fun getSpecificCategory(category: String) {

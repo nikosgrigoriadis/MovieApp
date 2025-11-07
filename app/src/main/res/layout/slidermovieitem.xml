@@ -9,7 +9,7 @@
     android:layout_marginTop="10dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="#443A7C"
+    app:cardBackgroundColor="#b4add1"
     app:cardCornerRadius="7dp"
     app:cardElevation="0dp">
 
@@ -17,9 +17,8 @@
         android:id="@+id/moviecover"
         android:layout_width="110dp"
         android:layout_height="150dp"
-        android:contentDescription="@string/moviecover"
-        android:scaleType="centerCrop"
-        android:src="@drawable/cars"></com.google.android.material.imageview.ShapeableImageView>
+        android:contentDescription="@string/moviecover">
+    </com.google.android.material.imageview.ShapeableImageView>
 
 
 </androidx.cardview.widget.CardView>

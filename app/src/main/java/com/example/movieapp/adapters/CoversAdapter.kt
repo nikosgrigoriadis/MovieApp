@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.movieapp.R
 import com.example.movieapp.data.Movie
 import com.example.movieapp.fragments.MovieDetailsFragment
@@ -31,8 +32,21 @@ class CoversAdapter(
     override fun onBindViewHolder(holder: CoversAdapterViewHolder, position: Int) {
         val covTMDBpos = moviesTMDB[position]
 
+        val coverUrl = covTMDBpos.poster_path?.let {
+            "https://image.tmdb.org/t/p/w500$it"
+        }
+
+        val requestOptions = if (coverUrl == null) {
+            RequestOptions()
+                .placeholder(R.drawable.nomovieicon)
+                .error(R.drawable.nomovieicon)
+        } else {
+            RequestOptions().centerCrop()
+        }
+
         Glide.with(holder.itemView.context)
-            .load("https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
+            .load(coverUrl)
+            .apply(requestOptions)
             .into(holder.coverImageView)
 
         holder.itemView.setOnClickListener {
@@ -41,7 +55,7 @@ class CoversAdapter(
                 putString("titlekey", covTMDBpos.title)
                 putString("overviewkey", covTMDBpos.overview)
                 putString("releasekey", covTMDBpos.release_date)
-                putString("coverkey", "https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
+                putString("coverkey", coverUrl)
             }
 
             val openFragment = MovieDetailsFragment().apply {

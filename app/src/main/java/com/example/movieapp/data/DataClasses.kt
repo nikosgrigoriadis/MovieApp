@@ -18,7 +18,7 @@
 
     data class ScheduledMovieItem (
         val movieId: Int,
-        val poster_path: String,
+        val poster_path: String?,
         val scheduledTime: Long,
         val dbID: Int,
         val title: String,
@@ -77,8 +77,3 @@
         val character: String,
         val profile_path: String?
     )
-
-
-
-
-

@@ -38,13 +38,33 @@
             android:id="@+id/noresultsanimation"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:layout_gravity="center_horizontal"
             app:lottie_autoPlay="true"
             android:layout_marginTop="60dp"
-            app:lottie_loop="false"
+            app:lottie_loop="true"
             app:lottie_rawRes="@raw/animationresults" />
 
+        <TextView
+            android:id="@+id/no_results_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="320dp"
+            android:text=""
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:visibility="gone" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/searchanimation"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="60dp"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/searchprocessing" />
     </com.google.android.material.search.SearchView>
 
         <androidx.core.widget.NestedScrollView
