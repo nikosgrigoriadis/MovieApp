@@ -1,13 +1,18 @@
 package com.example.movieapp.fragments
 
 import BackdropPagerAdapter
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +27,8 @@ import com.example.movieapp.database.FavoriteMovieId
 import com.example.movieapp.database.MovieSchedule
 import com.example.movieapp.databinding.FragmentMovieDetailsBinding
 import com.example.movieapp.network.RetroifitInstance.api
+import com.example.movieapp.notifications.NotificationScheduler
+import com.example.movieapp.notifications.createNotificationChannel
 import com.example.movieapp.viewmodels.FavoritesViewModel
 import com.example.movieapp.viewmodels.ScheduleViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -33,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
+import java.util.TimeZone
 
 
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
@@ -53,6 +61,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNav() //call function from main activity
         getsetDatatoFragment()
+        createNotificationChannel(requireContext())
     }
 
 
@@ -64,45 +73,107 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private fun schbutton_handler(movieId: Int) {
 
         binding.schbutton.setOnClickListener {
-            val datePicker =
-                MaterialDatePicker.Builder.datePicker()
-                    .setTheme(R.style.DatePickerTheme)
-                    .setTitleText("Select Schedule Date")
-                    .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                    .build()
-
-            datePicker.addOnPositiveButtonClickListener { dateSelection ->
-
-                val timePicker =
-                    MaterialTimePicker.Builder()
-                        .setTheme(R.style.TimePickerTheme)
-                        .setTimeFormat(TimeFormat.CLOCK_24H)
-                        .setHour(12)
-                        .setMinute(0)
-                        .setTitleText("Select Schedule Time")
-                        .build()
-
-                timePicker.addOnPositiveButtonClickListener {
-                    val calendar = Calendar.getInstance()
-                    calendar.timeInMillis = dateSelection
-                    calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
-                    calendar.set(Calendar.MINUTE, timePicker.minute)
-                    calendar.set(Calendar.SECOND, 0)
-                    calendar.set(Calendar.MILLISECOND, 0)
-
-                    val scheduledTime = calendar.timeInMillis
-                    val schmovie = MovieSchedule(movieId = movieId, scheduledTime = scheduledTime)
-                    viewModelSchedule.addScheduled(schmovie)
-                    showsnackbar("sch")
-
-                }
-
-                timePicker.show(parentFragmentManager, "movie_time_picker")
-            }
-
-            datePicker.show(parentFragmentManager, "movie_date_picker")
+            checkPermissionsAndOpenDatePicker(movieId)
         }
     }
+
+    private fun showDatePickerAndSchedule(movieId: Int) {
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTheme(R.style.DatePickerTheme)
+                .setTitleText("Select Schedule Date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+
+        datePicker.addOnPositiveButtonClickListener { dateSelection ->
+            val currentTime = Calendar.getInstance()
+
+            val timePicker =
+                MaterialTimePicker.Builder()
+                    .setTheme(R.style.TimePickerTheme)
+                    .setTimeFormat(TimeFormat.CLOCK_24H)
+                    .setHour(currentTime.get(Calendar.HOUR_OF_DAY))
+                    .setMinute(currentTime.get(Calendar.MINUTE) + 1)
+                    .setTitleText("Select Schedule Time")
+                    .build()
+
+            timePicker.addOnPositiveButtonClickListener {
+                //val calendar = Calendar.getInstance()
+                //calendar.timeInMillis = dateSelection
+                val calendar = Calendar.getInstance().apply {
+                    timeInMillis = dateSelection + TimeZone.getDefault().rawOffset
+                }
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+                calendar.set(Calendar.MINUTE, timePicker.minute)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+
+                val scheduledTime = calendar.timeInMillis
+                val movieTitle = binding.movieTitleDe.text.toString()
+
+                if (scheduledTime <= System.currentTimeMillis()) { //passed date/time check
+                    Snackbar.make(requireView(), "Cannot schedule for a past date or time", Snackbar.LENGTH_LONG).show()
+                } else {
+                    scheduleNotification(scheduledTime, movieTitle, movieId)
+                }
+            }
+
+            timePicker.show(parentFragmentManager, "movie_time_picker")
+        }
+
+        datePicker.show(parentFragmentManager, "movie_date_picker")
+    }
+
+    //Notifications
+    private var pendingMovieId: Int? = null
+
+    private fun checkPermissionsAndOpenDatePicker(movieId: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    showDatePickerAndSchedule(movieId)
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                    // Explain to the user why you need the notification permission
+                    Snackbar.make(requireView(), "Notification permission is needed to schedule movies", Snackbar.LENGTH_LONG)
+                        .setAction("Grant") {
+                            pendingMovieId = movieId
+                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }.show()
+                } else -> {
+                    pendingMovieId = movieId
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+        } else {
+            showDatePickerAndSchedule(movieId)
+        }
+    }
+
+    private fun scheduleNotification(scheduledTime: Long, movieTitle: String, movieId: Int) {
+        NotificationScheduler.scheduleNotification(requireContext(), scheduledTime, movieTitle, movieId)
+        val schmovie = MovieSchedule(movieId = movieId, scheduledTime = scheduledTime)
+        viewModelSchedule.addScheduled(schmovie)
+        showsnackbar("sch")
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Permission is granted. Continue with the flow
+            pendingMovieId?.let { showDatePickerAndSchedule(it) }
+        } else {
+            // Permission is not granted. Inform the user.
+            Snackbar.make(requireView(), "Permission denied. Cannot schedule notification.", Snackbar.LENGTH_SHORT).show()
+        }
+        pendingMovieId = null
+    }
+
+
 
     private fun favbutton_handler(movieId: Int) {
         val dao = DatabaseProvider.getDatabase(requireContext()).favoriteMovieDao()

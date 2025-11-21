@@ -17,4 +17,7 @@ interface MovieScheduleDao {
 
     @Delete
     suspend fun delete(schedule: MovieSchedule)
+
+    @Query("DELETE FROM movie_schedule WHERE movieId = :movieId")
+    suspend fun deleteByMovieId(movieId: Int)
 }
