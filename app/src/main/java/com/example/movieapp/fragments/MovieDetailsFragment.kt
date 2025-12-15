@@ -110,11 +110,12 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
 
                 val scheduledTime = calendar.timeInMillis
                 val movieTitle = binding.movieTitleDe.text.toString()
+                val moviePoster = arguments?.getString("coverkey")
 
                 if (scheduledTime <= System.currentTimeMillis()) { //passed date/time check
                     Snackbar.make(requireView(), "Cannot schedule for a past date or time", Snackbar.LENGTH_LONG).show()
                 } else {
-                    scheduleNotification(scheduledTime, movieTitle, movieId)
+                    scheduleNotification(scheduledTime, movieTitle, movieId, moviePoster)
                 }
             }
 
@@ -153,8 +154,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         }
     }
 
-    private fun scheduleNotification(scheduledTime: Long, movieTitle: String, movieId: Int) {
-        NotificationScheduler.scheduleNotification(requireContext(), scheduledTime, movieTitle, movieId)
+    private fun scheduleNotification(scheduledTime: Long, movieTitle: String, movieId: Int, moviePoster: String?) {
+        NotificationScheduler.scheduleNotification(requireContext(), scheduledTime, movieTitle, movieId, moviePoster)
         val schmovie = MovieSchedule(movieId = movieId, scheduledTime = scheduledTime)
         viewModelSchedule.addScheduled(schmovie)
         showsnackbar("sch")
