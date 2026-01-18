@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +32,7 @@ class ScheduleViewModel@Inject constructor (
 
             for (i in schmoviesEntities) {  //make it async without for loop
                 val scmovie = withContext(Dispatchers.IO) {
-                    api.getMovie(i.movieId, APIKEY)
+                    api.getMovie(i.movieId, APIKEY,  language = Locale.getDefault().language)
                 }
                 itemList.add(ScheduledMovieItem(
                     scmovie.id,

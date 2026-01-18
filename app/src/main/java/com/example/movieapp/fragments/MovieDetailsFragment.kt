@@ -40,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
+import java.util.Locale
 import java.util.TimeZone
 
 
@@ -62,6 +63,11 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         (activity as? MainActivity)?.hideBottomNav() //call function from main activity
         getsetDatatoFragment()
         createNotificationChannel(requireContext())
+
+        binding.languageToggle.setOnClickListener {
+            val languageBottomSheetFragment = LanguageBottomSheetFragment()
+            languageBottomSheetFragment.show(parentFragmentManager, languageBottomSheetFragment.tag)
+        }
     }
 
 
@@ -383,7 +389,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = api.getMovieDetails(
                 movieId = movieId,
-                apiKey = APIKEY
+                apiKey = APIKEY,
+                language = Locale.getDefault().language
             )
             withContext(Dispatchers.Main) {
                 val genre = response.genres.take(2)
@@ -402,7 +409,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         CoroutineScope(Dispatchers.IO).launch {
             val response = api.getMovieDetails(
                 movieId = movieId,
-                apiKey = APIKEY
+                apiKey = APIKEY,
+                language = Locale.getDefault().language
             )
             withContext(Dispatchers.Main) {
                 val duration = response.runtime

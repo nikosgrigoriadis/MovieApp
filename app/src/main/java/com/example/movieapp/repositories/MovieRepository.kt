@@ -13,33 +13,33 @@ class MovieRepository @Inject constructor() {
 
     private val api = RetroifitInstance.api
 
-    suspend fun getUpcomingMovies(): List<Movie> {
+    suspend fun getUpcomingMovies(language: String): List<Movie> {
         return try {
-            api.getUpcomingMovies(APIKEY).results
+            api.getUpcomingMovies(APIKEY, language).results
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    suspend fun getNowPlayingMovies(): List<Movie> {
+    suspend fun getNowPlayingMovies(language: String): List<Movie> {
         return try {
-            api.getNowPlayingMovies(APIKEY).results
+            api.getNowPlayingMovies(APIKEY, language).results
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    suspend fun getMoviesByGenre(genreId: String): List<Movie> {
+    suspend fun getMoviesByGenre(genreId: String, language: String): List<Movie> {
         return try {
-            api.getMoviesByGenreRetrofit(genreId).results
+            api.getMoviesByGenreRetrofit(genreId, language = language).results
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    suspend fun getMostPopularMovies(): List<Movie> {
+    suspend fun getMostPopularMovies(language: String): List<Movie> {
         return try {
-            api.getPopularMovies(APIKEY).results
+            api.getPopularMovies(APIKEY, language = language).results
         } catch (e: Exception) {
             emptyList()
         }
@@ -50,17 +50,17 @@ class MovieRepository @Inject constructor() {
         return currentPage
     }
 
-    suspend fun getTopRatedMovies(): List<Movie> {
+    suspend fun getTopRatedMovies(language: String): List<Movie> {
         return try {
-            api.getTopRatedMovies(APIKEY, loadTopRatedNextPage()).results
+            api.getTopRatedMovies(APIKEY, loadTopRatedNextPage(), language).results
         } catch (e: Exception) {
             emptyList()
         }
     }
 
-    suspend fun searchMovies(query: String): List<Movie> {
+    suspend fun searchMovies(query: String, language: String): List<Movie> {
         return try {
-            api.searchMovies(APIKEY, query).results
+            api.searchMovies(APIKEY, query, language).results
         } catch (e: Exception) {
             emptyList()
         }

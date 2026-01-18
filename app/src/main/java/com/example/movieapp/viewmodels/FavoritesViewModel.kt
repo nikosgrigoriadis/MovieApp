@@ -8,10 +8,13 @@ import com.example.movieapp.fragments.APIKEY
 import com.example.movieapp.network.RetroifitInstance.api
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,19 +40,16 @@ class FavoritesViewModel @Inject constructor(private val dao: FavoriteMovieDao):
 
         viewModelScope.launch {
 
-            //withContext because we take results
-            val favoriteIds = withContext(Dispatchers.IO) { dao.getAllFavorites()}
+            val favoriteIds = withContext(Dispatchers.IO) { dao.getAllFavorites() }
+            val language = Locale.getDefault().language
 
-            val favmovies = mutableListOf<Movie>()
-
-            for (fav in favoriteIds) {  //make it async without for loop
-                val movie = withContext(Dispatchers.IO) {
-                    api.getMovie(fav.id, APIKEY)
+            val favMovies = favoriteIds.map { favId ->
+                async(Dispatchers.IO) {
+                    api.getMovie(favId.id, APIKEY, language)
                 }
-                favmovies.add(movie)
+            }.awaitAll()
 
-            }
-            _favorites.value = favmovies
+            _favorites.value = favMovies
         }
     }
 }

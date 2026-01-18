@@ -16,6 +16,8 @@
         app:navigationIconTint="?attr/colorOnSurface"
         app:strokeColor="@android:color/transparent" />
 
+
+
     <com.google.android.material.search.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
