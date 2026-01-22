@@ -40,7 +40,11 @@
     data class MovieDetailsResponse(
         val genres: List<MoreDetails>,
         val runtime: Int,
-        @SerializedName("vote_average")val voteAverage: Double
+        @SerializedName("vote_average")val voteAverage: Double,
+        val title: String,
+        val overview: String,
+        val release_date: String,
+        val poster_path: String
     )
 
     data class MoreDetails(

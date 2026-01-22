@@ -1,6 +1,7 @@
 package com.example.movieapp.repositories
 
 import com.example.movieapp.data.Movie
+import com.example.movieapp.data.MovieDetailsResponse
 import com.example.movieapp.fragments.APIKEY
 import com.example.movieapp.network.RetroifitInstance
 import javax.inject.Inject
@@ -63,6 +64,14 @@ class MovieRepository @Inject constructor() {
             api.searchMovies(APIKEY, query, language).results
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+
+    suspend fun getMovieDetails(movieId: Int, language: String): MovieDetailsResponse? {
+        return try {
+            api.getMovieDetails(movieId, APIKEY, language)
+        } catch (e: Exception) {
+            null
         }
     }
 }

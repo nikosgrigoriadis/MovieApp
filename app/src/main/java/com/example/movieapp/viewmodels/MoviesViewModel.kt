@@ -1,6 +1,7 @@
 package com.example.movieapp.viewmodels
 
-
+import android.app.Application
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.Movie
@@ -10,12 +11,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.Locale
 import javax.inject.Inject
 
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor(private val repository: MovieRepository) : ViewModel() {
+class MoviesViewModel @Inject constructor(private val repository: MovieRepository, private val app: Application) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<MovieCategories>>(emptyList())
     val categories: StateFlow<List<MovieCategories>> = _categories
@@ -32,7 +32,9 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
     private val _hasFetched = MutableStateFlow(false)
     val hasFetched: StateFlow<Boolean> = _hasFetched
 
-    private val language = Locale.getDefault().language
+    private val prefs = app.getSharedPreferences("lang_prefs", Context.MODE_PRIVATE)
+    private val language: String
+        get() = prefs.getString("selected_language", "en-US") ?: "en-US"
 
     fun markDataAsFetched() {
         _hasFetched.value = true
@@ -134,6 +136,11 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
             _nowPlayingMovies.value = nowplaying.movies
             _isLoading.value = false
         }
+    }
+
+    fun refreshMoviesInNewLanguage() {
+        _hasFetched.value = false
+        fetchMovies()
     }
 
     suspend fun getSpecificCategory(category: String) {

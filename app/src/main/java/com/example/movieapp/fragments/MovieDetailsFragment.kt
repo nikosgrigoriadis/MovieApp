@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -30,24 +31,29 @@ import com.example.movieapp.network.RetroifitInstance.api
 import com.example.movieapp.notifications.NotificationScheduler
 import com.example.movieapp.notifications.createNotificationChannel
 import com.example.movieapp.viewmodels.FavoritesViewModel
+import com.example.movieapp.viewmodels.MovieDetailsViewModel
+import com.example.movieapp.viewmodels.MoviesViewModel
 import com.example.movieapp.viewmodels.ScheduleViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Calendar
-import java.util.Locale
 import java.util.TimeZone
 
-
+@AndroidEntryPoint
 class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private lateinit var binding: FragmentMovieDetailsBinding
     private val viewModelFav: FavoritesViewModel by activityViewModels()
     private val viewModelSchedule: ScheduleViewModel by activityViewModels()
+    private val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
+    private val moviesViewModel: MoviesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,12 +67,74 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideBottomNav() //call function from main activity
-        getsetDatatoFragment()
+
+        val movieId = arguments?.getString("idkey")?.toInt() ?: 0
+        movieDetailsViewModel.loadMovie(movieId)
+
+        observeMovieDetails()
         createNotificationChannel(requireContext())
 
         binding.languageToggle.setOnClickListener {
-            val languageBottomSheetFragment = LanguageBottomSheetFragment()
+            val languageBottomSheetFragment = LanguageBottomSheetFragment { language ->
+                movieDetailsViewModel.changeLanguage(movieId, language)
+                moviesViewModel.refreshMoviesInNewLanguage()
+            }
             languageBottomSheetFragment.show(parentFragmentManager, languageBottomSheetFragment.tag)
+        }
+
+        schbutton_handler(movieId)
+        favbutton_handler(movieId)
+        getDirector(movieId)
+        getTrailer(movieId)
+        getCast(movieId)
+        fetchBackdrops(movieId)
+
+        binding.apply {
+            backButton.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
+            floatingshare.setOnClickListener {
+                shareMovie(movieId)
+            }
+        }
+    }
+
+    private fun observeMovieDetails() {
+        lifecycleScope.launch {
+            movieDetailsViewModel.movieDetails.collectLatest { movieDetails ->
+                movieDetails?.let {
+                    binding.movieTitleDe.text = it.title
+                    if (it.overview.isEmpty()) {
+                        binding.movieOverviewDe.text = when (movieDetailsViewModel.language.value) {
+                            "el-GR" -> "Δεν υπάρχει περιγραφή στα Ελληνικά"
+                            else -> "Description does not exist"
+                        }
+                    } else {
+                        binding.movieOverviewDe.text = it.overview
+                    }
+                    val genre = it.genres.take(2).joinToString(", ") { genre -> genre.name }
+                    binding.GenreField.text = "${genre}  •"
+                    binding.ratingBar.rating = (it.voteAverage / 2).toFloat()
+                    binding.ratingBar.numStars = 5
+                    binding.ratingValueText.text = "${String.format("%.1f", it.voteAverage)} / 10"
+                    val duration = it.runtime
+                    val convert = if (duration < 60) {
+                        "$duration min"
+                    } else {
+                        val hours = duration / 60
+                        val minutes = duration % 60
+                        "${hours}h ${minutes}m"
+                    }
+                    binding.DurationField.text = convert
+                    val getReleaseDate = it.release_date.substring(0, 4) //only 4 first digits(year)
+                    binding.YearField.text = "${getReleaseDate}  •"
+
+                    val getCover = "https://image.tmdb.org/t/p/w500${it.poster_path}" //MovieCover
+                    Glide.with(requireContext())
+                        .load(getCover)
+                        .into(binding.movieCoverDe)
+                }
+            }
         }
     }
 
@@ -104,8 +172,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                     .build()
 
             timePicker.addOnPositiveButtonClickListener {
-                //val calendar = Calendar.getInstance()
-                //calendar.timeInMillis = dateSelection
                 val calendar = Calendar.getInstance().apply {
                     timeInMillis = dateSelection + TimeZone.getDefault().rawOffset
                 }
@@ -180,8 +246,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         pendingMovieId = null
     }
 
-
-
     private fun favbutton_handler(movieId: Int) {
         val dao = DatabaseProvider.getDatabase(requireContext()).favoriteMovieDao()
 
@@ -212,48 +276,6 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             else R.drawable.favorite_white
         )
         binding.savetext.text = if (isFav) "Saved" else "Save"
-    }
-
-
-
-
-    private fun getsetDatatoFragment() {
-        val movieId = arguments?.getString("idkey")?.toInt() ?: 0
-
-        schbutton_handler(movieId)
-        favbutton_handler(movieId)
-        getDirector(movieId)
-        getGenre(movieId)
-        getDuration(movieId)
-        getTrailer(movieId)
-        getCast(movieId)
-        fetchBackdrops(movieId)
-
-        binding.apply {
-
-            backButton.setOnClickListener {
-                parentFragmentManager.popBackStack()
-            }
-
-            floatingshare.setOnClickListener {
-                shareMovie(movieId)
-            }
-
-            val getOverview = arguments?.getString("overviewkey")
-            movieOverviewDe.text = "$getOverview"
-
-            val getReleaseDate =
-                arguments?.getString("releasekey")?.substring(0, 4) //only 4 first digits(year)
-            YearField.text = "${getReleaseDate}  •"
-
-            val getTitle = arguments?.getString("titlekey")
-            movieTitleDe.text = "$getTitle"
-
-            val getCover = arguments?.getString("coverkey") //MovieCover
-            Glide.with(requireContext())
-                .load(getCover)
-                .into(binding.movieCoverDe)
-        }
     }
 
     private fun getCast(movieId: Int) {
@@ -384,46 +406,4 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
             }
         }
     }
-
-    private fun getGenre(movieId: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = api.getMovieDetails(
-                movieId = movieId,
-                apiKey = APIKEY,
-                language = Locale.getDefault().language
-            )
-            withContext(Dispatchers.Main) {
-                val genre = response.genres.take(2)
-                    .joinToString(", ") { it.name } //takes only 2 genres and not all
-                binding.GenreField.text = "${genre}  •"
-
-                binding.ratingBar.rating = (response.voteAverage / 2).toFloat()
-                binding.ratingBar.numStars = 5
-                binding.ratingValueText.text = "${"%.1f".format(response.voteAverage)} / 10"
-
-            }
-        }
-    }
-
-    private fun getDuration(movieId: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response = api.getMovieDetails(
-                movieId = movieId,
-                apiKey = APIKEY,
-                language = Locale.getDefault().language
-            )
-            withContext(Dispatchers.Main) {
-                val duration = response.runtime
-                val convert = if (duration < 60) {
-                    "$duration min"
-                } else {
-                    val hours = duration / 60
-                    val minutes = duration % 60
-                    "${hours}h ${minutes}m"
-                }
-                binding.DurationField.text = convert
-            }
-        }
-    }
-
 }
