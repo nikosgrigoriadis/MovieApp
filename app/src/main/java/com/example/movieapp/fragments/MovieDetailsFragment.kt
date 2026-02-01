@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -23,6 +24,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.movieapp.R
 import com.example.movieapp.activities.MainActivity
 import com.example.movieapp.adapters.CastAdapter
+import com.example.movieapp.adapters.WatchProvidersAdapter
 import com.example.movieapp.database.DatabaseProvider
 import com.example.movieapp.database.FavoriteMovieId
 import com.example.movieapp.database.MovieSchedule
@@ -72,6 +74,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
         movieDetailsViewModel.loadMovie(movieId)
 
         observeMovieDetails()
+        observeWatchProviders()
         createNotificationChannel(requireContext())
 
         binding.languageToggle.setOnClickListener {
@@ -133,6 +136,24 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                     Glide.with(requireContext())
                         .load(getCover)
                         .into(binding.movieCoverDe)
+                }
+            }
+        }
+    }
+
+    private fun observeWatchProviders() {
+        lifecycleScope.launch {
+            movieDetailsViewModel.watchProviders.collectLatest { providers ->
+                binding.watchProvidersRecyclerView.isVisible = providers.isNotEmpty()
+
+                if (providers.isNotEmpty()) {
+                    val adapter = WatchProvidersAdapter(providers) { url ->
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
+                    }
+                    binding.watchProvidersRecyclerView.layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                    binding.watchProvidersRecyclerView.adapter = adapter
                 }
             }
         }

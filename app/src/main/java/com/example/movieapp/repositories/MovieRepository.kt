@@ -2,6 +2,7 @@ package com.example.movieapp.repositories
 
 import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieDetailsResponse
+import com.example.movieapp.data.Provider
 import com.example.movieapp.fragments.APIKEY
 import com.example.movieapp.network.RetroifitInstance
 import javax.inject.Inject
@@ -72,6 +73,15 @@ class MovieRepository @Inject constructor() {
             api.getMovieDetails(movieId, APIKEY, language)
         } catch (e: Exception) {
             null
+        }
+    }
+
+    suspend fun getWatchProviders(movieId: Int): List<Provider> {
+        return try {
+            val response = api.getWatchProviders(movieId, APIKEY)
+            response.results["GR"]?.flatrate ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 }

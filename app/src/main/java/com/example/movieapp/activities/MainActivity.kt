@@ -18,7 +18,6 @@ import com.example.movieapp.fragments.ScheduleFragment
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
@@ -88,16 +87,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     fun navigateToFavorites() {
         binding.bottomNav.selectedItemId = R.id.nav_favorites
-    }
-
-    fun setLocale(languageCode: String) {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        val resources = resources
-        val config = resources.configuration
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.displayMetrics)
-        recreate()
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -120,7 +120,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/DurationField"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/YearField"
-                app:layout_constraintTop_toBottomOf="@id/viewPagerLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPagerLayout" />
 
             <TextView
                 android:id="@+id/DurationField"
@@ -134,7 +134,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/GenreField"
-                app:layout_constraintTop_toBottomOf="@id/viewPagerLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/viewPagerLayout" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/favbutton"
@@ -192,7 +192,7 @@
                 android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/favbutton"
-                app:layout_constraintTop_toBottomOf="@id/DurationField">
+                app:layout_constraintTop_toBottomOf="@+id/DurationField">
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/trailerbtim"
@@ -314,6 +314,31 @@
                 app:layout_constraintTop_toBottomOf="@id/ratingBar" />
 
             <TextView
+                android:id="@+id/watchProvidersTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/roboto"
+                android:padding="5dp"
+                android:text="Available on"
+                android:textColor="#D5FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/movieOverviewDe"
+                app:layout_constraintTop_toBottomOf="@+id/movieOverviewDe" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/watchProvidersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                app:layout_constraintTop_toBottomOf="@+id/watchProvidersTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+            <TextView
                 android:id="@+id/castTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -324,7 +349,7 @@
                 android:textColor="#D5FFFFFF"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="@+id/movieOverviewDe"
-                app:layout_constraintTop_toBottomOf="@+id/movieOverviewDe" />
+                app:layout_constraintTop_toBottomOf="@+id/watchProvidersRecyclerView" />
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/castDivider"
@@ -391,7 +416,7 @@
                         android:id="@+id/directorsImageView"
                         android:layout_width="100dp"
                         android:layout_height="140dp"
-                        android:background="#25222d"
+                        android.background="#25222d"
                         android:src="@drawable/notanactor" />
                 </com.google.android.material.card.MaterialCardView>
 

@@ -6,6 +6,7 @@ import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieDetailsResponse
 import com.example.movieapp.data.MovieResponse
 import com.example.movieapp.data.VideoResponse
+import com.example.movieapp.data.WatchProviderResponse
 import com.example.movieapp.fragments.APIKEY
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -99,6 +100,11 @@ interface TMDBApi {
         @Query("language") language: String
     ): Movie
 
+    @GET("movie/{movie_id}/watch/providers")
+    suspend fun getWatchProviders(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): WatchProviderResponse
 
 }
 
