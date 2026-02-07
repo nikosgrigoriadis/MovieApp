@@ -102,3 +102,8 @@ data class Provider(
     @SerializedName("logo_path")
     val logoPath: String
 )
+
+data class WatchProviderItem(
+    val provider: Provider,
+    val link: String
+)
