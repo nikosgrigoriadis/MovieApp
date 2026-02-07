@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.MovieDetailsResponse
-import com.example.movieapp.data.Provider
+import com.example.movieapp.data.WatchProviderItem
 import com.example.movieapp.repositories.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +22,8 @@ class MovieDetailsViewModel @Inject constructor(
     private val _movieDetails = MutableStateFlow<MovieDetailsResponse?>(null)
     val movieDetails: StateFlow<MovieDetailsResponse?> = _movieDetails
 
-    private val _watchProviders = MutableStateFlow<List<Provider>>(emptyList())
-    val watchProviders: StateFlow<List<Provider>> = _watchProviders
+    private val _watchProviders = MutableStateFlow<List<WatchProviderItem>>(emptyList())
+    val watchProviders: StateFlow<List<WatchProviderItem>> = _watchProviders
 
     private val _tmdbLink = MutableStateFlow<String?>(null)
     val tmdbLink: StateFlow<String?> = _tmdbLink
