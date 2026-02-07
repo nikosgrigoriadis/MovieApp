@@ -147,10 +147,7 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
                 binding.watchProvidersRecyclerView.isVisible = providers.isNotEmpty()
 
                 if (providers.isNotEmpty()) {
-                    val adapter = WatchProvidersAdapter(providers) { url ->
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        startActivity(intent)
-                    }
+                    val adapter = WatchProvidersAdapter(providers)
                     binding.watchProvidersRecyclerView.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                     binding.watchProvidersRecyclerView.adapter = adapter
