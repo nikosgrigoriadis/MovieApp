@@ -54,8 +54,6 @@ class FavoritesAdapter(
             val bundle = Bundle().apply {
                 putString("idkey", covTMDBpos.id.toString())
                 putString("titlekey", covTMDBpos.title)
-                putString("overviewkey", covTMDBpos.overview)
-                putString("releasekey", covTMDBpos.release_date)
                 putString("coverkey", coverUrl)
             }
 

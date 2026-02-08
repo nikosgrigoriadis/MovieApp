@@ -39,8 +39,6 @@ class CarouselAdapter(private val images: List<Movie>) :
 
             bundle.putString("idkey", "${covTMDBpos.id}")
             bundle.putString("titlekey", covTMDBpos.title)
-            bundle.putString("overviewkey", covTMDBpos.overview)
-            bundle.putString("releasekey", covTMDBpos.release_date)
             bundle.putString("coverkey", "https://image.tmdb.org/t/p/w500${covTMDBpos.poster_path}")
             openFragment.arguments = bundle
 
