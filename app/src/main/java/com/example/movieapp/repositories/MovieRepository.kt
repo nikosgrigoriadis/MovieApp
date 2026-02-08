@@ -2,6 +2,7 @@ package com.example.movieapp.repositories
 
 import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieDetailsResponse
+import com.example.movieapp.data.Provider
 import com.example.movieapp.data.WatchProviderItem
 import com.example.movieapp.fragments.APIKEY
 import com.example.movieapp.network.RetroifitInstance
@@ -79,10 +80,21 @@ class MovieRepository @Inject constructor() {
     suspend fun getWatchProviders(movieId: Int): List<WatchProviderItem> {
         return try {
             val response = api.getWatchProviders(movieId, APIKEY)
-            val providerLink = response.results["GR"]?.link
-            response.results["GR"]?.flatrate?.mapNotNull { provider ->
-                providerLink?.let { WatchProviderItem(provider, it) }
-            } ?: emptyList()
+            val countryProviders = response.results["GR"] ?: return emptyList()
+            val providerLink = countryProviders.link
+            val items = mutableListOf<WatchProviderItem>()
+
+            fun addProviders(providers: List<Provider>, label: String) {
+                providers.forEach { provider ->
+                    items.add(WatchProviderItem(provider, providerLink, label))
+                }
+            }
+
+            addProviders(countryProviders.flatrate, "Streaming")
+            addProviders(countryProviders.rent, "Rent")
+            addProviders(countryProviders.buy, "Buy")
+
+            items.distinctBy { "${it.provider.providerId}-${it.availabilityLabel}" }
         } catch (e: Exception) {
             emptyList()
         }

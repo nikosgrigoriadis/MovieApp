@@ -105,5 +105,6 @@ data class Provider(
 
 data class WatchProviderItem(
     val provider: Provider,
-    val link: String
+    val link: String,
+    val availabilityLabel: String
 )
