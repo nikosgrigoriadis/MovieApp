@@ -2,6 +2,7 @@ package com.example.movieapp.viewmodels
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.Movie
@@ -44,6 +45,7 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
         if (_hasFetched.value) return
 
         viewModelScope.launch {
+            Log.d("MoviesViewModel", "Starting fetchMovies for language=$language")
             _isLoading.value = true
             val upcoming = MovieCategories("Upcoming", repository.getUpcomingMovies(language))
             val nowplaying = MovieCategories("Now Playing", repository.getNowPlayingMovies(language))
@@ -135,15 +137,21 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
             _upcomingMovies.value = upcoming.movies
             _nowPlayingMovies.value = nowplaying.movies
             _isLoading.value = false
+            Log.d(
+                "MoviesViewModel",
+                "Finished fetchMovies: categories=${_categories.value.size}, upcoming=${_upcomingMovies.value.size}, nowPlaying=${_nowPlayingMovies.value.size}"
+            )
         }
     }
 
     fun refreshMoviesInNewLanguage() {
+        Log.d("MoviesViewModel", "Refreshing movies in new language=$language")
         _hasFetched.value = false
         fetchMovies()
     }
 
     suspend fun getSpecificCategory(category: String) {
+        Log.d("MoviesViewModel", "Refreshing category=$category for language=$language")
         val refreshMovies = when (category) {
             "Action" -> repository.getMoviesByGenre("28", language)
             "Animation" -> repository.getMoviesByGenre("16", language)
@@ -171,9 +179,11 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
         _categories.value = _categories.value.map {
             if (it.cat == category) refreshCategory else it
         }
+        Log.d("MoviesViewModel", "Category refresh completed category=$category size=${refreshMovies.size}")
     }
 
     suspend fun searchMovie(query: String): List<Movie> {
+        Log.d("MoviesViewModel", "Searching movies query=$query language=$language")
         return repository.searchMovies(query, language)
     }
 }
