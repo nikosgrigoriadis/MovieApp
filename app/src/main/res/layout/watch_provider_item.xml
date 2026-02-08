@@ -3,18 +3,46 @@
 
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
     app:cardBackgroundColor="#25222d"
-    android:layout_marginLeft="10dp"
     app:cardCornerRadius="8dp">
 
-    <ImageView
-        android:id="@+id/providerLogo"
-        android:scaleType="centerCrop"
-        android:layout_width="100dp"
-        android:layout_height="120dp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/providerLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/providerName"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:text="Disney+" />
+
+        <TextView
+            android:id="@+id/providerAvailability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="@font/roboto"
+            android:textColor="#D5FFFFFF"
+            android:textSize="11sp"
+            tools:text="Streaming" />
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
-
-
 
