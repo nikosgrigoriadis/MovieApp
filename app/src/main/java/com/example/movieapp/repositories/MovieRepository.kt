@@ -2,7 +2,7 @@ package com.example.movieapp.repositories
 
 import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieDetailsResponse
-import com.example.movieapp.data.Provider
+import com.example.movieapp.data.WatchProviderItem
 import com.example.movieapp.fragments.APIKEY
 import com.example.movieapp.network.RetroifitInstance
 import javax.inject.Inject
@@ -76,10 +76,13 @@ class MovieRepository @Inject constructor() {
         }
     }
 
-    suspend fun getWatchProviders(movieId: Int): List<Provider> {
+    suspend fun getWatchProviders(movieId: Int): List<WatchProviderItem> {
         return try {
             val response = api.getWatchProviders(movieId, APIKEY)
-            response.results["GR"]?.flatrate ?: emptyList()
+            val providerLink = response.results["GR"]?.link
+            response.results["GR"]?.flatrate?.mapNotNull { provider ->
+                providerLink?.let { WatchProviderItem(provider, it) }
+            } ?: emptyList()
         } catch (e: Exception) {
             emptyList()
         }

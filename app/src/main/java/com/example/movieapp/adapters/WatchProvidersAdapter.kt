@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.movieapp.data.Provider
+import com.example.movieapp.data.WatchProviderItem
 import com.example.movieapp.databinding.WatchProviderItemBinding
 
 class WatchProvidersAdapter(
@@ -25,9 +25,9 @@ class WatchProvidersAdapter(
     inner class WatchProviderViewHolder(private val binding: WatchProviderItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(provider: Provider) {
+        fun bind(item: WatchProviderItem) {
             Glide.with(itemView.context)
-                .load("https://image.tmdb.org/t/p/w92${provider.logoPath}")
+                .load("https://image.tmdb.org/t/p/w92${item.provider.logoPath}")
                 .into(binding.providerLogo)
 
             itemView.setOnClickListener(null)
