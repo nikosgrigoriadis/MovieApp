@@ -120,7 +120,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/DurationField"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/YearField"
-                app:layout_constraintTop_toBottomOf="@+id/viewPagerLayout" />
+                app:layout_constraintTop_toBottomOf="@id/viewPagerLayout" />
 
             <TextView
                 android:id="@+id/DurationField"
@@ -134,7 +134,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/GenreField"
-                app:layout_constraintTop_toBottomOf="@+id/viewPagerLayout" />
+                app:layout_constraintTop_toBottomOf="@id/viewPagerLayout" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/favbutton"
@@ -279,7 +279,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/movieOverviewDe"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/schbutton"
+                app:layout_constraintTop_toBottomOf="@id/schbutton"
                 app:layout_constraintVertical_bias="0.0"
                 tools:layout_editor_absoluteY="200dp" />
 
@@ -303,7 +303,7 @@
                 android:layout_marginTop="35dp"
                 android:background="@drawable/custom_button_edge"
                 android:fontFamily="sans-serif-condensed-light"
-                android:gravity="center"
+                android.gravity="center"
                 android:padding="15dp"
                 android:text="@string/lightning_mcqueen_a_hotshot_rookie_race_car_driven_to_succeed_discovers_that_life_is_about_the_journey_not_the_finish_line_when_he_finds_himself_unexpectedly_detoured_in_the_sleepy_route_66_town_of_radiator_springs_on_route_across_the_country_to_the_big_piston_cup_championship_in_california_to_compete_against_two_seasoned_pros_mcqueen_gets_to_know_the_town_s_offbeat_characters"
                 android:textColor="@color/white"
@@ -313,17 +313,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ratingBar" />
 
+            <View
+                android:id="@+id/watchProvidersTitleBar"
+                android:layout_width="4dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/rounded_vertical_line"
+                app:layout_constraintBottom_toBottomOf="@+id/watchProvidersTitle"
+                app:layout_constraintStart_toStartOf="@+id/movieOverviewDe"
+                app:layout_constraintTop_toTopOf="@+id/watchProvidersTitle" />
+
             <TextView
                 android:id="@+id/watchProvidersTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="18dp"
                 android:fontFamily="@font/roboto"
                 android:padding="5dp"
                 android:text="Available on"
                 android:textColor="#D5FFFFFF"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/movieOverviewDe"
+                app:layout_constraintStart_toEndOf="@+id/watchProvidersTitleBar"
                 app:layout_constraintTop_toBottomOf="@+id/movieOverviewDe" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -337,72 +349,77 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <View
+                android:id="@+id/castTextViewBar"
+                android:layout_width="4dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/rounded_vertical_line"
+                app:layout_constraintBottom_toBottomOf="@+id/castTextView"
+                app:layout_constraintStart_toStartOf="@+id/movieOverviewDe"
+                app:layout_constraintTop_toTopOf="@+id/castTextView" />
 
             <TextView
                 android:id="@+id/castTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/roboto"
                 android:padding="5dp"
                 android:text="Cast"
                 android:textColor="#D5FFFFFF"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/movieOverviewDe"
+                app:layout_constraintStart_toEndOf="@+id/castTextViewBar"
                 app:layout_constraintTop_toBottomOf="@+id/watchProvidersRecyclerView" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/castDivider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerInsetEnd="16dp"
-                app:dividerInsetStart="16dp"
-                app:layout_constraintStart_toStartOf="@+id/castTextView"
-                app:layout_constraintTop_toBottomOf="@+id/castTextView" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/castRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:orientation="horizontal"
                 android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/castDivider" />
+                app:layout_constraintTop_toBottomOf="@+id/castTextView" />
+
+            <View
+                android:id="@+id/directorTextViewBar"
+                android:layout_width="4dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/rounded_vertical_line"
+                app:layout_constraintBottom_toBottomOf="@+id/directorTextView"
+                app:layout_constraintStart_toStartOf="@+id/movieOverviewDe"
+                app:layout_constraintTop_toTopOf="@+id/directorTextView" />
 
             <TextView
                 android:id="@+id/directorTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/roboto"
                 android:padding="5dp"
                 android:text="Director"
                 android:textColor="#D5FFFFFF"
                 android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="@+id/castTextView"
+                app:layout_constraintStart_toEndOf="@+id/directorTextViewBar"
                 app:layout_constraintTop_toBottomOf="@+id/castRecyclerView" />
-
-            <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/directorDivider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerInsetEnd="16dp"
-                app:dividerInsetStart="16dp"
-                app:layout_constraintStart_toStartOf="@+id/directorTextView"
-                app:layout_constraintTop_toBottomOf="@+id/directorTextView" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/directorCardView"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 app:cardBackgroundColor="#25222d"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:layout_constraintStart_toStartOf="@+id/directorDivider"
-                app:layout_constraintTop_toBottomOf="@+id/directorDivider">
+                app:layout_constraintStart_toStartOf="@+id/directorTextView"
+                app:layout_constraintTop_toBottomOf="@+id/directorTextView">
 
 
                 <com.google.android.material.card.MaterialCardView
@@ -416,7 +433,7 @@
                         android:id="@+id/directorsImageView"
                         android:layout_width="100dp"
                         android:layout_height="140dp"
-                        android.background="#25222d"
+                        android:background="#25222d"
                         android:src="@drawable/notanactor" />
                 </com.google.android.material.card.MaterialCardView>
 
@@ -429,7 +446,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:gravity="start|center"
-                android:text="Director;s Name"
+                android:text="Directors Name"
                 android:textColor="#cac4d0"
                 android:textSize="17sp"
                 android:textStyle="bold"
@@ -456,11 +473,4 @@
         app:layout_constraintEnd_toEndOf="parent">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
-
 </FrameLayout>
-
-
-
-
-
-

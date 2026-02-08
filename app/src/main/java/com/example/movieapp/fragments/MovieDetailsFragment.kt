@@ -144,6 +144,8 @@ class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
     private fun observeWatchProviders() {
         lifecycleScope.launch {
             movieDetailsViewModel.watchProviders.collectLatest { providers ->
+                binding.watchProvidersTitle.isVisible = providers.isNotEmpty()
+                binding.watchProvidersTitleBar.isVisible = providers.isNotEmpty()
                 binding.watchProvidersRecyclerView.isVisible = providers.isNotEmpty()
 
                 if (providers.isNotEmpty()) {

@@ -27,7 +27,7 @@ class WatchProvidersAdapter(
 
         fun bind(item: WatchProviderItem) {
             Glide.with(itemView.context)
-                .load("https://image.tmdb.org/t/p/w185${item.provider.logoPath}")
+                .load("https://image.tmdb.org/t/p/w342${item.provider.logoPath}")
                 .into(binding.providerLogo)
 
             binding.providerName.text = item.provider.providerName

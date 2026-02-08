@@ -16,14 +16,17 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <ImageView
-            android:id="@+id/providerLogo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:adjustViewBounds="true"
-            android:padding="6dp"
-            android:scaleType="fitCenter"
-            android:background="@drawable/custom_button_edge" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp">
+            <ImageView
+                android:id="@+id/providerLogo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:adjustViewBounds="true" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/providerName"
