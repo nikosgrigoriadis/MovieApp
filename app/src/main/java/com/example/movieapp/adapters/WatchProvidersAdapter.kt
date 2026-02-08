@@ -8,8 +8,7 @@ import com.example.movieapp.data.WatchProviderItem
 import com.example.movieapp.databinding.WatchProviderItemBinding
 
 class WatchProvidersAdapter(
-    private val providers: List<WatchProviderItem>,
-    private val onProviderClick: (String) -> Unit
+    private val providers: List<Provider>
 ) : RecyclerView.Adapter<WatchProvidersAdapter.WatchProviderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchProviderViewHolder {
@@ -31,9 +30,7 @@ class WatchProvidersAdapter(
                 .load("https://image.tmdb.org/t/p/w92${item.provider.logoPath}")
                 .into(binding.providerLogo)
 
-            itemView.setOnClickListener {
-                onProviderClick.invoke(item.link)
-            }
+            itemView.setOnClickListener(null)
         }
     }
 }
