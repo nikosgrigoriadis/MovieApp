@@ -8,7 +8,7 @@ import com.example.movieapp.data.WatchProviderItem
 import com.example.movieapp.databinding.WatchProviderItemBinding
 
 class WatchProvidersAdapter(
-    private val providers: List<Provider>
+    private val providers: List<WatchProviderItem>
 ) : RecyclerView.Adapter<WatchProvidersAdapter.WatchProviderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WatchProviderViewHolder {
