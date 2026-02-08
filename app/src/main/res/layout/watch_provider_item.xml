@@ -20,7 +20,10 @@
             android:id="@+id/providerLogo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:scaleType="centerCrop" />
+            android:adjustViewBounds="true"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/custom_button_edge" />
 
         <TextView
             android:id="@+id/providerName"
@@ -45,4 +48,3 @@
             tools:text="Streaming" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
-
