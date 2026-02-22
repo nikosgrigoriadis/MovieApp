@@ -58,7 +58,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         lifecycleScope.launch {
             if (isNetworkAvailable(requireContext())) {
                 viewModel.getSpecificCategory(category)
-                viewModel.categories.collect { categoryList ->
+                viewModel.filteredCategories.collect { categoryList ->
                     binding.apply {
                         catrecyclerView.adapter = MainAdapter(categoryList, this@MoviesFragment)
                     }
@@ -184,7 +184,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         }
 
         lifecycleScope.launch {
-            viewModel.categories.collect { categoryList ->
+            viewModel.filteredCategories.collect { categoryList ->
                 binding.apply {
                     catrecyclerView.adapter = MainAdapter(categoryList, this@MoviesFragment)
                 }

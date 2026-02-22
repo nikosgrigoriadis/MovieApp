@@ -9,8 +9,11 @@ import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieCategories
 import com.example.movieapp.repositories.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,6 +23,15 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
 
     private val _categories = MutableStateFlow<List<MovieCategories>>(emptyList())
     val categories: StateFlow<List<MovieCategories>> = _categories
+
+    private val _selectedCategories = MutableStateFlow<Set<String>?>(null)
+    val selectedCategories: StateFlow<Set<String>?> = _selectedCategories
+
+    val filteredCategories: StateFlow<List<MovieCategories>> =
+        combine(_categories, _selectedCategories) { categories, selected ->
+            val selectedSet = selected ?: categories.map { it.cat }.toSet()
+            categories.filter { it.cat in selectedSet }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     private val _upcomingMovies = MutableStateFlow<List<Movie>>(emptyList())
     val upcomingMovies: StateFlow<List<Movie>> = _upcomingMovies
@@ -134,6 +146,7 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
                     repository.getTopRatedMovies(language)
                 )
             )
+            initializeSelectedCategories()
             _upcomingMovies.value = upcoming.movies
             _nowPlayingMovies.value = nowplaying.movies
             _isLoading.value = false
@@ -185,5 +198,25 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
     suspend fun searchMovie(query: String): List<Movie> {
         Log.d("MoviesViewModel", "Searching movies query=$query language=$language")
         return repository.searchMovies(query, language)
+    }
+
+    fun setCategoryChecked(category: String, isChecked: Boolean) {
+        val selectedSet = _selectedCategories.value ?: _categories.value.map { it.cat }.toSet()
+        _selectedCategories.value = if (isChecked) {
+            selectedSet + category
+        } else {
+            selectedSet - category
+        }
+    }
+
+    private fun initializeSelectedCategories() {
+        val availableCategories = _categories.value.map { it.cat }.toSet()
+        val currentSelection = _selectedCategories.value
+
+        _selectedCategories.value = if (currentSelection == null) {
+            availableCategories
+        } else {
+            currentSelection.intersect(availableCategories)
+        }
     }
 }

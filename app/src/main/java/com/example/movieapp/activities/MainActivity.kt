@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.commit
 import com.example.movieapp.R
 import com.example.movieapp.databinding.ActivityMainBinding
+import com.example.movieapp.fragments.CategoriesFilterBottomSheetFragment
 import com.example.movieapp.fragments.FavoritesFragment
 import com.example.movieapp.fragments.MoviesFragment
 import com.example.movieapp.fragments.ScheduleFragment
@@ -104,6 +105,16 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             R.id.nav_favorites -> {
                 onFavoritesClicked()
                 return true
+            }
+
+            R.id.nav_categories -> {
+                if (supportFragmentManager.findFragmentByTag(CategoriesFilterBottomSheetFragment.TAG) == null) {
+                    CategoriesFilterBottomSheetFragment().show(
+                        supportFragmentManager,
+                        CategoriesFilterBottomSheetFragment.TAG
+                    )
+                }
+                return false
             }
 
             else -> {
