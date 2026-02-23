@@ -9,6 +9,7 @@ import com.example.movieapp.data.Movie
 import com.example.movieapp.data.MovieCategories
 import com.example.movieapp.repositories.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -225,5 +226,32 @@ class MoviesViewModel @Inject constructor(
             "Most Popular",
             "Top Rated"
         )
+    }
+
+    fun setCategoryChecked(category: String, isChecked: Boolean) {
+        val selectedSet = _selectedCategories.value ?: _categories.value.map { it.cat }.toSet()
+        val updatedSelection = if (isChecked) {
+            selectedSet + category
+        } else {
+            selectedSet - category
+        }
+        _selectedCategories.value = updatedSelection
+        saveHiddenCategories(updatedSelection)
+    }
+
+    private fun initializeSelectedCategories() {
+        val availableCategories = _categories.value.map { it.cat }.toSet()
+        val hiddenCategories = categoriesPrefs.getStringSet(KEY_HIDDEN_CATEGORIES, emptySet()) ?: emptySet()
+        _selectedCategories.value = availableCategories - hiddenCategories
+    }
+
+    private fun saveHiddenCategories(selectedCategories: Set<String>) {
+        val availableCategories = _categories.value.map { it.cat }.toSet()
+        val hiddenCategories = availableCategories - selectedCategories
+        categoriesPrefs.edit().putStringSet(KEY_HIDDEN_CATEGORIES, hiddenCategories).apply()
+    }
+
+    companion object {
+        private const val KEY_HIDDEN_CATEGORIES = "hidden_categories"
     }
 }
