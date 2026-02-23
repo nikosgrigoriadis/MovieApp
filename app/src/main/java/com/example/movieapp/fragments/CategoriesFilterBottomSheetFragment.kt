@@ -46,8 +46,7 @@ class CategoriesFilterBottomSheetFragment : BottomSheetDialogFragment() {
                         text = categoryName
                         isChecked = categoryName in selectedSet
                         setOnCheckedChangeListener { buttonView, isChecked ->
-                            val updated = viewModel.setCategoryChecked(categoryName, isChecked)
-                            if (!updated) {
+                            if (!viewModel.setCategoryChecked(categoryName, isChecked)) {
                                 buttonView.isChecked = true
                                 Toast.makeText(
                                     requireContext(),
