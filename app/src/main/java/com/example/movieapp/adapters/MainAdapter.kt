@@ -33,9 +33,12 @@ class MainAdapter(
 
 
         holder.binding.refreshButton.setOnClickListener {
-                parentFragment.refreshCategory(catpos.cat)
+            parentFragment.refreshCategory(catpos.cat)
+        }
 
-            }
+        holder.binding.categorytext.setOnClickListener {
+            parentFragment.showCategoriesBottomSheet()
+        }
     }
 
     override fun getItemCount() = categories.size
