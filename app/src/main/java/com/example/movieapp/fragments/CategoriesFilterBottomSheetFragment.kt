@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.movieapp.databinding.FragmentCategoriesFilterBinding
@@ -33,16 +34,27 @@ class CategoriesFilterBottomSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            combine(viewModel.categories, viewModel.selectedCategories) { categories, selected ->
-                categories to (selected ?: categories.map { it.cat }.toSet())
-            }.collect { (categories, selectedSet) ->
+            combine(
+                viewModel.availableCategoryNames,
+                viewModel.selectedCategories
+            ) { categoryNames, selected ->
+                categoryNames to (selected ?: categoryNames.toSet())
+            }.collect { (categoryNames, selectedSet) ->
                 binding.categoriesContainer.removeAllViews()
-                categories.forEach { category ->
+                categoryNames.forEach { categoryName ->
                     val checkBox = MaterialCheckBox(requireContext()).apply {
-                        text = category.cat
-                        isChecked = category.cat in selectedSet
-                        setOnCheckedChangeListener { _, isChecked ->
-                            viewModel.setCategoryChecked(category.cat, isChecked)
+                        text = categoryName
+                        isChecked = categoryName in selectedSet
+                        setOnCheckedChangeListener { buttonView, isChecked ->
+                            val updated = viewModel.setCategoryChecked(categoryName, isChecked)
+                            if (!updated) {
+                                buttonView.isChecked = true
+                                Toast.makeText(
+                                    requireContext(),
+                                    "At least one category must remain selected",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                     binding.categoriesContainer.addView(checkBox)
