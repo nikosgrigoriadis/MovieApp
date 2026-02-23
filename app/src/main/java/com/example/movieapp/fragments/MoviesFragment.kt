@@ -58,13 +58,18 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
         lifecycleScope.launch {
             if (isNetworkAvailable(requireContext())) {
                 viewModel.getSpecificCategory(category)
-                viewModel.filteredCategories.collect { categoryList ->
-                    binding.apply {
-                        catrecyclerView.adapter = MainAdapter(categoryList, this@MoviesFragment)
-                    }
-                }
+            } else {
+                showNoInternetUI()
             }
-            else {showNoInternetUI()}
+        }
+    }
+
+    fun showCategoriesBottomSheet() {
+        if (parentFragmentManager.findFragmentByTag(CategoriesFilterBottomSheetFragment.TAG) == null) {
+            CategoriesFilterBottomSheetFragment().show(
+                parentFragmentManager,
+                CategoriesFilterBottomSheetFragment.TAG
+            )
         }
     }
 

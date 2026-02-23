@@ -107,15 +107,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 return true
             }
 
-            R.id.nav_categories -> {
-                if (supportFragmentManager.findFragmentByTag(CategoriesFilterBottomSheetFragment.TAG) == null) {
-                    CategoriesFilterBottomSheetFragment().show(
-                        supportFragmentManager,
-                        CategoriesFilterBottomSheetFragment.TAG
-                    )
-                }
-                return false
-            }
 
             else -> {
                 return false

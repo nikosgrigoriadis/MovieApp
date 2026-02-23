@@ -11,6 +11,7 @@ import com.example.movieapp.repositories.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
@@ -19,7 +20,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MoviesViewModel @Inject constructor(private val repository: MovieRepository, private val app: Application) : ViewModel() {
+class MoviesViewModel @Inject constructor(
+    private val repository: MovieRepository,
+    private val app: Application
+) : ViewModel() {
 
     private val _categories = MutableStateFlow<List<MovieCategories>>(emptyList())
     val categories: StateFlow<List<MovieCategories>> = _categories
@@ -48,6 +52,8 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
     private val prefs = app.getSharedPreferences("lang_prefs", Context.MODE_PRIVATE)
     private val language: String
         get() = prefs.getString("selected_language", "en-US") ?: "en-US"
+
+    private val categoriesPrefs = app.getSharedPreferences("category_filter_prefs", Context.MODE_PRIVATE)
 
     fun markDataAsFetched() {
         _hasFetched.value = true
@@ -202,21 +208,28 @@ class MoviesViewModel @Inject constructor(private val repository: MovieRepositor
 
     fun setCategoryChecked(category: String, isChecked: Boolean) {
         val selectedSet = _selectedCategories.value ?: _categories.value.map { it.cat }.toSet()
-        _selectedCategories.value = if (isChecked) {
+        val updatedSelection = if (isChecked) {
             selectedSet + category
         } else {
             selectedSet - category
         }
+        _selectedCategories.value = updatedSelection
+        saveHiddenCategories(updatedSelection)
     }
 
     private fun initializeSelectedCategories() {
         val availableCategories = _categories.value.map { it.cat }.toSet()
-        val currentSelection = _selectedCategories.value
+        val hiddenCategories = categoriesPrefs.getStringSet(KEY_HIDDEN_CATEGORIES, emptySet()) ?: emptySet()
+        _selectedCategories.value = availableCategories - hiddenCategories
+    }
 
-        _selectedCategories.value = if (currentSelection == null) {
-            availableCategories
-        } else {
-            currentSelection.intersect(availableCategories)
-        }
+    private fun saveHiddenCategories(selectedCategories: Set<String>) {
+        val availableCategories = _categories.value.map { it.cat }.toSet()
+        val hiddenCategories = availableCategories - selectedCategories
+        categoriesPrefs.edit().putStringSet(KEY_HIDDEN_CATEGORIES, hiddenCategories).apply()
+    }
+
+    companion object {
+        private const val KEY_HIDDEN_CATEGORIES = "hidden_categories"
     }
 }

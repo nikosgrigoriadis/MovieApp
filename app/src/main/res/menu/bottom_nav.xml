@@ -13,8 +13,4 @@
         android:title="Schedule"
         android:icon="@drawable/nav_schedule_icon"/>
 
-    <item android:id="@+id/nav_categories"
-        android:title="Categories"
-        android:icon="@drawable/movieicon_24"
-        android:checkable="false"/>
 </menu>
