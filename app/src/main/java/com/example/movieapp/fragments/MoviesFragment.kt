@@ -23,7 +23,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-const val APIKEY = "5e8009b02ba3ed667527c72cf4779a4d"
+const val APIKEY = ""
 
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
