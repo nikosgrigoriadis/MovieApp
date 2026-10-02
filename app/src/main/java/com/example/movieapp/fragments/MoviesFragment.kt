@@ -11,6 +11,7 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.movieapp.BuildConfig
 import com.example.movieapp.R
 import com.example.movieapp.activities.MainActivity
 import com.example.movieapp.adapters.CarouselAdapter
@@ -23,7 +24,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-const val APIKEY = ""
+val APIKEY: String = BuildConfig.TMDB_API_KEY
 
 class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
